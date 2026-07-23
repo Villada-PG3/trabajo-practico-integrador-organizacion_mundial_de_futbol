@@ -1,1 +1,84 @@
+erDiagram
 
+    PAIS {
+        int id_pais PK
+        string nombre
+    }
+
+    MUNDIAL {
+        int id_mundial PK
+        int anio
+        string sede
+    }
+
+    PARTICIPACION {
+        int id_participacion PK
+        int posicion_final
+    }
+
+    EQUIPO {
+        int id_equipo PK
+        string nombre
+        string director_tecnico
+    }
+
+    JUGADOR {
+        int id_jugador PK
+        string nombre
+        string apellido
+        date fecha_nacimiento
+        string posicion
+        int numero_camiseta
+    }
+
+    ESTADIO {
+        int id_estadio PK
+        string nombre
+        string ciudad
+        int capacidad
+    }
+
+    ARBITRO {
+        int id_arbitro PK
+        string nombre
+        string apellido
+        string nacionalidad
+    }
+
+    PARTIDO {
+        int id_partido PK
+        date fecha
+        string fase
+    }
+
+    PARTICIPA_EN {
+        int id_participa PK
+        string condicion
+        int goles
+    }
+
+    ESTADISTICA_JUGADOR {
+        int id_estadistica PK
+        int goles
+        int asistencias
+        int tarjetas_amarillas
+        int tarjetas_rojas
+        int minutos_jugados
+    }
+
+    PAIS ||--o{ PARTICIPACION : participa
+    MUNDIAL ||--o{ PARTICIPACION : incluye
+
+    PAIS ||--|| EQUIPO : representa
+
+    EQUIPO ||--o{ JUGADOR : posee
+
+    ESTADIO ||--o{ PARTIDO : se_juega_en
+
+    ARBITRO ||--o{ PARTIDO : dirige
+
+    EQUIPO ||--o{ PARTICIPA_EN : juega
+    PARTIDO ||--o{ PARTICIPA_EN : tiene
+
+    JUGADOR ||--o{ ESTADISTICA_JUGADOR : registra
+    PARTIDO ||--o{ ESTADISTICA_JUGADOR : contiene
