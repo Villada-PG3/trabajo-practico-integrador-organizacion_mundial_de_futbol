@@ -35,11 +35,19 @@ erDiagram
         string nombre
         string apellido
         date fecha_nacimiento
-        int numero_camiseta
 
         int pais_id FK
         int club_id FK
         int posicion_id FK
+    }
+
+    PARTICIPACION_JUGADOR_MUNDIAL {
+        int id PK
+        int jugador_id FK
+        int participacion_mundial_id FK
+
+        int numero_camiseta
+        int partidos_jugados
     }
 
     ROL_TECNICO {
@@ -78,13 +86,6 @@ erDiagram
 
         string condicion
         int goles
-    }
-
-    ESTADISTICA_EQUIPO {
-        int id PK
-
-        int partido_id FK
-        int pais_id FK
 
         int minutos_ataque
         int cantidad_laterales
@@ -106,39 +107,41 @@ erDiagram
         int minuto
     }
 
-    %% ===========================
-    %% RELACIONES
-    %% ===========================
+    CAMBIO {
+        int id PK
 
-    PAIS ||--o{ PARTICIPACION_MUNDIAL : participa
+        int partido_id FK
+        int jugador_sale_id FK
+        int jugador_entra_id FK
+
+        int minuto
+    }
+
     MUNDIAL ||--o{ PARTICIPACION_MUNDIAL : incluye
+    PAIS ||--o{ PARTICIPACION_MUNDIAL : participa
 
     PAIS ||--o{ CLUB : posee
 
     CLUB ||--o{ JUGADOR : pertenece
-
     POSICION ||--o{ JUGADOR : ocupa
-
     PAIS ||--o{ JUGADOR : representa
 
-    PAIS ||--o{ CUERPO_TECNICO : integra
+    PARTICIPACION_MUNDIAL ||--o{ PARTICIPACION_JUGADOR_MUNDIAL : registra
+    JUGADOR ||--o{ PARTICIPACION_JUGADOR_MUNDIAL : participa
 
+    PAIS ||--o{ CUERPO_TECNICO : integra
     ROL_TECNICO ||--o{ CUERPO_TECNICO : cumple
 
     MUNDIAL ||--o{ PARTIDO : contiene
-
     INSTANCIA ||--o{ PARTIDO : corresponde
 
+    PARTIDO ||--o{ PARTICIPA_PARTIDO : tiene
     PAIS ||--o{ PARTICIPA_PARTIDO : participa
 
-    PARTIDO ||--o{ PARTICIPA_PARTIDO : tiene
-
-    PARTIDO ||--o{ ESTADISTICA_EQUIPO : registra
-
-    PAIS ||--o{ ESTADISTICA_EQUIPO : obtiene
-
     PARTIDO ||--o{ EVENTO_JUGADOR : ocurre
-
     JUGADOR ||--o{ EVENTO_JUGADOR : realiza
-
     TIPO_EVENTO ||--o{ EVENTO_JUGADOR : clasifica
+
+    PARTIDO ||--o{ CAMBIO : registra
+    JUGADOR ||--o{ CAMBIO : sale
+    JUGADOR ||--o{ CAMBIO : entra
