@@ -13,12 +13,15 @@ erDiagram
 
     PARTICIPACION_MUNDIAL {
         int id PK
+        int mundial_id FK
+        int pais_id FK
         int posicion_final
     }
 
     CLUB {
         int id PK
         string nombre
+        int pais_id FK
     }
 
     POSICION {
@@ -28,11 +31,15 @@ erDiagram
 
     JUGADOR {
         int id PK
-        string numero_pasaporte UK
+        string numero_pasaporte
         string nombre
         string apellido
         date fecha_nacimiento
         int numero_camiseta
+
+        int pais_id FK
+        int club_id FK
+        int posicion_id FK
     }
 
     ROL_TECNICO {
@@ -42,9 +49,12 @@ erDiagram
 
     CUERPO_TECNICO {
         int id PK
-        string numero_pasaporte UK
+        string numero_pasaporte
         string nombre
         string apellido
+
+        int pais_id FK
+        int rol_tecnico_id FK
     }
 
     INSTANCIA {
@@ -55,16 +65,27 @@ erDiagram
     PARTIDO {
         int id PK
         datetime fecha_hora
+
+        int mundial_id FK
+        int instancia_id FK
     }
 
     PARTICIPA_PARTIDO {
         int id PK
+
+        int partido_id FK
+        int pais_id FK
+
         string condicion
         int goles
     }
 
     ESTADISTICA_EQUIPO {
         int id PK
+
+        int partido_id FK
+        int pais_id FK
+
         int minutos_ataque
         int cantidad_laterales
         int cantidad_corners
@@ -77,11 +98,17 @@ erDiagram
 
     EVENTO_JUGADOR {
         int id PK
+
+        int partido_id FK
+        int jugador_id FK
+        int tipo_evento_id FK
+
         int minuto
     }
 
-
-    %% ========= RELACIONES =========
+    %% ===========================
+    %% RELACIONES
+    %% ===========================
 
     PAIS ||--o{ PARTICIPACION_MUNDIAL : participa
     MUNDIAL ||--o{ PARTICIPACION_MUNDIAL : incluye
