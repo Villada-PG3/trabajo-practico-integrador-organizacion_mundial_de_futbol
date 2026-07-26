@@ -11,10 +11,18 @@ erDiagram
         string nombre
     }
 
+    GRUPO {
+        int id PK
+        string nombre
+    }
+
     PARTICIPACION_MUNDIAL {
         int id PK
         int mundial_id FK
         int pais_id FK
+        int grupo_id FK
+
+        int posicion_grupo
         int posicion_final
     }
 
@@ -48,6 +56,10 @@ erDiagram
 
         int numero_camiseta
         int partidos_jugados
+        int goles
+        int asistencias
+        int tarjetas_amarillas
+        int tarjetas_rojas
     }
 
     ROL_TECNICO {
@@ -119,6 +131,7 @@ erDiagram
 
     MUNDIAL ||--o{ PARTICIPACION_MUNDIAL : incluye
     PAIS ||--o{ PARTICIPACION_MUNDIAL : participa
+    GRUPO ||--o{ PARTICIPACION_MUNDIAL : integra
 
     PAIS ||--o{ CLUB : posee
 
