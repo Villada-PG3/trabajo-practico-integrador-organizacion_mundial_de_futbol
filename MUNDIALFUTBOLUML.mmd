@@ -1,0 +1,202 @@
+classDiagram
+
+    class MUNDIAL {
+        -anio : int
+        -sede : string
+
+        +registrarMundial() 
+        +actualizarSede() 
+        +obtenerPartidos() 
+        +obtenerParticipaciones()
+    }
+
+    class PAIS {
+        -nombre : string
+
+        +registrarPais() 
+        +actualizarNombre() 
+        +obtenerMundialesParticipados() 
+        +obtenerPosicionesObtenidas() 
+        +obtenerJugadores() 
+        +obtenerCuerpoTecnico() 
+        +obtenerPartidos()
+    }
+
+    class GRUPO {
+        -nombre : string
+
+        +registrarGrupo() 
+        +agregarPais() 
+        +obtenerPaises() 
+    }
+
+    class PARTICIPACION_MUNDIAL {
+        -posicion_grupo : int
+        -posicion_final : int
+
+        +registrarParticipacion() 
+        +actualizarPosicionGrupo() 
+        +actualizarPosicionFinal() 
+        +obtenerJugadores() 
+    }
+
+    class CLUB {
+        -nombre : string
+
+        +registrarClub() 
+        +actualizarNombre() 
+        +obtenerJugadores()
+    }
+
+    class POSICION {
+        -nombre : string
+
+        +registrarPosicion() 
+        +actualizarNombre() 
+        +obtenerJugadores() 
+    }
+
+    class JUGADOR {
+        -numero_pasaporte : string
+        -nombre : string
+        -apellido : string
+        -fecha_nacimiento : date
+
+        +registrarJugador() 
+        +actualizarDatos() 
+        +calcularEdad() 
+        +obtenerClubActual() 
+        +obtenerPosicion()
+        +obtenerHistorialMundiales() 
+        +obtenerEstadisticas()
+    }
+
+    class PARTICIPACION_JUGADOR_MUNDIAL {
+        -numero_camiseta : int
+        -partidos_jugados : int
+        -goles : int
+        -asistencias : int
+        -tarjetas_amarillas : int
+        -tarjetas_rojas : int
+
+        +registrarParticipacion() 
+        +actualizarNumeroCamiseta()
+        +registrarPartidoJugado() 
+        +registrarGol() 
+        +registrarAsistencia() 
+        +registrarTarjetaAmarilla() 
+        +registrarTarjetaRoja() 
+        +obtenerEstadisticas() 
+    }
+
+    class ROL_TECNICO {
+        -nombre : string
+
+        +registrarRol() 
+        +actualizarNombre() 
+        +obtenerPersonal()
+    }
+
+    class CUERPO_TECNICO {
+        -numero_pasaporte : string
+        -nombre : string
+        -apellido : string
+
+        +registrarIntegrante() 
+        +actualizarDatos() 
+        +asignarRol() 
+        +obtenerRol() 
+    }
+
+    class INSTANCIA {
+        -nombre : string
+
+        +registrarInstancia() 
+        +actualizarNombre() 
+        +obtenerPartidos() 
+    }
+
+    class PARTIDO {
+        -fecha_hora : datetime
+
+        +registrarPartido() 
+        +actualizarFechaHora() 
+        +asignarInstancia() 
+        +registrarResultado() 
+        +obtenerEquipos() 
+        +obtenerEventos() 
+        +obtenerEstadisticas() 
+    }
+
+    class PARTICIPA_PARTIDO {
+        -condicion : string
+        -goles : int
+        -minutos_ataque : int
+        -cantidad_laterales : int
+        -cantidad_corners : int
+
+        +registrarParticipacion() 
+        +registrarGoles() 
+        +actualizarEstadisticas() 
+        +registrarMinutosAtaque() 
+        +registrarLaterales() 
+        +registrarCorners() 
+        +obtenerEstadisticas() 
+    }
+
+    class TIPO_EVENTO {
+        -nombre : string
+
+        +registrarTipoEvento()  
+        +actualizarNombre()  
+        +obtenerEventos()  
+    }
+
+    class EVENTO_JUGADOR {
+        -minuto : int
+
+        +registrarEvento() 
+        +actualizarMinuto() 
+        +obtenerJugador() 
+        +obtenerTipoEvento() 
+    }
+
+    class CAMBIO {
+        -minuto : int
+
+        +registrarCambio() 
+        +actualizarMinuto()
+        +obtenerJugadorSale() 
+        +obtenerJugadorEntra()
+    }
+
+
+    MUNDIAL "1" --> "0..*" PARTICIPACION_MUNDIAL : incluye
+    PAIS "1" --> "0..*" PARTICIPACION_MUNDIAL : participa
+    GRUPO "1" --> "0..*" PARTICIPACION_MUNDIAL : integra
+
+    PAIS "1" --> "0..*" CLUB : posee
+
+    CLUB "1" --> "0..*" JUGADOR : pertenece
+    POSICION "1" --> "0..*" JUGADOR : ocupa
+    PAIS "1" --> "0..*" JUGADOR : representa
+
+    PARTICIPACION_MUNDIAL "1" --> "0..*" PARTICIPACION_JUGADOR_MUNDIAL : registra
+    JUGADOR "1" --> "0..*" PARTICIPACION_JUGADOR_MUNDIAL : participa
+
+    PAIS "1" --> "0..*" CUERPO_TECNICO : integra
+    ROL_TECNICO "1" --> "0..*" CUERPO_TECNICO : cumple
+
+    MUNDIAL "1" --> "0..*" PARTIDO : contiene
+    INSTANCIA "1" --> "0..*" PARTIDO : corresponde
+
+    PARTIDO "1" --> "0..*" PARTICIPA_PARTIDO : tiene
+    PAIS "1" --> "0..*" PARTICIPA_PARTIDO : participa
+
+    PARTIDO "1" --> "0..*" EVENTO_JUGADOR : ocurre
+    JUGADOR "1" --> "0..*" EVENTO_JUGADOR : realiza
+    TIPO_EVENTO "1" --> "0..*" EVENTO_JUGADOR : clasifica
+
+    PARTIDO "1" --> "0..*" CAMBIO : registra
+    JUGADOR "1" --> "0..*" CAMBIO : sale
+    JUGADOR "1" --> "0..*" CAMBIO : entra
