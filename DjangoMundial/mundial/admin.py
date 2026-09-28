@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Mundial, Seleccion, Jugador
 
-# Register your models here.
+admin.site.register(Mundial)
+admin.site.register(Seleccion)
+admin.site.register(Jugador)

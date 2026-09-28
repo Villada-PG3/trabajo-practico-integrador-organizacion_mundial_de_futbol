@@ -16,7 +16,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from mundial import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Raíz
+    path('', views.inicio, name='inicio'),
+    path('acerca/', views.acerca, name='acerca'),
+
+    # Mundial
+    path('mundial/', views.mundiales, name='mundiales'),
+    path('mundial/<int:pk>/', views.detalle_mundial, name='detalle_mundial'),
+
+    # Selección
+    path('seleccion/', views.selecciones, name='selecciones'),
+    path('seleccion/<int:pk>/', views.detalle_seleccion, name='detalle_seleccion'),
+
+    # Jugador
+    path('jugador/', views.jugadores, name='jugadores'),
+    path('jugador/<int:pk>/', views.detalle_jugador, name='detalle_jugador'),
 ]
+
