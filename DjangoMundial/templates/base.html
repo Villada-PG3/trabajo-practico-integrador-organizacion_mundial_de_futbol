@@ -92,22 +92,40 @@
                 <i class="fa-solid fa-bars text-dorado fs-3"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'inicio' %}"><i class="fa-solid fa-house me-1"></i> Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mundiales' %}"><i class="fa-solid fa-earth-americas me-1"></i> Mundiales</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'selecciones' %}"><i class="fa-solid fa-flag me-1"></i> Selecciones</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'jugadores' %}"><i class="fa-solid fa-user me-1"></i> Jugadores</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'acerca' %}"><i class="fa-solid fa-circle-info me-1"></i> Acerca de</a>
-                    </li>
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'inicio' %}"><i class="fa-solid fa-house me-1"></i> Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'mundiales' %}"><i class="fa-solid fa-earth-americas me-1"></i> Mundiales</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'selecciones' %}"><i class="fa-solid fa-flag me-1"></i> Selecciones</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'jugadores' %}"><i class="fa-solid fa-user me-1"></i> Jugadores</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'acerca' %}"><i class="fa-solid fa-circle-info me-1"></i> Acerca de</a></li>
+
+                    <!-- SECCIÓN DE AUTENTICACIÓN Y ROLES -->
+                    {% if user.is_authenticated %}
+                        <!-- Si el usuario es Administrador/Staff, mostramos el botón de Cargar Datos / Panel Admin -->
+                        {% if user.is_staff %}
+                        <li class="nav-item ms-lg-2">
+                            <a class="btn btn-dorado btn-sm px-3" href="/admin/" target="_blank">
+                                <i class="fa-solid fa-plus-circle me-1"></i> Panel Admin / Cargar Datos
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        <li class="nav-item ms-lg-2">
+                            <span class="text-dorado fw-bold me-2 small">Hola, {{ user.username }}</span>
+                            <form action="{% url 'logout' %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="fa-solid fa-right-from-bracket"></i> Salir
+                                </button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item ms-lg-2">
+                            <a class="btn btn-outline-dorado btn-sm px-3" href="{% url 'login' %}">
+                                <i class="fa-solid fa-right-to-bracket me-1"></i> Ingresar
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

@@ -1,9 +1,25 @@
 from django.db import models
 
 class Mundial(models.Model):
+    # Campos que ya tenías
     anio = models.IntegerField(verbose_name="Año")
     sede = models.CharField(max_length=100)
     descripcion = models.TextField(blank=True, null=True, verbose_name="Descripción")
+    
+    # Nuevos campos de Imágenes
+    imagen_logo = models.ImageField(upload_to='mundiales/logos/', blank=True, null=True, verbose_name="Logo / Emblema")
+    imagen_portada = models.ImageField(upload_to='mundiales/portadas/', blank=True, null=True, verbose_name="Imagen de Portada")
+    
+    # Nuevos campos del Cuadro de Honor
+    campeon = models.CharField(max_length=100, blank=True, null=True, verbose_name="Campeón")
+    subcampeon = models.CharField(max_length=100, blank=True, null=True, verbose_name="Subcampeón")
+    tercer_puesto = models.CharField(max_length=100, blank=True, null=True, verbose_name="Tercer Puesto")
+    
+    # Nuevos campos de Premios Individuales
+    maximo_goleador = models.CharField(max_length=100, blank=True, null=True, verbose_name="Máximo Goleador")
+    goles_maximo_goleador = models.PositiveIntegerField(blank=True, null=True, verbose_name="Goles del goleador")
+    mvp_mundial = models.CharField(max_length=100, blank=True, null=True, verbose_name="Mejor Jugador (MVP)")
+    mejor_arquero = models.CharField(max_length=100, blank=True, null=True, verbose_name="Mejor Arquero (Guante de Oro)")
 
     class Meta:
         verbose_name = "Mundial"
