@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio | MundoFútbol{% endblock %}
+
+{% block content %}
+<!-- Banner principal -->
+<div class="p-5 mb-5 bg-navbar text-white rounded-4 shadow border border-dorado text-center">
+    <div class="container-fluid py-2">
+        <h1 class="display-4 fw-bold text-dorado"><i class="fa-solid fa-trophy me-2"></i>Bienvenido a MundoFútbol</h1>
+        <p class="col-md-8 fs-5 mx-auto text-light opacity-90 mt-3">
+            Explora la historia de la Copa Mundial de Fútbol: ediciones disputadas, selecciones participantes y las leyendas más emblemáticas.
+        </p>
+        <a href="{% url 'acerca' %}" class="btn btn-outline-dorado btn-lg mt-3 px-4">Conoce más del proyecto</a>
+    </div>
+</div>
+
+<!-- Tarjetas de acceso a los 3 módulos -->
+<div class="row g-4">
+    <!-- Módulo 1: Mundiales -->
+    <div class="col-md-4">
+        <div class="card bg-tarjeta text-white h-100 shadow border-0 rounded-3">
+            <div class="card-body text-center p-4">
+                <div class="display-4 text-dorado mb-3">
+                    <i class="fa-solid fa-earth-americas"></i>
+                </div>
+                <h3 class="card-title h4 fw-bold text-white mb-3">Mundiales</h3>
+                <p class="card-text text-light opacity-75">
+                    Consulta la historia de las copas del mundo, años de realización, sedes y campeones.
+                </p>
+                <a href="{% url 'mundiales' %}" class="btn btn-dorado w-100 mt-3">Ver Mundiales</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Módulo 2: Selecciones -->
+    <div class="col-md-4">
+        <div class="card bg-tarjeta text-white h-100 shadow border-0 rounded-3">
+            <div class="card-body text-center p-4">
+                <div class="display-4 text-dorado mb-3">
+                    <i class="fa-solid fa-flag"></i>
+                </div>
+                <h3 class="card-title h4 fw-bold text-white mb-3">Selecciones</h3>
+                <p class="card-text text-light opacity-75">
+                    Descubre los equipos nacionales, confederaciones, trofeos ganados e historial.
+                </p>
+                <a href="{% url 'selecciones' %}" class="btn btn-dorado w-100 mt-3">Ver Selecciones</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Módulo 3: Jugadores -->
+    <div class="col-md-4">
+        <div class="card bg-tarjeta text-white h-100 shadow border-0 rounded-3">
+            <div class="card-body text-center p-4">
+                <div class="display-4 text-dorado mb-3">
+                    <i class="fa-solid fa-user-ninja"></i>
+                </div>
+                <h3 class="card-title h4 fw-bold text-white mb-3">Jugadores</h3>
+                <p class="card-text text-light opacity-75">
+                    Conoce el perfil de las máximas figuras del fútbol, goles, posiciones y marcas individuales.
+                </p>
+                <a href="{% url 'jugadores' %}" class="btn btn-dorado w-100 mt-3">Ver Jugadores</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

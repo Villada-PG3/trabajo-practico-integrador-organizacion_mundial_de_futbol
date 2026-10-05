@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Acerca de | MundoFútbol{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <!-- Tarjeta Informativa del Proyecto -->
+        <div class="card bg-navbar text-white shadow border border-dorado rounded-4 mb-4">
+            <div class="card-body p-4 p-md-5">
+                <h1 class="h2 fw-bold text-dorado mb-3"><i class="fa-solid fa-circle-info me-2"></i>Acerca del Proyecto</h1>
+                <p class="lead text-light mb-0">
+                    Plataforma web desarrollada como proyecto integrador para la materia de Programación. El sistema permite la gestión y exploración dinámica de la historia de los Mundiales de Fútbol, Selecciones Nacionales y Jugadores.
+                </p>
+            </div>
+        </div>
+
+        <!-- Ficha de Integrantes -->
+        <h2 class="h4 fw-bold text-dorado mb-3"><i class="fa-solid fa-users me-2"></i>Equipo de Desarrollo</h2>
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card bg-tarjeta text-white border-0 shadow text-center p-3 rounded-3">
+                    <div class="card-body">
+                        <i class="fa-solid fa-user-gear fa-3x text-dorado mb-3"></i>
+                        <h5 class="card-title fw-bold mb-1">Integrante 1</h5>
+                        <span class="badge bg-navbar text-dorado border border-dorado my-2 px-3 py-2">Módulo: Mundiales</span>
+                        <p class="small text-light opacity-75 mb-0">Administración de ediciones del mundial, sedes y campeones.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-tarjeta text-white border-0 shadow text-center p-3 rounded-3">
+                    <div class="card-body">
+                        <i class="fa-solid fa-user-gear fa-3x text-dorado mb-3"></i>
+                        <h5 class="card-title fw-bold mb-1">Integrante 2</h5>
+                        <span class="badge bg-navbar text-dorado border border-dorado my-2 px-3 py-2">Módulo: Selecciones</span>
+                        <p class="small text-light opacity-75 mb-0">Gestión de selecciones nacionales y estadísticas por equipo.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-tarjeta text-white border-0 shadow text-center p-3 rounded-3">
+                    <div class="card-body">
+                        <i class="fa-solid fa-user-gear fa-3x text-dorado mb-3"></i>
+                        <h5 class="card-title fw-bold mb-1">Integrante 3</h5>
+                        <span class="badge bg-navbar text-dorado border border-dorado my-2 px-3 py-2">Módulo: Jugadores</span>
+                        <p class="small text-light opacity-75 mb-0">Registro y estadísticas individuales de los futbolistas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tecnologías -->
+        <div class="card bg-tarjeta text-white border-0 shadow rounded-3">
+            <div class="card-body p-4">
+                <h3 class="h5 fw-bold text-dorado mb-3"><i class="fa-solid fa-code me-2"></i>Tecnologías Utilizadas</h3>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge bg-navbar text-white border border-dorado fs-6 py-2 px-3"><i class="fa-brands fa-python text-dorado me-1"></i> Python 3</span>
+                    <span class="badge bg-navbar text-white border border-dorado fs-6 py-2 px-3"><i class="fa-solid fa-cubes text-dorado me-1"></i> Django Framework</span>
+                    <span class="badge bg-navbar text-white border border-dorado fs-6 py-2 px-3"><i class="fa-brands fa-html5 text-dorado me-1"></i> HTML5 & CSS3</span>
+                    <span class="badge bg-navbar text-white border border-dorado fs-6 py-2 px-3"><i class="fa-brands fa-bootstrap text-dorado me-1"></i> Bootstrap 5</span>
+                    <span class="badge bg-navbar text-white border border-dorado fs-6 py-2 px-3"><i class="fa-brands fa-git-alt text-dorado me-1"></i> Git & GitHub</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
