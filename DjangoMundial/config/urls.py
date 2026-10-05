@@ -17,12 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from mundial import views
+from django.contrib.auth import views as auth_views
+from mundial.views import inicio, acerca, registro_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # Raíz
     path('', views.inicio, name='inicio'),
     path('acerca/', views.acerca, name='acerca'),
+
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='inicio'), name='logout'),
+    path('registro/', registro_view, name='registro'),
 
     # Mundial
     path('mundial/', views.mundiales, name='mundiales'),

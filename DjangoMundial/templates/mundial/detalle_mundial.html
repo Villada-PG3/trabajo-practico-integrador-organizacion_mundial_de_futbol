@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ mundial.nombre|default:"Detalle del Mundial" }} | MundoFútbol{% endblock %}
+
+{% block content %}
+<!-- Botón Volver -->
+<div class="mb-4">
+    <a href="{% url 'mundiales' %}" class="btn btn-outline-dorado px-3">
+        <i class="fa-solid fa-arrow-left me-2"></i>Volver a Mundiales
+    </a>
+</div>
+
+<!-- Ficha Principal del Mundial -->
+<div class="card bg-navbar text-white shadow border border-dorado rounded-4 mb-5">
+    <div class="card-body p-4 p-md-5">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <span class="badge bg-tarjeta text-dorado border border-dorado fs-6 px-3 py-2 mb-2">
+                    Año {{ mundial.anio }}
+                </span>
+                <h1 class="display-5 fw-bold text-dorado mb-3">{{ mundial.nombre|default:"Copa Mundial de Fútbol" }}</h1>
+                <p class="fs-5 text-light opacity-90 mb-2">
+                    <i class="fa-solid fa-location-dot text-dorado me-2"></i>País anfitrión: <strong>{{ mundial.sede }}</strong>
+                </p>
+            </div>
+            <!-- Podio / Ganadores -->
+            <div class="col-md-4 mt-4 mt-md-0">
+                <div class="bg-tarjeta p-3 rounded-3 border border-dorado">
+                    <h5 class="fw-bold text-dorado mb-3 text-center border-bottom border-dorado pb-2">
+                        <i class="fa-solid fa-trophy me-2"></i>Cuadro de Honor
+                    </h5>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2 text-light">
+                            🥇 <strong>Campeón:</strong> <span class="text-dorado">{{ mundial.campeon|default:"-" }}</span>
+                        </li>
+                        <li class="mb-2 text-light">
+                            🥈 <strong>Subcampeón:</strong> {{ mundial.subcampeon|default:"-" }}
+                        </li>
+                        <li class="text-light">
+                            🥉 <strong>Tercer Puesto:</strong> {{ mundial.tercer_puesto|default:"-" }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECCIÓN: Fase de Grupos -->
+<div class="mb-5">
+    <h3 class="h4 fw-bold text-dorado mb-3">
+        <i class="fa-solid fa-layer-group me-2"></i>Fase de Grupos
+    </h3>
+
+    <!-- Acordeón para los Grupos -->
+    <div class="accordion accordion-flush rounded-3 overflow-hidden border border-dorado" id="accordionGrupos">
+        <!-- Ejemplo Grupo A -->
+        <div class="accordion-item bg-tarjeta text-white border-bottom border-secondary">
+            <h2 class="accordion-header" id="headingA">
+                <button class="accordion-button bg-navbar text-dorado fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseA">
+                    <i class="fa-solid fa-users me-2"></i>Grupo A
+                </button>
+            </h2>
+            <div id="collapseA" class="accordion-collapse collapse show" data-bs-parent="#accordionGrupos">
+                <div class="accordion-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped mb-0 text-center align-middle" style="--bs-table-bg: transparent;">
+                            <thead class="bg-navbar text-dorado">
+                                <tr>
+                                    <th class="text-start ps-4">Equipo</th>
+                                    <th>PJ</th>
+                                    <th>G</th>
+                                    <th>E</th>
+                                    <th>P</th>
+                                    <th class="text-dorado">Pts</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if mundial.posiciones_grupo_a %}
+                                    {% for pos in mundial.posiciones_grupo_a %}
+                                    <tr>
+                                        <td class="text-start ps-4 fw-bold">{{ pos.equipo }}</td>
+                                        <td>{{ pos.pj }}</td>
+                                        <td>{{ pos.g }}</td>
+                                        <td>{{ pos.e }}</td>
+                                        <td>{{ pos.p }}</td>
+                                        <td class="text-dorado fw-bold">{{ pos.pts }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <!-- Datos de demostración si aún no están conectados a la BD -->
+                                    <tr>
+                                        <td class="text-start ps-4 fw-bold">Equipo 1</td>
+                                        <td>3</td><td>2</td><td>1</td><td>0</td>
+                                        <td class="text-dorado fw-bold">7</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start ps-4 fw-bold">Equipo 2</td>
+                                        <td>3</td><td>1</td><td>1</td><td>1</td>
+                                        <td class="text-dorado fw-bold">4</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ejemplo Grupo B -->
+        <div class="accordion-item bg-tarjeta text-white">
+            <h2 class="accordion-header" id="headingB">
+                <button class="accordion-button bg-navbar text-dorado fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseB">
+                    <i class="fa-solid fa-users me-2"></i>Grupo B
+                </button>
+            </h2>
+            <div id="collapseB" class="accordion-collapse collapse" data-bs-parent="#accordionGrupos">
+                <div class="accordion-body p-0">
+                    <p class="text-center py-3 text-light opacity-75 mb-0">Detalle de posiciones del Grupo B.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECCIÓN: Eliminatorias -->
+<div>
+    <h3 class="h4 fw-bold text-dorado mb-3">
+        <i class="fa-solid fa-sitemap me-2"></i>Fase Eliminatoria
+    </h3>
+    <div class="row g-3">
+        <div class="col-md-3">
+            <div class="card bg-tarjeta text-white border-0 shadow text-center p-3">
+                <div class="card-body">
+                    <i class="fa-solid fa-1 me-1 text-dorado"></i><i class="fa-solid fa-8 text-dorado"></i>
+                    <h5 class="fw-bold mt-2">Octavos</h5>
+                    <p class="small text-light opacity-75 mb-0">16 selecciones clasificadas</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-tarjeta text-white border-0 shadow text-center p-3">
+                <div class="card-body">
+                    <i class="fa-solid fa-1 me-1 text-dorado"></i><i class="fa-solid fa-4 text-dorado"></i>
+                    <h5 class="fw-bold mt-2">Cuartos</h5>
+                    <p class="small text-light opacity-75 mb-0">8 mejores equipos</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-tarjeta text-white border-0 shadow text-center p-3">
+                <div class="card-body">
+                    <i class="fa-solid fa-2 me-1 text-dorado"></i>
+                    <h5 class="fw-bold mt-2">Semifinal</h5>
+                    <p class="small text-light opacity-75 mb-0">4 semifinalistas</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-navbar text-white border border-dorado shadow text-center p-3">
+                <div class="card-body">
+                    <i class="fa-solid fa-trophy text-dorado fa-2x mb-2"></i>
+                    <h5 class="fw-bold text-dorado">Gran Final</h5>
+                    <p class="small text-light opacity-75 mb-0">Partido decisivo</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

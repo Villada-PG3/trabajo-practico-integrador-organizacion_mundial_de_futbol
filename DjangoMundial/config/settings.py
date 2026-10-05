@@ -28,11 +28,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # Apps del proyecto (1 por integrante)
     'mundial',
-    # Si creaste apps con 'startapp' (por ejemplo: 'mundial', 'seleccion', 'jugador'), agrégalas aquí:
-    # 'mundial',
-    # 'seleccion',
-    # 'jugador',
 ]
 
 MIDDLEWARE = [
@@ -106,6 +104,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Configuración de Autenticación y Redirecciones
+LOGIN_REDIRECT_URL = 'inicio'
+LOGOUT_REDIRECT_URL = 'inicio'
+
 
 # Email
 MAILERS = {
@@ -113,3 +118,5 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
