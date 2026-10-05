@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ seleccion.nombre }} | MundoFútbol{% endblock %}
+
+{% block content %}
+
+<div class="mb-4">
+    <a href="{% url 'selecciones' %}"
+        class="btn btn-outline-dorado">
+        <i class="fa-solid fa-arrow-left me-1"></i>
+        Volver a selecciones
+    </a>
+</div>
+
+
+<!-- Información principal -->
+
+<div class="card bg-navbar text-white shadow border border-dorado rounded-4 mb-4">
+
+    <div class="card-body p-4 p-md-5">
+
+        <div class="text-center mb-4">
+            <i class="fa-solid fa-flag fa-4x text-dorado"></i>
+        </div>
+
+        <h1 class="text-center h2 fw-bold text-dorado mb-4">
+            {{ seleccion.nombre }}
+        </h1>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="text-center">
+                    <small class="text-light opacity-75">
+                        Confederación
+                    </small>
+
+                    <h3 class="h5 fw-bold mt-2">
+                        {{ seleccion.confederacion }}
+                    </h3>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="text-center">
+                    <small class="text-light opacity-75">
+                        Títulos mundiales
+                    </small>
+
+                    <h3 class="h5 fw-bold text-dorado mt-2">
+                        {{ seleccion.titulos }}
+                    </h3>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="text-center">
+                    <small class="text-light opacity-75">
+                        Mundial registrado
+                    </small>
+
+                    {% if seleccion.mundial %}
+                        <h3 class="h5 fw-bold mt-2">
+                            {{ seleccion.mundial }}
+                        </h3>
+                    {% else %}
+                        <h3 class="h5 text-light opacity-50 mt-2">
+                            Sin registrar
+                        </h3>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Jugadores -->
+
+{% for jugador in seleccion.jugadores.all %}
+
+{% empty %}
+
+    <div class="card bg-tarjeta text-white">
+        <div class="card-body text-center">
+            No hay jugadores registrados para esta selección.
+        </div>
+    </div>
+
+{% endfor %}
+
+{% endblock %}
