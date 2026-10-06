@@ -41,5 +41,7 @@ urlpatterns = [
     # Jugador
     path('jugador/', views.jugadores, name='jugadores'),
     path('jugador/<int:pk>/', views.detalle_jugador, name='detalle_jugador'),
+
+  
 ]
 

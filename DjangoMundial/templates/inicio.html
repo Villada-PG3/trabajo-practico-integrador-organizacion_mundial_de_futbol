@@ -1,67 +1,168 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Inicio | MundoFútbol{% endblock %}
 
 {% block content %}
-<!-- Banner principal -->
-<div class="p-5 mb-5 bg-navbar text-white rounded-4 shadow border border-dorado text-center">
-    <div class="container-fluid py-2">
-        <h1 class="display-4 fw-bold text-dorado"><i class="fa-solid fa-trophy me-2"></i>Bienvenido a MundoFútbol</h1>
-        <p class="col-md-8 fs-5 mx-auto text-light opacity-90 mt-3">
-            Explora la historia de la Copa Mundial de Fútbol: ediciones disputadas, selecciones participantes y las leyendas más emblemáticas.
-        </p>
-        <a href="{% url 'acerca' %}" class="btn btn-outline-dorado btn-lg mt-3 px-4">Conoce más del proyecto</a>
+<!-- 1. CARRUSEL DESLIZANTE DE FOTOS -->
+<div id="carruselHome" class="carousel slide carousel-fade mb-5 shadow-lg rounded-4 overflow-hidden border border-dorado" data-bs-ride="carousel">
+    <!-- Indicadores inferiores -->
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carruselHome" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#carruselHome" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#carruselHome" data-bs-slide-to="2"></button>
+    </div>
+
+    <!-- Imágenes del carrusel -->
+    <div class="carousel-inner">
+        <!-- Foto 1 -->
+        <div class="carousel-item active" data-bs-interval="4000">
+            <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1200&auto=format&fit=crop" 
+                 class="d-block w-100 object-fit-cover" style="height: 400px;" alt="Estadio de fútbol">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded-3 p-3">
+                <h3 class="fw-bold text-dorado">Vive la Pasión del Fútbol Mundial</h3>
+                <p class="mb-0">Revive la historia de los torneos más importantes del planeta.</p>
+            </div>
+        </div>
+
+        <!-- Foto 2 -->
+        <div class="carousel-item" data-bs-interval="4000">
+            <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=1200&auto=format&fit=crop" 
+                 class="d-block w-100 object-fit-cover" style="height: 400px;" alt="Pelota de fútbol">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded-3 p-3">
+                <h3 class="fw-bold text-dorado">Selecciones e Ídolos</h3>
+                <p class="mb-0">Consulta las estadísticas de los mejores equipos y jugadores.</p>
+            </div>
+        </div>
+
+        <!-- Foto 3 -->
+        <div class="carousel-item" data-bs-interval="4000">
+            <img src="media/cannavaro.webp" class="d-block w-100 object-fit-cover" style="height: 400px;" alt="Copa del mundo">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded-3 p-3">
+                <h3 class="fw-bold text-dorado">Gloria Eterna</h3>
+                <p class="mb-0">Explora el cuadro de honor y todos los campeones históricos.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botones de navegación (Anterior / Siguiente) -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#carruselHome" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carruselHome" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+    </button>
+</div>
+
+
+<!-- 2. ÚLTIMOS 3 MUNDIALES (CAJAS / BOXES) -->
+<div class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h3 fw-bold text-dorado mb-0">
+            <i class="fa-solid fa-trophy me-2"></i>Últimas Ediciones Disputadas
+        </h2>
+        <a href="{% url 'mundiales' %}" class="btn btn-outline-dorado btn-sm">
+            Ver todos los mundiales <i class="fa-solid fa-arrow-right ms-1"></i>
+        </a>
+    </div>
+
+    <div class="row g-4">
+        {% for mundial in ultimos_mundiales %}
+        <div class="col-md-4">
+            <div class="card bg-tarjeta text-white h-100 shadow border border-dorado rounded-3 overflow-hidden d-flex flex-column">
+                
+                <!-- Portada o Imagen del Mundial -->
+                {% if mundial.imagen_portada %}
+                    <img src="/media/mundiales/portadas/portada2026.webp" class="card-img-top object-fit-cover" style="height: 180px;" alt="{{ mundial.sede }}">
+                {% elif mundial.imagen_logo %}
+                    <div class="text-center bg-navbar p-3">
+                        <img src="{{ mundial.imagen_logo.url }}" class="img-fluid" style="max-height: 120px; object-fit: contain;" alt="{{ mundial.sede }}">
+                    </div>
+                {% else %}
+                    <div class="bg-navbar text-center py-4 border-bottom border-secondary">
+                        <i class="fa-solid fa-earth-americas fa-3x text-dorado opacity-75"></i>
+                    </div>
+                {% endif %}
+
+                <div class="card-body p-4 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-navbar text-dorado border border-dorado fs-6 px-3 py-1">
+                                {{ mundial.anio }}
+                            </span>
+                            {% if mundial.campeon %}
+                                <span class="small text-light opacity-90">
+                                    <i class="fa-solid fa-crown text-dorado me-1"></i> {{ mundial.campeon }}
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        <h3 class="card-title h4 fw-bold text-white mt-2 mb-2">
+                            Copa Mundial {{ mundial.anio }}
+                        </h3>
+
+                        <p class="card-text text-light opacity-75 mb-3">
+                            <i class="fa-solid fa-location-dot text-dorado me-2"></i><strong>Sede:</strong> {{ mundial.sede }}
+                        </p>
+                    </div>
+
+                    <div class="mt-3 pt-3 border-top border-secondary">
+                        <a href="{% url 'detalle_mundial' mundial.pk %}" class="btn btn-dorado w-100">
+                            <i class="fa-solid fa-circle-info me-1"></i> Ver Detalle Completo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert bg-navbar text-light border border-dorado text-center py-4 mb-0">
+                <i class="fa-solid fa-circle-info text-dorado fa-2x mb-2 d-block"></i>
+                Aún no hay mundiales cargados en la base de datos.
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 
-<!-- Tarjetas de acceso a los 3 módulos -->
-<div class="row g-4">
-    <!-- Módulo 1: Mundiales -->
-    <div class="col-md-4">
-        <div class="card bg-tarjeta text-white h-100 shadow border-0 rounded-3">
-            <div class="card-body text-center p-4">
-                <div class="display-4 text-dorado mb-3">
-                    <i class="fa-solid fa-earth-americas"></i>
-                </div>
-                <h3 class="card-title h4 fw-bold text-white mb-3">Mundiales</h3>
-                <p class="card-text text-light opacity-75">
-                    Consulta la historia de las copas del mundo, años de realización, sedes y campeones.
-                </p>
-                <a href="{% url 'mundiales' %}" class="btn btn-dorado w-100 mt-3">Ver Mundiales</a>
-            </div>
-        </div>
-    </div>
 
-    <!-- Módulo 2: Selecciones -->
+<!-- 3. ACCESOS RÁPIDOS A MÓDULOS (OPCIONAL/COMPLEMENTARIO) -->
+<h2 class="h4 fw-bold text-dorado mb-3"><i class="fa-solid fa-compass me-2"></i>Explora la Plataforma</h2>
+<div class="row g-3">
     <div class="col-md-4">
-        <div class="card bg-tarjeta text-white h-100 shadow border-0 rounded-3">
-            <div class="card-body text-center p-4">
-                <div class="display-4 text-dorado mb-3">
-                    <i class="fa-solid fa-flag"></i>
+        <a href="{% url 'mundiales' %}" class="card bg-tarjeta text-white text-decoration-none shadow-sm p-3 rounded-3 border-0 h-100">
+            <div class="d-flex align-items-center">
+                <i class="fa-solid fa-earth-americas fa-2x text-dorado me-3"></i>
+                <div>
+                    <h5 class="fw-bold mb-0">Mundiales</h5>
+                    <small class="text-light opacity-75">Historial y campeones</small>
                 </div>
-                <h3 class="card-title h4 fw-bold text-white mb-3">Selecciones</h3>
-                <p class="card-text text-light opacity-75">
-                    Descubre los equipos nacionales, confederaciones, trofeos ganados e historial.
-                </p>
-                <a href="{% url 'selecciones' %}" class="btn btn-dorado w-100 mt-3">Ver Selecciones</a>
             </div>
-        </div>
+        </a>
     </div>
-
-    <!-- Módulo 3: Jugadores -->
     <div class="col-md-4">
-        <div class="card bg-tarjeta text-white h-100 shadow border-0 rounded-3">
-            <div class="card-body text-center p-4">
-                <div class="display-4 text-dorado mb-3">
-                    <i class="fa-solid fa-user-ninja"></i>
+        <a href="{% url 'selecciones' %}" class="card bg-tarjeta text-white text-decoration-none shadow-sm p-3 rounded-3 border-0 h-100">
+            <div class="d-flex align-items-center">
+                <i class="fa-solid fa-flag fa-2x text-dorado me-3"></i>
+                <div>
+                    <h5 class="fw-bold mb-0">Selecciones</h5>
+                    <small class="text-light opacity-75">Equipos nacionales</small>
                 </div>
-                <h3 class="card-title h4 fw-bold text-white mb-3">Jugadores</h3>
-                <p class="card-text text-light opacity-75">
-                    Conoce el perfil de las máximas figuras del fútbol, goles, posiciones y marcas individuales.
-                </p>
-                <a href="{% url 'jugadores' %}" class="btn btn-dorado w-100 mt-3">Ver Jugadores</a>
             </div>
-        </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'jugadores' %}" class="card bg-tarjeta text-white text-decoration-none shadow-sm p-3 rounded-3 border-0 h-100">
+            <div class="d-flex align-items-center">
+                <i class="fa-solid fa-user-ninja fa-2x text-dorado me-3"></i>
+                <div>
+                    <h5 class="fw-bold mb-0">Jugadores</h5>
+                    <small class="text-light opacity-75">Figuras e ídolos</small>
+                </div>
+            </div>
+        </a>
     </div>
 </div>
 {% endblock %}

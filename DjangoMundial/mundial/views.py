@@ -6,7 +6,12 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 # --- Vistas Generales ---
 def inicio(request):
-    return render(request, 'inicio.html')
+    # Obtenemos los últimos 3 mundiales ordenados por año descendente
+    ultimos_mundiales = Mundial.objects.all().order_by('-anio')[:3]
+    
+    return render(request, 'inicio.html', {
+        'ultimos_mundiales': ultimos_mundiales
+    })
 
 def acerca(request):
     return render(request, 'acerca.html')
