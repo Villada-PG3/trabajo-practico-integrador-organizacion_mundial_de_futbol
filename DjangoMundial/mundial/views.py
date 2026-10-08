@@ -1,5 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect 
 from .models import Mundial, Seleccion, Jugador
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
 
 # --- Vistas Generales ---
 def inicio(request):
@@ -7,6 +10,24 @@ def inicio(request):
 
 def acerca(request):
     return render(request, 'acerca.html')
+
+@staff_member_required
+def crear_mundial(request):
+    # Esta vista solo la podrá abrir un usuario que sea Administrador/Staff
+    if request.method == 'POST':
+        # Procesar formulario...
+        pass
+    return render(request, 'mundial/crear_mundial.html')
+def registro_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, '¡Cuenta creada con éxito! Ya puedes iniciar sesión.')
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registro.html', {'form': form})
 
 # --- Vistas de Mundial ---
 def mundiales(request):

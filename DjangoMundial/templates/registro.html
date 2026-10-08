@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro | MundoFútbol{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card bg-navbar text-white border border-dorado shadow-lg rounded-4">
+            <div class="card-body p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <i class="fa-solid fa-user-plus fa-3x text-dorado mb-2"></i>
+                    <h2 class="h3 fw-bold text-dorado">Crear Cuenta</h2>
+                    <p class="small text-light opacity-75">Regístrate para formar parte del sistema</p>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3 text-light">
+                        {{ form.as_p }}
+                    </div>
+
+                    <button type="submit" class="btn btn-dorado w-100 py-2 fw-bold mt-3">
+                        <i class="fa-solid fa-check me-2"></i>Registrarse
+                    </button>
+                </form>
+
+                <hr class="border-secondary my-4">
+
+                <div class="text-center">
+                    <p class="small text-light mb-0">¿Ya tienes cuenta? 
+                        <a href="{% url 'login' %}" class="text-dorado fw-bold text-decoration-none">Inicia sesión</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

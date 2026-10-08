@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Iniciar Sesión | MundoFútbol{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card bg-navbar text-white border border-dorado shadow-lg rounded-4">
+            <div class="card-body p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <i class="fa-solid fa-user-lock fa-3x text-dorado mb-2"></i>
+                    <h2 class="h3 fw-bold text-dorado">Iniciar Sesión</h2>
+                    <p class="small text-light opacity-75">Ingresa tus credenciales para acceder</p>
+                </div>
+
+                {% if form.errors %}
+                <div class="alert bg-danger text-white border-0 text-center py-2 mb-3 small">
+                    Usuario o contraseña incorrectos.
+                </div>
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label text-light">Nombre de usuario / Email</label>
+                        <input type="text" name="username" class="form-control bg-tarjeta text-white border-secondary" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-light">Contraseña</label>
+                        <input type="password" name="password" class="form-control bg-tarjeta text-white border-secondary" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-dorado w-100 py-2 fw-bold">
+                        <i class="fa-solid fa-right-to-bracket me-2"></i>Ingresar
+                    </button>
+                </form>
+
+                <hr class="border-secondary my-4">
+
+                <div class="text-center">
+                    <p class="small text-light mb-0">¿No tienes cuenta? 
+                        <a href="{% url 'registro' %}" class="text-dorado fw-bold text-decoration-none">Regístrate aquí</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
