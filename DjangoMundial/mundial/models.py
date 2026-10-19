@@ -1,62 +1,182 @@
+
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-class Mundial(models.Model):
-    anio = models.IntegerField(unique=True, verbose_name="Año")
-    nombre = models.CharField(max_length=100, default="Copa Mundial de Fútbol", verbose_name="Nombre")
-    sede = models.CharField(max_length=100, verbose_name="Sede")
-    descripcion = models.TextField(blank=True, null=True, verbose_name="Descripción")
 
-    # Cuadro de Honor (Podio)
-    campeon = models.CharField(max_length=100, blank=True, null=True, verbose_name="Campeón")
-    subcampeon = models.CharField(max_length=100, blank=True, null=True, verbose_name="Subcampeón")
-    tercer_puesto = models.CharField(max_length=100, blank=True, null=True, verbose_name="Tercer Puesto")
+# ==========================================
+# MUNDIAL
+# ==========================================
+
+class Mundial(models.Model):
+
+    anio = models.IntegerField(
+        unique=True,
+        verbose_name="Año"
+    )
+
+    nombre = models.CharField(
+        max_length=100,
+        default="Copa Mundial de Fútbol",
+        verbose_name="Nombre"
+    )
+
+    sede = models.CharField(
+        max_length=100,
+        verbose_name="Sede"
+    )
+
+    descripcion = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Descripción"
+    )
+
+    # Cuadro de Honor
+    campeon = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name="Campeón"
+    )
+
+    subcampeon = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name="Subcampeón"
+    )
+
+    tercer_puesto = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name="Tercer Puesto"
+    )
 
     # Premios Individuales
-    maximo_goleador = models.CharField(max_length=100, blank=True, null=True, verbose_name="Máximo Goleador")
-    goles_maximo_goleador = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name="Goles del Máximo Goleador")
-    mvp_mundial = models.CharField(max_length=100, blank=True, null=True, verbose_name="MVP / Mejor Jugador")
-    mejor_arquero = models.CharField(max_length=100, blank=True, null=True, verbose_name="Mejor Arquero")
+    maximo_goleador = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name="Máximo Goleador"
+    )
+
+    goles_maximo_goleador = models.PositiveIntegerField(
+        default=0,
+        blank=True,
+        null=True,
+        verbose_name="Goles del Máximo Goleador"
+    )
+
+    mvp_mundial = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name="MVP / Mejor Jugador"
+    )
+
+    mejor_arquero = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name="Mejor Arquero"
+    )
 
     # Imágenes
-    imagen_logo = models.ImageField(upload_to='mundiales/logos/', blank=True, null=True, verbose_name="Logo / Emblema")
-    imagen_portada = models.ImageField(upload_to='mundiales/portadas/', blank=True, null=True, verbose_name="Imagen de Portada")
+    imagen_logo = models.ImageField(
+        upload_to="mundiales/logos/",
+        blank=True,
+        null=True,
+        verbose_name="Logo / Emblema"
+    )
+
+    imagen_portada = models.ImageField(
+        upload_to="mundiales/portadas/",
+        blank=True,
+        null=True,
+        verbose_name="Imagen de Portada"
+    )
 
     class Meta:
         verbose_name = "Mundial"
         verbose_name_plural = "Mundiales"
-        ordering = ['-anio']
+        ordering = ["-anio"]
 
     def __str__(self):
         return f"Copa Mundial {self.anio} - {self.sede}"
 
 
+# ==========================================
+# POSICIONES DE GRUPOS
+# ==========================================
+
 class PosicionGrupo(models.Model):
+
     GRUPOS_CHOICES = [
-        ('Grupo A', 'Grupo A'),
-        ('Grupo B', 'Grupo B'),
-        ('Grupo C', 'Grupo C'),
-        ('Grupo D', 'Grupo D'),
-        ('Grupo E', 'Grupo E'),
-        ('Grupo F', 'Grupo F'),
-        ('Grupo G', 'Grupo G'),
-        ('Grupo H', 'Grupo H'),
+        (f"Grupo {letra}", f"Grupo {letra}")
+        for letra in "ABCDEFGHIJKL"
     ]
-    
-    mundial = models.ForeignKey(Mundial, on_delete=models.CASCADE, related_name='posiciones')
-    grupo = models.CharField(max_length=10, choices=GRUPOS_CHOICES, default='Grupo A')
-    equipo = models.CharField(max_length=50)
-    pj = models.PositiveIntegerField(default=0, verbose_name="J (Jugados)")
-    g = models.PositiveIntegerField(default=0, verbose_name="G (Ganados)")
-    e = models.PositiveIntegerField(default=0, verbose_name="E (Empatados)")
-    p = models.PositiveIntegerField(default=0, verbose_name="P (Perdidos)")
-    gf = models.PositiveIntegerField(default=0, verbose_name="GF (Goles Favor)")
-    gc = models.PositiveIntegerField(default=0, verbose_name="GC (Goles Contra)")
-    pts = models.PositiveIntegerField(default=0, verbose_name="PTS (Puntos)")
-    forma = models.CharField(max_length=20, blank=True, null=True, help_text="Ejemplo: V,V,V o V,E,D (separados por coma)")
+
+    mundial = models.ForeignKey(
+        Mundial,
+        on_delete=models.CASCADE,
+        related_name="posiciones"
+    )
+
+    grupo = models.CharField(
+        max_length=10,
+        choices=GRUPOS_CHOICES,
+        default="Grupo A"
+    )
+
+    equipo = models.CharField(
+        max_length=50
+    )
+
+    pj = models.PositiveIntegerField(
+        default=0,
+        verbose_name="J (Jugados)"
+    )
+
+    g = models.PositiveIntegerField(
+        default=0,
+        verbose_name="G (Ganados)"
+    )
+
+    e = models.PositiveIntegerField(
+        default=0,
+        verbose_name="E (Empatados)"
+    )
+
+    p = models.PositiveIntegerField(
+        default=0,
+        verbose_name="P (Perdidos)"
+    )
+
+    gf = models.PositiveIntegerField(
+        default=0,
+        verbose_name="GF (Goles Favor)"
+    )
+
+    gc = models.PositiveIntegerField(
+        default=0,
+        verbose_name="GC (Goles Contra)"
+    )
+
+    pts = models.PositiveIntegerField(
+        default=0,
+        verbose_name="PTS (Puntos)"
+    )
+
+    forma = models.CharField(
+        max_length=20,
+        blank=True,
+        null=True,
+        help_text="Ejemplo: V,V,V o V,E,D"
+    )
 
     class Meta:
-        ordering = ['grupo', '-pts', '-g', '-gf']
+        ordering = ["grupo", "-pts", "-g", "-gf"]
         verbose_name = "Posición de Grupo"
         verbose_name_plural = "Posiciones de Grupos"
 
@@ -67,47 +187,115 @@ class PosicionGrupo(models.Model):
     @property
     def lista_forma(self):
         if self.forma:
-            return [f.strip().upper() for f in self.forma.split(',')]
+            return [
+                f.strip().upper()
+                for f in self.forma.split(",")
+            ]
         return []
 
     def __str__(self):
         return f"{self.grupo} - {self.equipo} ({self.pts} pts)"
 
 
+# ==========================================
+# PARTIDOS DE ELIMINATORIAS
+# ==========================================
+
 class PartidoEliminatoria(models.Model):
+
     FASE_CHOICES = [
-        ('16vos', '16vos de Final'),
-        ('Octavos', 'Octavos de Final'),
-        ('Cuartos', 'Cuartos de Final'),
-        ('Semifinal', 'Semifinales'),
-        ('Final', 'Gran Final'),
+        ("16vos", "16vos de Final"),
+        ("Octavos", "Octavos de Final"),
+        ("Cuartos", "Cuartos de Final"),
+        ("Semifinal", "Semifinales"),
+        ("Tercer Puesto", "Tercer Puesto"),
+        ("Final", "Gran Final"),
     ]
 
-    mundial = models.ForeignKey(Mundial, on_delete=models.CASCADE, related_name='partidos_eliminatoria')
-    fase = models.CharField(max_length=20, choices=FASE_CHOICES, default='Octavos')
-    equipo1 = models.CharField(max_length=50, verbose_name="Equipo 1")
-    goles1 = models.PositiveIntegerField(default=0, verbose_name="Goles Equipo 1")
-    equipo2 = models.CharField(max_length=50, verbose_name="Equipo 2")
-    goles2 = models.PositiveIntegerField(default=0, verbose_name="Goles Equipo 2")
-    info_extra = models.CharField(max_length=50, blank=True, null=True, help_text="Ej: Penales 4-3, 18/06 16:00")
+    mundial = models.ForeignKey(
+        Mundial,
+        on_delete=models.CASCADE,
+        related_name="partidos_eliminatoria"
+    )
+
+    fase = models.CharField(
+        max_length=20,
+        choices=FASE_CHOICES,
+        default="Octavos"
+    )
+
+    # NUEVO: Orden de los partidos dentro del cuadro
+    orden = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Orden en el cuadro",
+        help_text="Determina la posición del partido dentro de su fase"
+    )
+
+    equipo1 = models.CharField(
+        max_length=50,
+        verbose_name="Equipo 1"
+    )
+
+    goles1 = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Goles Equipo 1"
+    )
+
+    equipo2 = models.CharField(
+        max_length=50,
+        verbose_name="Equipo 2"
+    )
+
+    goles2 = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Goles Equipo 2"
+    )
+
+    info_extra = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        help_text="Ej: Penales 4-3, 18/06 16:00"
+    )
 
     class Meta:
         verbose_name = "Partido de Eliminatoria"
         verbose_name_plural = "Partidos de Eliminatorias"
+        ordering = ["orden", "id"]
 
     def __str__(self):
-        return f"{self.get_fase_display()}: {self.equipo1} ({self.goles1}) vs ({self.goles2}) {self.equipo2}"
+        return (
+            f"{self.get_fase_display()}: "
+            f"{self.equipo1} ({self.goles1}) vs "
+            f"({self.goles2}) {self.equipo2}"
+        )
 
+
+# ==========================================
+# SELECCIONES
+# ==========================================
 
 class Seleccion(models.Model):
-    nombre = models.CharField(max_length=100)
-    confederacion = models.CharField(max_length=50, help_text="Ej: CONMEBOL, UEFA")
-    titulos = models.PositiveIntegerField(default=0, verbose_name="Títulos Mundiales")
+
+    nombre = models.CharField(
+        max_length=100
+    )
+
+    confederacion = models.CharField(
+        max_length=50,
+        help_text="Ej: CONMEBOL, UEFA"
+    )
+
+    titulos = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Títulos Mundiales"
+    )
+
     mundial = models.ForeignKey(
-        Mundial, 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True, 
+        Mundial,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
         related_name="selecciones"
     )
 
@@ -119,7 +307,12 @@ class Seleccion(models.Model):
         return self.nombre
 
 
+# ==========================================
+# JUGADORES
+# ==========================================
+
 class Jugador(models.Model):
+
     POSICIONES = [
         ("ARQ", "Arquero"),
         ("DEF", "Defensa"),
@@ -179,9 +372,18 @@ class Jugador(models.Model):
         verbose_name_plural = "Jugadores"
 
     def __str__(self):
-        return f"{self.apellido_nombres} ({self.seleccion.nombre})"
-        return f"{self.apellido_nombres} ({self.seleccion.nombre})"
+        return (
+            f"{self.apellido_nombres} "
+            f"({self.seleccion.nombre})"
+        )
+
+
+# ==========================================
+# HISTORIAL DE JUGADORES
+# ==========================================
+
 class HistorialJugador(models.Model):
+
     jugador = models.ForeignKey(
         Jugador,
         on_delete=models.CASCADE,
@@ -207,7 +409,12 @@ class HistorialJugador(models.Model):
     class Meta:
         verbose_name = "Historial de jugador"
         verbose_name_plural = "Historiales de jugadores"
-        ordering = ["-mundial__anio", "jugador__apellido_nombres"]
+
+        ordering = [
+            "-mundial__anio",
+            "jugador__apellido_nombres"
+        ]
+
         constraints = [
             models.UniqueConstraint(
                 fields=["jugador", "mundial"],
@@ -216,4 +423,87 @@ class HistorialJugador(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.jugador.apellido_nombres} - {self.mundial.anio}"
+        return (
+            f"{self.jugador.apellido_nombres} - "
+            f"{self.mundial.anio}"
+        )
+
+
+# ==========================================
+# EVENTOS DE LOS PARTIDOS
+# ==========================================
+
+class EventoPartido(models.Model):
+
+    TIPOS_EVENTO = [
+        ("GOL", "Gol"),
+        ("PENAL", "Gol de penal"),
+        ("AUTOGOL", "Gol en contra"),
+        ("AMARILLA", "Tarjeta amarilla"),
+        ("ROJA", "Tarjeta roja"),
+        ("DOBLE_AMARILLA", "Expulsión por doble amarilla"),
+        ("CAMBIO", "Cambio de jugador"),
+        ("FALTA", "Falta"),
+        ("INICIO", "Inicio del partido"),
+        ("DESCANSO", "Descanso"),
+        ("FINAL", "Final del partido"),
+    ]
+
+    partido = models.ForeignKey(
+        PartidoEliminatoria,
+        on_delete=models.CASCADE,
+        related_name="eventos",
+        verbose_name="Partido"
+    )
+
+    tipo = models.CharField(
+        max_length=20,
+        choices=TIPOS_EVENTO,
+        verbose_name="Tipo de evento"
+    )
+
+    minuto = models.CharField(
+        max_length=10,
+        verbose_name="Minuto",
+        help_text="Ejemplo: 34, 45+2, 90+7"
+    )
+
+    equipo = models.CharField(
+        max_length=100,
+        blank=True,
+        verbose_name="Selección"
+    )
+
+    jugador = models.CharField(
+        max_length=150,
+        blank=True,
+        verbose_name="Jugador"
+    )
+
+    jugador_entra = models.CharField(
+        max_length=150,
+        blank=True,
+        verbose_name="Jugador que entra"
+    )
+
+    jugador_sale = models.CharField(
+        max_length=150,
+        blank=True,
+        verbose_name="Jugador que sale"
+    )
+
+    descripcion = models.TextField(
+        blank=True,
+        verbose_name="Descripción"
+    )
+
+    class Meta:
+        verbose_name = "Evento del partido"
+        verbose_name_plural = "Eventos de los partidos"
+        ordering = ["id"]
+
+    def __str__(self):
+        return (
+            f"{self.get_tipo_display()} - "
+            f"{self.minuto}' - {self.jugador}"
+        )

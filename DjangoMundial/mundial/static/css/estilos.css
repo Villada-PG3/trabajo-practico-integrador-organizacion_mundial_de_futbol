@@ -1,0 +1,228 @@
+
+/* ==========================================
+   PALETA OFICIAL DE COLORES MUNDOFÚTBOL
+   ========================================== */
+
+:root {
+    --color-fondo: #0F3D2E;
+    --color-navbar: #145A32;
+    --color-tarjeta: #1E8449;
+    --color-dorado: #C8A34D;
+    --color-texto: #FFFFFF;
+}
+
+/* ==========================================
+   FONDO PRINCIPAL
+   ========================================== */
+
+body {
+    background-color: var(--color-fondo) !important;
+    color: var(--color-texto) !important;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ==========================================
+   NAVBAR Y FOOTER
+   ========================================== */
+
+.navbar,
+.bg-navbar,
+footer {
+    background-color: var(--color-navbar) !important;
+}
+
+/* ==========================================
+   TARJETAS
+   ========================================== */
+
+.card,
+.bg-tarjeta {
+    background-color: var(--color-tarjeta) !important;
+    color: var(--color-texto) !important;
+    border-color: var(--color-dorado) !important;
+}
+
+.card-header,
+.card-footer {
+    background-color: var(--color-navbar) !important;
+    border-color: var(--color-dorado) !important;
+    color: var(--color-texto) !important;
+}
+
+/* ==========================================
+   COLORES PERSONALIZADOS
+   ========================================== */
+
+.text-dorado {
+    color: var(--color-dorado) !important;
+}
+
+.bg-dorado {
+    background-color: var(--color-dorado) !important;
+}
+
+.border-dorado {
+    border-color: var(--color-dorado) !important;
+}
+
+/* ==========================================
+   BOTONES PERSONALIZADOS
+   ========================================== */
+
+.btn-dorado {
+    background-color: var(--color-dorado) !important;
+    color: #0F3D2E !important;
+    font-weight: bold;
+    border: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-dorado:hover {
+    background-color: #b08d3b !important;
+    color: #FFFFFF !important;
+}
+
+.btn-outline-dorado {
+    color: var(--color-dorado) !important;
+    border-color: var(--color-dorado) !important;
+    background-color: transparent;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-outline-dorado:hover {
+    color: #0F3D2E !important;
+    background-color: var(--color-dorado) !important;
+}
+
+/* ==========================================
+   ENLACES DE NAVEGACIÓN
+   ========================================== */
+
+.nav-link {
+    color: #FFFFFF !important;
+}
+
+.nav-link:hover {
+    color: var(--color-dorado) !important;
+}
+
+/* ==========================================
+   CARRUSEL DE IMÁGENES
+   ========================================== */
+
+.carousel-item img {
+    max-height: 420px;
+    object-fit: cover;
+    width: 100%;
+}
+
+/* ==========================================
+   PESTAÑAS DE NAVEGACIÓN
+   ========================================== */
+
+.nav-pills .nav-link {
+    color: var(--color-dorado) !important;
+    background-color: transparent;
+}
+
+.nav-pills .nav-link.active {
+    color: #0F3D2E !important;
+    background-color: var(--color-dorado) !important;
+    border-color: var(--color-dorado) !important;
+}
+
+/* ==========================================
+   CUADRO DE ELIMINATORIAS
+   ========================================== */
+
+/* Tarjetas de los partidos */
+#pills-eliminatorias .card {
+    background-color: var(--color-tarjeta) !important;
+    border: 1px solid var(--color-dorado) !important;
+    color: #FFFFFF !important;
+}
+
+/* Encabezados con fechas y horarios */
+#pills-eliminatorias .card-header {
+    background-color: var(--color-navbar) !important;
+    color: var(--color-dorado) !important;
+    border-bottom: 1px solid var(--color-dorado) !important;
+}
+
+/* Fondo interior de los partidos */
+#pills-eliminatorias .card-body {
+    background-color: var(--color-tarjeta) !important;
+    color: #FFFFFF !important;
+}
+
+/* Nombres de las selecciones */
+#pills-eliminatorias .card-body span.text-truncate {
+    color: #FFFFFF !important;
+    opacity: 1 !important;
+    font-weight: 600 !important;
+}
+
+/* Equipos ganadores */
+#pills-eliminatorias .card-body span.text-success {
+    color: #FFD966 !important;
+    font-weight: 800 !important;
+    opacity: 1 !important;
+}
+
+/* Ganadores de la final */
+#pills-eliminatorias .card-body span.text-dorado {
+    color: #FFD966 !important;
+    font-weight: 800 !important;
+}
+
+/* Resultados normales */
+#pills-eliminatorias .badge {
+    background-color: #000000 !important;
+    color: #FFFFFF !important;
+    font-weight: bold !important;
+    border-radius: 6px;
+}
+
+/* Resultados de los equipos ganadores */
+#pills-eliminatorias .badge.bg-success,
+#pills-eliminatorias .badge.bg-dorado {
+    background-color: var(--color-dorado) !important;
+    color: #0F3D2E !important;
+    border-color: var(--color-dorado) !important;
+}
+
+/* Separadores entre equipos */
+#pills-eliminatorias .card-body .border-bottom {
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Títulos de las fases */
+#pills-eliminatorias .bracket-col > div:first-child {
+    color: var(--color-dorado) !important;
+    font-weight: bold !important;
+}
+
+/* Espaciado y tamaño de las tarjetas */
+#pills-eliminatorias .bracket-col .card {
+    border-radius: 8px !important;
+    overflow: hidden;
+}
+
+/* Evitar que los nombres desaparezcan */
+#pills-eliminatorias .card-body span {
+    visibility: visible !important;
+}
+
+/* ==========================================
+   EFECTOS VISUALES
+   ========================================== */
+
+/* Animación al pasar por las tarjetas */
+#pills-eliminatorias .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#pills-eliminatorias .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(200, 163, 77, 0.25) !important;
+}

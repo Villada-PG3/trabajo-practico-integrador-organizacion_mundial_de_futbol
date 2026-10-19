@@ -1,0 +1,667 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+{{ partido.equipo1 }} vs {{ partido.equipo2 }} | MundoFútbol
+{% endblock %}
+
+{% block content %}
+
+<style>
+/* =====================================
+   DETALLE DEL PARTIDO - MUNDOFÚTBOL
+   ===================================== */
+
+.detalle-partido {
+    --verde-oscuro: #0F3D2E;
+    --verde-profundo: #145A32;
+    --verde-tarjeta: #1E8449;
+    --dorado: #C8A34D;
+    color: #FFFFFF;
+}
+
+.detalle-partido .marcador {
+    background: #145A32;
+    border: 1px solid #C8A34D;
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.detalle-partido .marcador-equipos {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
+    gap: 16px;
+    align-items: center;
+}
+
+.detalle-partido .nombre-equipo {
+    font-size: clamp(17px, 2.5vw, 27px);
+    font-weight: bold;
+    color: white;
+    overflow-wrap: anywhere;
+}
+
+.detalle-partido .resultado {
+    font-size: clamp(32px, 4vw, 50px);
+    font-weight: 800;
+    color: #C8A34D;
+    white-space: nowrap;
+}
+
+.detalle-partido .fase {
+    color: #C8A34D;
+    text-align: center;
+    font-weight: 700;
+    font-size: 17px;
+    margin-bottom: 25px;
+}
+
+.detalle-partido .info-partido {
+    text-align: center;
+    color: #C8A34D;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.detalle-partido .partido-tabs {
+    border-bottom: 1px solid #C8A34D;
+    gap: 10px;
+}
+
+.detalle-partido .partido-tabs .nav-link {
+    color: #FFFFFF !important;
+    background: transparent !important;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    padding: 14px 20px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.detalle-partido .partido-tabs .nav-link.active {
+    color: #C8A34D !important;
+    background: transparent !important;
+    border-bottom-color: #C8A34D;
+}
+
+.detalle-partido .panel-partido {
+    background: #145A32;
+    border: 1px solid #C8A34D;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.detalle-partido .titulo-panel {
+    padding: 16px;
+    text-align: center;
+    background: #0F3D2E;
+    color: #C8A34D;
+    font-weight: bold;
+    border-bottom: 1px solid #C8A34D;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.detalle-partido .encabezado-eventos {
+    display: grid;
+    grid-template-columns: 1fr 90px 1fr;
+    gap: 12px;
+    padding: 18px;
+    background: #0F3D2E;
+    font-weight: bold;
+}
+
+.detalle-partido .fila-evento {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) 90px minmax(0,1fr);
+    gap: 12px;
+    align-items: center;
+    padding: 16px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    min-height: 75px;
+}
+
+.detalle-partido .fila-evento:last-child {
+    border-bottom: 0;
+}
+
+.detalle-partido .minuto {
+    text-align: center;
+    color: #C8A34D;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.detalle-partido .evento-izquierda {
+    text-align: left;
+    min-width: 0;
+}
+
+.detalle-partido .evento-derecha {
+    text-align: right;
+    min-width: 0;
+}
+
+.detalle-partido .evento-centro {
+    grid-column: 1 / -1;
+    text-align: center;
+}
+
+.detalle-partido .jugador-evento {
+    font-weight: bold;
+    color: #FFFFFF;
+    overflow-wrap: anywhere;
+}
+
+.detalle-partido .descripcion-evento {
+    color: #D9E9DE;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.detalle-partido .icono-amarilla {
+    display: inline-block;
+    width: 11px;
+    height: 15px;
+    background: #FFD600;
+    border-radius: 2px;
+    margin-left: 7px;
+    vertical-align: middle;
+}
+
+.detalle-partido .icono-roja {
+    display: inline-block;
+    width: 11px;
+    height: 15px;
+    background: #E53935;
+    border-radius: 2px;
+    margin-left: 7px;
+    vertical-align: middle;
+}
+
+.detalle-partido .entra {
+    color: #8EFF9B;
+}
+
+.detalle-partido .sale {
+    color: #FF9090;
+}
+
+.detalle-partido .evento-tipo {
+    color: #C8A34D;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.detalle-partido .resumen-tarjeta {
+    background: #1E8449;
+    border: 1px solid #C8A34D;
+    border-radius: 10px;
+    padding: 20px;
+    height: 100%;
+}
+
+.detalle-partido .resumen-numero {
+    color: #C8A34D;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.detalle-partido .sin-datos {
+    text-align: center;
+    padding: 35px 15px;
+    color: #D9E9DE;
+}
+
+@media (max-width: 576px) {
+    .detalle-partido .marcador {
+        padding: 20px 12px;
+    }
+
+    .detalle-partido .encabezado-eventos,
+    .detalle-partido .fila-evento {
+        grid-template-columns: minmax(0,1fr) 55px minmax(0,1fr);
+        gap: 7px;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .detalle-partido .jugador-evento {
+        font-size: 13px;
+    }
+
+    .detalle-partido .partido-tabs .nav-link {
+        padding: 12px;
+        font-size: 12px;
+    }
+}
+</style>
+
+
+<div class="container detalle-partido mt-4 mb-5">
+
+    <!-- BOTÓN VOLVER -->
+    <a href="{% url 'detalle_mundial' partido.mundial.pk %}"
+       class="btn btn-outline-dorado mb-4">
+        <i class="fa-solid fa-arrow-left me-2"></i>
+        Volver al Mundial
+    </a>
+
+
+    <!-- =====================================
+         MARCADOR PRINCIPAL
+         ===================================== -->
+
+    <div class="marcador shadow">
+
+        <div class="fase">
+            {{ partido.get_fase_display }}
+            · Mundial {{ partido.mundial.anio }}
+        </div>
+
+        <div class="marcador-equipos">
+
+            <div class="text-center">
+                <div class="nombre-equipo">
+                    {{ partido.equipo1 }}
+                </div>
+            </div>
+
+            <div class="text-center">
+                <div class="resultado">
+                    {{ partido.goles1 }} - {{ partido.goles2 }}
+                </div>
+
+                <small class="text-white">
+                    FINALIZADO
+                </small>
+            </div>
+
+            <div class="text-center">
+                <div class="nombre-equipo">
+                    {{ partido.equipo2 }}
+                </div>
+            </div>
+
+        </div>
+
+        {% if partido.info_extra %}
+        <div class="info-partido">
+            <i class="fa-regular fa-calendar me-2"></i>
+            {{ partido.info_extra }}
+        </div>
+        {% endif %}
+
+    </div>
+
+
+    <!-- =====================================
+         PESTAÑAS
+         ===================================== -->
+
+    <ul class="nav partido-tabs mt-4"
+        id="detalleTabs"
+        role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active"
+                    id="resumen-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#resumen"
+                    type="button"
+                    role="tab">
+                RESUMEN
+            </button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link"
+                    id="minuto-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#minuto-minuto"
+                    type="button"
+                    role="tab">
+                MINUTO A MINUTO
+            </button>
+        </li>
+
+    </ul>
+
+
+    <div class="tab-content" id="detalleTabsContent">
+
+        <!-- =====================================
+             RESUMEN
+             ===================================== -->
+
+        <div class="tab-pane fade show active"
+             id="resumen"
+             role="tabpanel">
+
+            <!-- CONTADORES -->
+            <div class="row g-3 mt-2">
+
+                <div class="col-6 col-lg-3">
+                    <div class="resumen-tarjeta text-center">
+                        <i class="fa-solid fa-futbol text-dorado mb-2"></i>
+                        <div class="resumen-numero">
+                            {{ estadisticas.goles }}
+                        </div>
+                        <div>Goles registrados</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-lg-3">
+                    <div class="resumen-tarjeta text-center">
+                        <div class="icono-amarilla mb-2"></div>
+                        <div class="resumen-numero">
+                            {{ estadisticas.amarillas }}
+                        </div>
+                        <div>Amarillas</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-lg-3">
+                    <div class="resumen-tarjeta text-center">
+                        <div class="icono-roja mb-2"></div>
+                        <div class="resumen-numero">
+                            {{ estadisticas.rojas }}
+                        </div>
+                        <div>Expulsiones</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-lg-3">
+                    <div class="resumen-tarjeta text-center">
+                        <i class="fa-solid fa-right-left text-dorado mb-2"></i>
+                        <div class="resumen-numero">
+                            {{ estadisticas.cambios }}
+                        </div>
+                        <div>Sustituciones</div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- GOLES -->
+            <div class="panel-partido">
+
+                <div class="titulo-panel">
+                    <i class="fa-solid fa-futbol me-2"></i>
+                    Goles del partido
+                </div>
+
+                {% for evento in goles %}
+
+                <div class="fila-evento">
+
+                    <div class="evento-izquierda">
+                        {% if evento.equipo == partido.equipo1 %}
+                            <div class="jugador-evento">
+                                {{ evento.jugador }}
+                                <i class="fa-solid fa-futbol text-dorado"></i>
+                            </div>
+                            <div class="evento-tipo">
+                                {{ evento.get_tipo_display }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="minuto">
+                        {{ evento.minuto }}'
+                    </div>
+
+                    <div class="evento-derecha">
+                        {% if evento.equipo == partido.equipo2 %}
+                            <div class="jugador-evento">
+                                <i class="fa-solid fa-futbol text-dorado"></i>
+                                {{ evento.jugador }}
+                            </div>
+                            <div class="evento-tipo">
+                                {{ evento.get_tipo_display }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {% if evento.equipo != partido.equipo1 and evento.equipo != partido.equipo2 %}
+                    <div class="evento-centro">
+                        {{ evento.jugador }} · {{ evento.equipo }}
+                    </div>
+                    {% endif %}
+
+                </div>
+
+                {% empty %}
+
+                <div class="sin-datos">
+                    Todavía no hay goles registrados para este partido.
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- TARJETAS -->
+            <div class="panel-partido">
+
+                <div class="titulo-panel">
+                    <i class="fa-solid fa-id-card me-2"></i>
+                    Tarjetas del partido
+                </div>
+
+                {% for evento in tarjetas %}
+
+                <div class="fila-evento">
+
+                    <div class="evento-izquierda">
+                        {% if evento.equipo == partido.equipo1 %}
+                            <span class="jugador-evento">
+                                {{ evento.jugador }}
+                            </span>
+
+                            {% if evento.tipo == "AMARILLA" %}
+                                <span class="icono-amarilla"></span>
+                            {% else %}
+                                <span class="icono-roja"></span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+                    <div class="minuto">
+                        {{ evento.minuto }}'
+                    </div>
+
+                    <div class="evento-derecha">
+                        {% if evento.equipo == partido.equipo2 %}
+
+                            <span class="jugador-evento">
+                                {{ evento.jugador }}
+                            </span>
+
+                            {% if evento.tipo == "AMARILLA" %}
+                                <span class="icono-amarilla"></span>
+                            {% else %}
+                                <span class="icono-roja"></span>
+                            {% endif %}
+
+                        {% endif %}
+                    </div>
+
+                    {% if evento.equipo != partido.equipo1 and evento.equipo != partido.equipo2 %}
+                    <div class="evento-centro">
+                        {{ evento.jugador }} · {{ evento.get_tipo_display }}
+                    </div>
+                    {% endif %}
+
+                </div>
+
+                {% empty %}
+
+                <div class="sin-datos">
+                    No hay tarjetas registradas.
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- CAMBIOS -->
+            <div class="panel-partido">
+
+                <div class="titulo-panel">
+                    <i class="fa-solid fa-right-left me-2"></i>
+                    Sustituciones
+                </div>
+
+                {% for evento in cambios %}
+
+                <div class="fila-evento">
+
+                    <div class="evento-izquierda">
+                        {% if evento.equipo == partido.equipo1 %}
+                            <div class="entra">
+                                <i class="fa-solid fa-arrow-up"></i>
+                                {{ evento.jugador_entra }}
+                            </div>
+                            <div class="sale">
+                                <i class="fa-solid fa-arrow-down"></i>
+                                {{ evento.jugador_sale }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="minuto">
+                        {{ evento.minuto }}'
+                    </div>
+
+                    <div class="evento-derecha">
+                        {% if evento.equipo == partido.equipo2 %}
+                            <div class="entra">
+                                <i class="fa-solid fa-arrow-up"></i>
+                                {{ evento.jugador_entra }}
+                            </div>
+                            <div class="sale">
+                                <i class="fa-solid fa-arrow-down"></i>
+                                {{ evento.jugador_sale }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {% if evento.equipo != partido.equipo1 and evento.equipo != partido.equipo2 %}
+                    <div class="evento-centro">
+                        {{ evento.get_tipo_display }} · {{ evento.equipo }}
+                    </div>
+                    {% endif %}
+
+                </div>
+
+                {% empty %}
+
+                <div class="sin-datos">
+                    No hay sustituciones registradas.
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================
+             MINUTO A MINUTO
+             ===================================== -->
+
+        <div class="tab-pane fade"
+             id="minuto-minuto"
+             role="tabpanel">
+
+            <div class="panel-partido">
+
+                <div class="titulo-panel">
+                    MINUTO A MINUTO
+                </div>
+
+                <div class="encabezado-eventos">
+
+                    <div class="text-start">
+                        {{ partido.equipo1 }}
+                    </div>
+
+                    <div></div>
+
+                    <div class="text-end">
+                        {{ partido.equipo2 }}
+                    </div>
+
+                </div>
+
+
+                {% for evento in eventos %}
+
+                <div class="fila-evento">
+
+                    <!-- EQUIPO 1 -->
+                    <div class="evento-izquierda">
+
+                        {% if evento.equipo == partido.equipo1 %}
+
+                            {% include "mundial/includes/evento_contenido.html" %}
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- MINUTO -->
+                    <div class="minuto">
+                        {{ evento.minuto }}'
+                    </div>
+
+
+                    <!-- EQUIPO 2 -->
+                    <div class="evento-derecha">
+
+                        {% if evento.equipo == partido.equipo2 %}
+
+                            {% include "mundial/includes/evento_contenido.html" %}
+
+                        {% endif %}
+
+                    </div>
+
+                    {% if evento.equipo != partido.equipo1 and evento.equipo != partido.equipo2 %}
+                    <div class="evento-centro">
+                        <strong>{{ evento.get_tipo_display }}</strong>
+                        {% if evento.descripcion %}
+                            <div class="descripcion-evento">
+                                {{ evento.descripcion }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                </div>
+
+                {% empty %}
+
+                <div class="sin-datos">
+                    No hay eventos registrados para este encuentro.
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

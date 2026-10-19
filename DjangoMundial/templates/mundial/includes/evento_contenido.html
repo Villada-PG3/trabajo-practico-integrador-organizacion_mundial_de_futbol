@@ -1,0 +1,61 @@
+
+{% if evento.tipo == "GOL" or evento.tipo == "PENAL" or evento.tipo == "AUTOGOL" %}
+
+    <div class="jugador-evento">
+        {{ evento.jugador }}
+        <i class="fa-solid fa-futbol text-dorado"></i>
+    </div>
+
+    <div class="evento-tipo">
+        {{ evento.get_tipo_display }}
+    </div>
+
+{% elif evento.tipo == "AMARILLA" %}
+
+    <div class="jugador-evento">
+        {{ evento.jugador }}
+        <span class="icono-amarilla"></span>
+    </div>
+
+{% elif evento.tipo == "ROJA" or evento.tipo == "DOBLE_AMARILLA" %}
+
+    <div class="jugador-evento">
+        {{ evento.jugador }}
+        <span class="icono-roja"></span>
+    </div>
+
+    <div class="evento-tipo">
+        {{ evento.get_tipo_display }}
+    </div>
+
+{% elif evento.tipo == "CAMBIO" %}
+
+    <div class="entra">
+        <i class="fa-solid fa-arrow-up"></i>
+        {{ evento.jugador_entra }}
+    </div>
+
+    <div class="sale">
+        <i class="fa-solid fa-arrow-down"></i>
+        {{ evento.jugador_sale }}
+    </div>
+
+{% else %}
+
+    <div class="jugador-evento">
+        {{ evento.get_tipo_display }}
+    </div>
+
+    {% if evento.jugador %}
+        <div class="descripcion-evento">
+            {{ evento.jugador }}
+        </div>
+    {% endif %}
+
+{% endif %}
+
+{% if evento.descripcion %}
+    <div class="descripcion-evento">
+        {{ evento.descripcion }}
+    </div>
+{% endif %}

@@ -43,6 +43,7 @@ urlpatterns = [
     # Jugador
     path('jugador/', views.jugadores, name='jugadores'),
     path('jugador/<int:pk>/', views.detalle_jugador, name='detalle_jugador'),
+    path('partido/<int:partido_id>/', views.detalle_partido, name='detalle_partido'),
 
 
 ]
