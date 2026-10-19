@@ -5,7 +5,6 @@ from django.utils.html import format_html
 
 admin.site.register(Seleccion)
 admin.site.register(Jugador)
-<<<<<<< HEAD
 class JugadorAdmin(admin.ModelAdmin):
     list_display = (
         "apellido_nombres",
@@ -28,7 +27,6 @@ class JugadorAdmin(admin.ModelAdmin):
         "posicion",
         "seleccion",
     )
-=======
 @admin.register(Mundial)
 class MundialAdmin(admin.ModelAdmin):
     list_display = ('anio', 'sede', 'campeon', 'mvp_mundial', 'maximo_goleador', 'mostrar_logo')
@@ -55,4 +53,3 @@ class MundialAdmin(admin.ModelAdmin):
             return format_html('<img src="{}" width="40" height="40" style="object-fit:contain; border-radius:4px;" />', obj.imagen_logo.url)
         return "Sin Logo"
     mostrar_logo.short_description = "Logo"
->>>>>>> origin/main
