@@ -1,0 +1,142 @@
+
+{% extends "base.html" %}
+
+{% block title %}Ficha del jugador | MundoFútbol{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <!-- Encabezado -->
+    <div class="mb-4">
+        <a href="{% url 'jugadores' %}"
+           class="btn btn-outline-light btn-sm mb-3">
+            <i class="fas fa-arrow-left"></i> Volver a jugadores
+        </a>
+
+        <h1 class="text-dorado fw-bold">
+            <i class="fas fa-id-card"></i>
+            {{ jugador.apellido_nombres }}
+        </h1>
+
+        <p class="text-white">
+            Ficha individual del jugador
+        </p>
+    </div>
+
+    <!-- Datos personales y deportivos -->
+    <div class="row g-4">
+
+        <div class="col-lg-6">
+            <div class="card bg-dark border-dorado h-100">
+                <div class="card-header border-dorado">
+                    <h5 class="text-dorado mb-0">
+                        Datos personales
+                    </h5>
+                </div>
+
+                <div class="card-body text-white">
+                    <p>
+                        <strong>Apellido y nombres:</strong>
+                        {{ jugador.apellido_nombres }}
+                    </p>
+
+                    <p>
+                        <strong>Número de pasaporte:</strong>
+                        {{ jugador.pasaporte }}
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Edad:</strong>
+                        {{ jugador.edad }} años
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card bg-dark border-dorado h-100">
+                <div class="card-header border-dorado">
+                    <h5 class="text-dorado mb-0">
+                        Información deportiva
+                    </h5>
+                </div>
+
+                <div class="card-body text-white">
+                    <p>
+                        <strong>Posición:</strong>
+                        {% if jugador.posicion == "ARQ" %}
+                            Arquero
+                        {% elif jugador.posicion == "DEF" %}
+                            Defensa
+                        {% elif jugador.posicion == "MED" %}
+                            Mediocampista
+                        {% elif jugador.posicion == "DEL" %}
+                            Delantero
+                        {% else %}
+                            {{ jugador.posicion }}
+                        {% endif %}
+                    </p>
+
+                    <p>
+                        <strong>Club actual:</strong>
+                        {{ jugador.equipo_actual }}
+                    </p>
+
+                    <p>
+                        <strong>País del club:</strong>
+                        {{ jugador.pais_equipo }}
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Selección:</strong>
+                        {% if jugador.seleccion %}
+                            {{ jugador.seleccion.nombre }}
+                        {% else %}
+                            Sin selección asignada
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Historial mundialista -->
+    <div class="card bg-dark border-dorado mt-4">
+        <div class="card-header border-dorado">
+            <h5 class="text-dorado mb-0">
+                <i class="fas fa-trophy"></i> Historial en mundiales
+            </h5>
+        </div>
+
+        <div class="card-body text-white">
+            <p class="mb-0">
+                En esta sección se mostrarán los mundiales en los que
+                participó el jugador, los partidos disputados y sus
+                estadísticas en cada torneo.
+            </p>
+        </div>
+    </div>
+
+    <!-- Estadísticas individuales -->
+    <div class="card bg-dark border-dorado mt-4">
+        <div class="card-header border-dorado">
+            <h5 class="text-dorado mb-0">
+                <i class="fas fa-chart-bar"></i> Estadísticas individuales
+            </h5>
+        </div>
+
+        <div class="card-body text-white">
+            <p>
+                Acá se mostrarán los goles, las faltas y las tarjetas
+                recibidas, indicando el partido y el minuto de cada evento.
+            </p>
+            <p class="mb-0">
+                Las estadísticas se completarán al conectar esta sección
+                con los registros de partidos y eventos de la base de datos.
+            </p>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
