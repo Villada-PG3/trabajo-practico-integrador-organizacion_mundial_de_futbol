@@ -19,6 +19,8 @@ from django.urls import path
 from mundial import views
 from django.contrib.auth import views as auth_views
 from mundial.views import inicio, acerca, registro_view
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -42,6 +44,7 @@ urlpatterns = [
     path('jugador/', views.jugadores, name='jugadores'),
     path('jugador/<int:pk>/', views.detalle_jugador, name='detalle_jugador'),
 
-  
-]
 
+]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

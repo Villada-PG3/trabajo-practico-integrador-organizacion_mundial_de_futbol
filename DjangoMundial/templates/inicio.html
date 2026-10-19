@@ -4,8 +4,12 @@
 {% block title %}Inicio | MundoFútbol{% endblock %}
 
 {% block content %}
-<!-- 1. CARRUSEL DESLIZANTE DE FOTOS -->
-<div id="carruselHome" class="carousel slide carousel-fade mb-5 shadow-lg rounded-4 overflow-hidden border border-dorado" data-bs-ride="carousel">
+<!-- 1. CARRUSEL DESLIZANTE DE FOTOS (CAMBIO AUTOMÁTICO CADA 3 SEGUNDOS) -->
+<div id="carruselHome" 
+     class="carousel slide carousel-fade mb-5 shadow-lg rounded-4 overflow-hidden border border-dorado" 
+     data-bs-ride="carousel" 
+     data-bs-interval="3000">
+    
     <!-- Indicadores inferiores -->
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#carruselHome" data-bs-slide-to="0" class="active"></button>
@@ -15,29 +19,39 @@
 
     <!-- Imágenes del carrusel -->
     <div class="carousel-inner">
-        <!-- Foto 1 -->
-        <div class="carousel-item active" data-bs-interval="4000">
-            <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1200&auto=format&fit=crop" 
-                 class="d-block w-100 object-fit-cover" style="height: 400px;" alt="Estadio de fútbol">
+        <!-- Foto 1: Pelé -->
+        <div class="carousel-item active" data-bs-interval="3000">
+            <div class="d-flex align-items-center justify-content-center bg-navbar" style="height: 420px;">
+                <img src="/media/pele-carrusel.webp" 
+                     class="h-100 w-auto object-fit-contain p-1" 
+                     alt="Estadio de fútbol">
+            </div>
             <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded-3 p-3">
                 <h3 class="fw-bold text-dorado">Vive la Pasión del Fútbol Mundial</h3>
                 <p class="mb-0">Revive la historia de los torneos más importantes del planeta.</p>
             </div>
         </div>
 
-        <!-- Foto 2 -->
-        <div class="carousel-item" data-bs-interval="4000">
-            <img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=1200&auto=format&fit=crop" 
-                 class="d-block w-100 object-fit-cover" style="height: 400px;" alt="Pelota de fútbol">
+        <!-- Foto 2: Messi y Chiqui -->
+        <div class="carousel-item" data-bs-interval="3000">
+            <div class="d-flex align-items-center justify-content-center bg-navbar" style="height: 420px;">
+                <img src="/media/messi-chiqui.webp" 
+                     class="h-100 w-auto object-fit-contain p-1" 
+                     alt="Pelota de fútbol">
+            </div>
             <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded-3 p-3">
                 <h3 class="fw-bold text-dorado">Selecciones e Ídolos</h3>
                 <p class="mb-0">Consulta las estadísticas de los mejores equipos y jugadores.</p>
             </div>
         </div>
 
-        <!-- Foto 3 -->
-        <div class="carousel-item" data-bs-interval="4000">
-            <img src="media/cannavaro.webp" class="d-block w-100 object-fit-cover" style="height: 400px;" alt="Copa del mundo">
+        <!-- Foto 3: Cannavaro -->
+        <div class="carousel-item" data-bs-interval="3000">
+            <div class="d-flex align-items-center justify-content-center bg-navbar" style="height: 420px;">
+                <img src="/media/cannavaro.webp" 
+                     class="h-100 w-auto object-fit-contain p-1" 
+                     alt="Gloria Eterna">
+            </div>
             <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded-3 p-3">
                 <h3 class="fw-bold text-dorado">Gloria Eterna</h3>
                 <p class="mb-0">Explora el cuadro de honor y todos los campeones históricos.</p>
@@ -73,12 +87,18 @@
         <div class="col-md-4">
             <div class="card bg-tarjeta text-white h-100 shadow border border-dorado rounded-3 overflow-hidden d-flex flex-column">
                 
-                <!-- Portada o Imagen del Mundial -->
+                <!-- Portada o Imagen del Mundial proveniente del Admin -->
                 {% if mundial.imagen_portada %}
-                    <img src="/media/mundiales/portadas/portada2026.webp" class="card-img-top object-fit-cover" style="height: 180px;" alt="{{ mundial.sede }}">
+                    <img src="{{ mundial.imagen_portada.url }}"
+                         class="card-img-top object-fit-cover"
+                         style="height: 180px; object-position: center top;"
+                         alt="{{ mundial.nombre }}">
                 {% elif mundial.imagen_logo %}
                     <div class="text-center bg-navbar p-3">
-                        <img src="{{ mundial.imagen_logo.url }}" class="img-fluid" style="max-height: 120px; object-fit: contain;" alt="{{ mundial.sede }}">
+                        <img src="{{ mundial.imagen_logo.url }}" 
+                             class="img-fluid" 
+                             style="max-height: 120px; object-fit: contain;" 
+                             alt="{{ mundial.sede }}">
                     </div>
                 {% else %}
                     <div class="bg-navbar text-center py-4 border-bottom border-secondary">
@@ -128,7 +148,7 @@
 </div>
 
 
-<!-- 3. ACCESOS RÁPIDOS A MÓDULOS (OPCIONAL/COMPLEMENTARIO) -->
+<!-- 3. ACCESOS RÁPIDOS A MÓDULOS -->
 <h2 class="h4 fw-bold text-dorado mb-3"><i class="fa-solid fa-compass me-2"></i>Explora la Plataforma</h2>
 <div class="row g-3">
     <div class="col-md-4">

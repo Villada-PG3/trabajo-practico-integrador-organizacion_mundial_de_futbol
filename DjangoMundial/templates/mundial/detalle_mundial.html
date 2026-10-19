@@ -11,10 +11,26 @@
 </div>
 
 <!-- Ficha Principal del Mundial -->
-<div class="card bg-navbar text-white shadow border border-dorado rounded-4 mb-5">
+<div class="card bg-navbar text-white shadow border border-dorado rounded-4 mb-4">
     <div class="card-body p-4 p-md-5">
         <div class="row align-items-center">
-            <div class="col-md-8">
+            
+            <!-- Logo / Emblema -->
+            <div class="col-md-3 text-center mb-3 mb-md-0">
+                {% if mundial.imagen_logo %}
+                    <img src="{{ mundial.imagen_logo.url }}" 
+                         class="img-fluid rounded-3 shadow p-2 bg-tarjeta border border-dorado" 
+                         style="max-height: 150px; width: auto; object-fit: contain;" 
+                         alt="Logo {{ mundial.nombre }}">
+                {% else %}
+                    <div class="p-3 bg-tarjeta border border-dorado rounded-3 text-center">
+                        <i class="fa-solid fa-trophy fa-3x text-dorado"></i>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Datos Principales -->
+            <div class="col-md-5">
                 <span class="badge bg-tarjeta text-dorado border border-dorado fs-6 px-3 py-2 mb-2">
                     Año {{ mundial.anio }}
                 </span>
@@ -23,7 +39,8 @@
                     <i class="fa-solid fa-location-dot text-dorado me-2"></i>País anfitrión: <strong>{{ mundial.sede }}</strong>
                 </p>
             </div>
-            <!-- Podio / Ganadores -->
+
+            <!-- Cuadro de Honor -->
             <div class="col-md-4 mt-4 mt-md-0">
                 <div class="bg-tarjeta p-3 rounded-3 border border-dorado">
                     <h5 class="fw-bold text-dorado mb-3 text-center border-bottom border-dorado pb-2">
@@ -42,129 +59,224 @@
                     </ul>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
 
-<!-- SECCIÓN: Fase de Grupos -->
-<div class="mb-5">
-    <h3 class="h4 fw-bold text-dorado mb-3">
-        <i class="fa-solid fa-layer-group me-2"></i>Fase de Grupos
-    </h3>
+<!-- Banner de Portada del Mundial -->
+{% if mundial.imagen_portada %}
+<div class="mb-5 rounded-4 overflow-hidden border border-dorado shadow-lg bg-navbar text-center p-2">
+    <img src="{{ mundial.imagen_portada.url }}" 
+         class="img-fluid rounded-3" 
+         style="max-height: 400px; width: auto; object-fit: contain;" 
+         alt="Portada {{ mundial.nombre }}">
+</div>
+{% endif %}
 
-    <!-- Acordeón para los Grupos -->
-    <div class="accordion accordion-flush rounded-3 overflow-hidden border border-dorado" id="accordionGrupos">
-        <!-- Ejemplo Grupo A -->
-        <div class="accordion-item bg-tarjeta text-white border-bottom border-secondary">
-            <h2 class="accordion-header" id="headingA">
-                <button class="accordion-button bg-navbar text-dorado fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseA">
-                    <i class="fa-solid fa-users me-2"></i>Grupo A
-                </button>
-            </h2>
-            <div id="collapseA" class="accordion-collapse collapse show" data-bs-parent="#accordionGrupos">
-                <div class="accordion-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-dark table-striped mb-0 text-center align-middle" style="--bs-table-bg: transparent;">
-                            <thead class="bg-navbar text-dorado">
-                                <tr>
-                                    <th class="text-start ps-4">Equipo</th>
-                                    <th>PJ</th>
-                                    <th>G</th>
-                                    <th>E</th>
-                                    <th>P</th>
-                                    <th class="text-dorado">Pts</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% if mundial.posiciones_grupo_a %}
-                                    {% for pos in mundial.posiciones_grupo_a %}
-                                    <tr>
-                                        <td class="text-start ps-4 fw-bold">{{ pos.equipo }}</td>
+<!-- BOTONES DE NAVEGACIÓN SUPERIOR (FASE DE GRUPOS / CUADRO DE ELIMINATORIAS) -->
+<div class="d-flex justify-content-center mb-4">
+    <ul class="nav nav-pills bg-black p-2 rounded-3 border border-dorado" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active fw-bold text-uppercase px-4 py-2 me-2" 
+                    id="pills-grupos-tab" 
+                    data-bs-toggle="pill" 
+                    data-bs-target="#pills-grupos" 
+                    type="button" 
+                    role="tab">
+                <i class="fa-solid fa-table-cells me-2"></i>Fase de Grupos
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link fw-bold text-uppercase px-4 py-2" 
+                    id="pills-eliminatorias-tab" 
+                    data-bs-toggle="pill" 
+                    data-bs-target="#pills-eliminatorias" 
+                    type="button" 
+                    role="tab">
+                <i class="fa-solid fa-sitemap me-2"></i>Cuadro de Eliminatorias ▲
+            </button>
+        </li>
+    </ul>
+</div>
+
+<!-- CONTENIDO INTERCAMBIABLE CON PESTAÑAS -->
+<div class="tab-content" id="pills-tabContent">
+
+    <!-- PESTAÑA 1: FASE DE GRUPOS ESTILO PROMIEDOS -->
+    <div class="tab-pane fade show active" id="pills-grupos" role="tabpanel">
+        {% if mundial.posiciones.all %}
+            {% regroup mundial.posiciones.all by grupo as lista_grupos %}
+            
+            <div class="row g-4">
+                {% for g in lista_grupos %}
+                <div class="col-12 mb-3">
+                    <div class="card bg-black border border-secondary shadow-lg rounded-3 overflow-hidden">
+                        
+                        <!-- Encabezado del Grupo -->
+                        <div class="card-header bg-dark text-white fw-bold text-center border-bottom border-secondary py-3 fs-5 letter-spacing-1">
+                            {{ g.grouper|upper }}
+                        </div>
+
+                        <!-- Tabla de Posiciones Completa -->
+                        <div class="table-responsive">
+                            <table class="table table-dark align-middle text-center mb-0" style="font-size: 0.95rem;">
+                                <thead>
+                                    <tr class="text-secondary small border-bottom border-secondary">
+                                        <th style="width: 50px;">#</th>
+                                        <th class="text-start ps-3">EQUIPOS</th>
+                                        <th>PTS</th>
+                                        <th>J</th>
+                                        <th>GOL</th>
+                                        <th>+/-</th>
+                                        <th>G</th>
+                                        <th>E</th>
+                                        <th>P</th>
+                                        <th>ÚLTIMAS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pos in g.list %}
+                                    <tr class="border-bottom border-secondary">
+                                        <!-- Posición con indicador de color -->
+                                        <td>
+                                            {% if forloop.counter == 1 %}
+                                                <span class="badge bg-success text-dark fw-bold px-2 py-1 fs-6" style="background-color: #ccff00 !important;">1</span>
+                                            {% elif forloop.counter == 2 %}
+                                                <span class="badge bg-primary fw-bold px-2 py-1 fs-6" style="background-color: #3b82f6 !important;">2</span>
+                                            {% else %}
+                                                <span class="text-secondary fw-bold">{{ forloop.counter }}</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <!-- Nombre del Equipo -->
+                                        <td class="text-start ps-3 fw-bold text-white fs-6">
+                                            {{ pos.equipo }}
+                                        </td>
+
+                                        <!-- Puntos y Estadísticas -->
+                                        <td class="fw-bold fs-5 text-white">{{ pos.pts }}</td>
                                         <td>{{ pos.pj }}</td>
+                                        <td>{{ pos.gf }}:{{ pos.gc }}</td>
+                                        
+                                        <!-- Diferencia de Gol -->
+                                        <td class="fw-bold {% if pos.diferencia_gol > 0 %}text-success{% elif pos.diferencia_gol < 0 %}text-danger{% else %}text-secondary{% endif %}">
+                                            {% if pos.diferencia_gol > 0 %}+{% endif %}{{ pos.diferencia_gol }}
+                                        </td>
+
                                         <td>{{ pos.g }}</td>
                                         <td>{{ pos.e }}</td>
                                         <td>{{ pos.p }}</td>
-                                        <td class="text-dorado fw-bold">{{ pos.pts }}</td>
+
+                                        <!-- Racha de Últimos Resultados (V, E, D) -->
+                                        <td>
+                                            {% for res in pos.lista_forma %}
+                                                {% if res == 'V' %}
+                                                    <span class="badge bg-success text-dark fw-bold px-2 py-1" style="background-color: #ccff00 !important;">V</span>
+                                                {% elif res == 'E' %}
+                                                    <span class="badge bg-secondary text-white fw-bold px-2 py-1">E</span>
+                                                {% elif res == 'D' %}
+                                                    <span class="badge bg-danger text-white fw-bold px-2 py-1">D</span>
+                                                {% endif %}
+                                            {% empty %}
+                                                <span class="text-secondary small">-</span>
+                                            {% endfor %}
+                                        </td>
                                     </tr>
                                     {% endfor %}
-                                {% else %}
-                                    <!-- Datos de demostración si aún no están conectados a la BD -->
-                                    <tr>
-                                        <td class="text-start ps-4 fw-bold">Equipo 1</td>
-                                        <td>3</td><td>2</td><td>1</td><td>0</td>
-                                        <td class="text-dorado fw-bold">7</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-start ps-4 fw-bold">Equipo 2</td>
-                                        <td>3</td><td>1</td><td>1</td><td>1</td>
-                                        <td class="text-dorado fw-bold">4</td>
-                                    </tr>
-                                {% endif %}
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Leyenda Inferior -->
+                        <div class="card-footer bg-black border-top border-secondary py-2 px-3 small text-secondary d-flex gap-4">
+                            <div><span class="badge bg-success text-dark me-1" style="background-color: #ccff00 !important;">1º</span> 1º de grupo</div>
+                            <div><span class="badge bg-primary me-1" style="background-color: #3b82f6 !important;">2º</span> Clasificación a la siguiente fase</div>
+                        </div>
+
                     </div>
                 </div>
+                {% endfor %}
             </div>
-        </div>
-
-        <!-- Ejemplo Grupo B -->
-        <div class="accordion-item bg-tarjeta text-white">
-            <h2 class="accordion-header" id="headingB">
-                <button class="accordion-button bg-navbar text-dorado fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseB">
-                    <i class="fa-solid fa-users me-2"></i>Grupo B
-                </button>
-            </h2>
-            <div id="collapseB" class="accordion-collapse collapse" data-bs-parent="#accordionGrupos">
-                <div class="accordion-body p-0">
-                    <p class="text-center py-3 text-light opacity-75 mb-0">Detalle de posiciones del Grupo B.</p>
-                </div>
+        {% else %}
+            <div class="alert bg-navbar text-light border border-dorado text-center py-4 mb-0">
+                <i class="fa-solid fa-circle-info text-dorado me-2"></i>No hay tablas de grupos cargadas para este mundial en el Admin.
             </div>
-        </div>
+        {% endif %}
     </div>
+
+    <!-- PESTAÑA 2: CUADRO DE ELIMINATORIAS (ESTILO LLAVE Y PARTIDOS) -->
+    <div class="tab-pane fade" id="pills-eliminatorias" role="tabpanel">
+        {% if mundial.partidos_eliminatoria.all %}
+            {% regroup mundial.partidos_eliminatoria.all by get_fase_display as lista_fases %}
+            
+            <div class="row g-4">
+                {% for fase in lista_fases %}
+                <div class="col-12">
+                    <h4 class="text-dorado fw-bold border-bottom border-dorado pb-2 mb-3">
+                        <i class="fa-solid fa-trophy me-2"></i>{{ fase.grouper }}
+                    </h4>
+                    
+                    <div class="row g-3">
+                        {% for partido in fase.list %}
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card bg-black border border-dorado rounded-3 shadow-sm h-100">
+                                
+                                {% if partido.info_extra %}
+                                <div class="card-header bg-dark text-dorado small text-center border-bottom border-secondary py-1">
+                                    {{ partido.info_extra }}
+                                </div>
+                                {% endif %}
+
+                                <div class="card-body p-3">
+                                    <!-- Equipo 1 -->
+                                    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-secondary">
+                                        <span class="fw-bold fs-6 {% if partido.goles1 > partido.goles2 %}text-dorado{% else %}text-white{% endif %}">
+                                            {{ partido.equipo1 }}
+                                        </span>
+                                        <span class="badge bg-dark border border-dorado text-dorado fs-6 px-3">
+                                            {{ partido.goles1 }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Equipo 2 -->
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold fs-6 {% if partido.goles2 > partido.goles1 %}text-dorado{% else %}text-white{% endif %}">
+                                            {{ partido.equipo2 }}
+                                        </span>
+                                        <span class="badge bg-dark border border-dorado text-dorado fs-6 px-3">
+                                            {{ partido.goles2 }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert bg-navbar text-light border border-dorado text-center py-4 mb-0">
+                <i class="fa-solid fa-circle-info text-dorado me-2"></i>No hay partidos de eliminatorias cargados en el Admin.
+            </div>
+        {% endif %}
+    </div>
+
 </div>
 
-<!-- SECCIÓN: Eliminatorias -->
-<div>
-    <h3 class="h4 fw-bold text-dorado mb-3">
-        <i class="fa-solid fa-sitemap me-2"></i>Fase Eliminatoria
-    </h3>
-    <div class="row g-3">
-        <div class="col-md-3">
-            <div class="card bg-tarjeta text-white border-0 shadow text-center p-3">
-                <div class="card-body">
-                    <i class="fa-solid fa-1 me-1 text-dorado"></i><i class="fa-solid fa-8 text-dorado"></i>
-                    <h5 class="fw-bold mt-2">Octavos</h5>
-                    <p class="small text-light opacity-75 mb-0">16 selecciones clasificadas</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card bg-tarjeta text-white border-0 shadow text-center p-3">
-                <div class="card-body">
-                    <i class="fa-solid fa-1 me-1 text-dorado"></i><i class="fa-solid fa-4 text-dorado"></i>
-                    <h5 class="fw-bold mt-2">Cuartos</h5>
-                    <p class="small text-light opacity-75 mb-0">8 mejores equipos</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card bg-tarjeta text-white border-0 shadow text-center p-3">
-                <div class="card-body">
-                    <i class="fa-solid fa-2 me-1 text-dorado"></i>
-                    <h5 class="fw-bold mt-2">Semifinal</h5>
-                    <p class="small text-light opacity-75 mb-0">4 semifinalistas</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card bg-navbar text-white border border-dorado shadow text-center p-3">
-                <div class="card-body">
-                    <i class="fa-solid fa-trophy text-dorado fa-2x mb-2"></i>
-                    <h5 class="fw-bold text-dorado">Gran Final</h5>
-                    <p class="small text-light opacity-75 mb-0">Partido decisivo</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- Estilo CSS personalizado para los Nav-Pills dorados de Bootstrap -->
+<style>
+    .nav-pills .nav-link {
+        color: #d4af37 !important;
+        background-color: transparent;
+        border: 1px solid transparent;
+    }
+    .nav-pills .nav-link.active {
+        color: #000000 !important;
+        background-color: #d4af37 !important;
+        border-color: #d4af37;
+    }
+</style>
 {% endblock %}
