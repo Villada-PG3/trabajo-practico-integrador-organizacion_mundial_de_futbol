@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from .models import Mundial, Seleccion, Jugador, PosicionGrupo, PartidoEliminatoria
+from .models import Mundial, Seleccion, Jugador, PosicionGrupo, PartidoEliminatoria, HistorialJugador
 
 # Registro de Selección
 admin.site.register(Seleccion)
@@ -30,6 +31,23 @@ class JugadorAdmin(admin.ModelAdmin):
         "posicion",
         "seleccion",
     )
+
+@admin.register(HistorialJugador)
+class HistorialJugadorAdmin(admin.ModelAdmin):
+    list_display = (
+        "jugador",
+        "mundial",
+        "partidos_jugados",
+        "goles",
+    )
+
+    list_filter = ("mundial",)
+
+    search_fields = (
+        "jugador__apellido_nombres",
+    )
+
+    ordering = ("-mundial__anio",)
 
 
 # Inlines para cargar las Posiciones de Grupos y los Partidos de Eliminatorias dentro del mismo Mundial

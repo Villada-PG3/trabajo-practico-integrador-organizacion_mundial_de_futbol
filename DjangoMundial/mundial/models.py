@@ -180,3 +180,40 @@ class Jugador(models.Model):
 
     def __str__(self):
         return f"{self.apellido_nombres} ({self.seleccion.nombre})"
+        return f"{self.apellido_nombres} ({self.seleccion.nombre})"
+class HistorialJugador(models.Model):
+    jugador = models.ForeignKey(
+        Jugador,
+        on_delete=models.CASCADE,
+        related_name="historiales"
+    )
+
+    mundial = models.ForeignKey(
+        Mundial,
+        on_delete=models.CASCADE,
+        related_name="historiales_jugadores"
+    )
+
+    partidos_jugados = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Partidos jugados"
+    )
+
+    goles = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Goles convertidos"
+    )
+
+    class Meta:
+        verbose_name = "Historial de jugador"
+        verbose_name_plural = "Historiales de jugadores"
+        ordering = ["-mundial__anio", "jugador__apellido_nombres"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["jugador", "mundial"],
+                name="un_historial_por_jugador_y_mundial"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.jugador.apellido_nombres} - {self.mundial.anio}"
