@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ confederacion.get_nombre_display }}</h2>
+    <p class="text-muted">Lista de selecciones pertenecientes a esta confederación.</p>
+    <hr>
+
+    <div class="row">
+        {% for seleccion in selecciones %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ seleccion.nombre }}</h5>
+                        <p class="card-text">Jugadores cargados: {{ seleccion.jugadores.count }}</p>
+                        <a href="{% url 'detalle_seleccion' seleccion.pk %}" class="btn btn-outline-primary">Ver Planta y Detalle</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="alert alert-info">No hay selecciones asociadas a esta confederación aún.</p>
+        {% endfor %}
+    </div>
+
+    <a href="{% url 'lista_confederaciones' %}" class="btn btn-secondary mt-3">Volver a Confederaciones</a>
+</div>
+{% endblock %}

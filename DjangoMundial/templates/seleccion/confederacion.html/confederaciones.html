@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-4">
+    <h1 class="text-gold"><i class="fas fa-flag"></i> Selecciones Nacionales</h1>
+    <p class="text-muted">Selecciona una confederación para ver sus equipos.</p>
+
+    <!-- Botones/Tarjetas de Confederaciones -->
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        {% for conf in confederaciones %}
+            <a href="?confederacion={{ conf }}" 
+            class="btn {% if confederacion_actual == conf %}btn-warning{% else %}btn-outline-success{% endif %}">
+                {{ conf }}
+            </a>
+        {% endfor %}
+        
+        {% if confederacion_actual %}
+            <a href="?" class="btn btn-secondary">Ver Todas</a>
+        {% endif %}
+    </div>
+
+    <!-- Mostrar Selecciones de la Confederación elegida -->
+    {% if selecciones %}
+        <h3 class="mb-3 text-light">Equipos de {{ confederacion_actual }}</h3>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for seleccion in selecciones %}
+                <div class="col">
+                    <div class="card h-100 bg-dark-green text-white border-success">
+                        <div class="card-body text-center">
+                            <i class="fas fa-flag fa-3x text-gold mb-2"></i>
+                            <h4 class="card-title fw-bold">{{ seleccion.nombre }}</h4>
+                            <p class="card-text"><strong>Confederación:</strong> {{ seleccion.confederacion }}</p>
+                            <a href="#" class="btn btn-gold w-100">Ver selección</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% elif confederacion_actual %}
+        <p class="text-warning">No hay selecciones registradas para esta confederación.</p>
+    {% else %}
+        <div class="alert alert-info">
+            Por favor, elige una confederación para desplegar sus selecciones.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

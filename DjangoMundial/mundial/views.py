@@ -1,13 +1,15 @@
-
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 
+
 from .models import (
+    Confederacion,
     Mundial,
     Seleccion,
     Jugador,
+    PersonalTecnico,
     PartidoEliminatoria,
     EventoPartido,
 )
@@ -154,26 +156,47 @@ def detalle_mundial(request, pk):
 
 
 # ==========================================
+# CONFEDERACIONES
+# ==========================================
+
+def lista_confederaciones(request):
+    confederaciones = Confederacion.objects.all()
+    return render(request, 'confederacion/confederaciones.html', {
+        'confederaciones': confederaciones
+    })
+
+
+def detalle_confederacion(request, pk):
+    confederacion = get_object_or_404(Confederacion, pk=pk)
+    selecciones = confederacion.selecciones.all()
+    return render(request, 'confederacion/detalle_confederacion.html', {
+        'confederacion': confederacion,
+        'selecciones': selecciones
+    })
+
+
+# ==========================================
 # SELECCIONES
 # ==========================================
 
 def selecciones(request):
-
-    lista_selecciones = Seleccion.objects.all()
+    # Trae todas las confederaciones e incluye sus selecciones asociadas
+    confederaciones = Confederacion.objects.prefetch_related('selecciones').all()
 
     return render(request, 'seleccion/selecciones.html', {
-        'selecciones': lista_selecciones
+        'confederaciones': confederaciones,
     })
-
 
 def detalle_seleccion(request, pk):
-
     seleccion = get_object_or_404(Seleccion, pk=pk)
-
+    plantel_tecnico = PersonalTecnico.objects.filter(seleccion=seleccion)
+    jugadores = Jugador.objects.filter(seleccion=seleccion)
+    
     return render(request, 'seleccion/detalle_seleccion.html', {
-        'seleccion': seleccion
+        'seleccion': seleccion,
+        'plantel_tecnico': plantel_tecnico,
+        'jugadores': jugadores,
     })
-
 
 # ==========================================
 # JUGADORES

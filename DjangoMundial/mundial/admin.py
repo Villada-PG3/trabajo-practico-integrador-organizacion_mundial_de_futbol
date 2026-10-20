@@ -1,15 +1,47 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from .models import Mundial, PosicionGrupo, PartidoEliminatoria
 from .models import (
-    Mundial, Seleccion, Jugador, PosicionGrupo,
-    PartidoEliminatoria, HistorialJugador, EventoPartido,
+    Confederacion,
+    EventoPartido,
+    HistorialJugador,
+    Jugador,
+    PersonalTecnico,
+    Seleccion,
 )
+
+@admin.register(Confederacion)
+class ConfederacionAdmin(admin.ModelAdmin):
+    list_display = ('nombre',)
+    search_fields = ('nombre',)
+
+
+class JugadorInline(admin.TabularInline):
+    model = Jugador
+    extra = 1
+    fields = ('apellido_nombres', 'pasaporte', 'posicion', 'numero_camiseta', 'equipo_actual', 'pais_equipo')
+
+
+class PersonalTecnicoInline(admin.TabularInline):
+    model = PersonalTecnico
+    extra = 1
+    fields = ('nombre', 'apellido', 'pasaporte', 'funcion')
+
 
 @admin.register(Seleccion)
 class SeleccionAdmin(admin.ModelAdmin):
-    list_display = ("nombre", "confederacion", "titulos", "mundial")
-    search_fields = ("nombre",)
-    list_filter = ("confederacion",)
+    list_display = ('nombre', 'confederacion')
+    list_filter = ('confederacion',)
+    search_fields = ('nombre',)
+    inlines = [PersonalTecnicoInline, JugadorInline]
+
+
+@admin.register(PersonalTecnico)
+class PersonalTecnicoAdmin(admin.ModelAdmin):
+    list_display = ('apellido', 'nombre', 'funcion', 'seleccion', 'pasaporte')
+    list_filter = ('funcion', 'seleccion')
+    search_fields = ('nombre', 'apellido', 'pasaporte')
+
 
 @admin.register(Jugador)
 class JugadorAdmin(admin.ModelAdmin):
