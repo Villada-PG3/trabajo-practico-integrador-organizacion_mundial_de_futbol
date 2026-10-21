@@ -1,8 +1,4 @@
-
-/* ==========================================
-   PALETA OFICIAL DE COLORES MUNDOFÚTBOL
-   ========================================== */
-
+/* MundoFútbol: estilos generales + tablas de clasificación 2026 */
 :root {
     --color-fondo: #0F3D2E;
     --color-navbar: #145A32;
@@ -10,418 +6,116 @@
     --color-dorado: #C8A34D;
     --color-texto: #FFFFFF;
 }
+body { background-color: var(--color-fondo) !important; color: var(--color-texto) !important; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+.navbar, .bg-navbar, footer { background-color: var(--color-navbar) !important; }
+.card, .bg-tarjeta { background-color: var(--color-tarjeta) !important; color: white !important; border-color: var(--color-dorado) !important; }
+.card-header, .card-footer { background-color: var(--color-navbar) !important; border-color: var(--color-dorado) !important; color: white !important; }
+.text-dorado { color: var(--color-dorado) !important; }
+.bg-dorado { background-color: var(--color-dorado) !important; }
+.border-dorado { border-color: var(--color-dorado) !important; }
+.btn-dorado { background-color: var(--color-dorado) !important; color: var(--color-fondo) !important; font-weight: bold; border: none; transition: all .2s ease; }
+.btn-dorado:hover { background-color: #b08d3b !important; color: white !important; }
+.btn-outline-dorado { color: var(--color-dorado) !important; border-color: var(--color-dorado) !important; background: transparent; transition: all .2s ease; }
+.btn-outline-dorado:hover { color: var(--color-fondo) !important; background-color: var(--color-dorado) !important; }
+.nav-link { color: white !important; }
+.nav-link:hover { color: var(--color-dorado) !important; }
+.carousel-item img { max-height: 420px; object-fit: cover; width: 100%; }
+.nav-pills .nav-link { color: var(--color-dorado) !important; background: transparent; }
+.nav-pills .nav-link.active { color: var(--color-fondo) !important; background: var(--color-dorado) !important; border-color: var(--color-dorado) !important; }
 
+/* Estilos de los partidos: compatibilidad con las tarjetas de la llave */
+#pills-eliminatorias .card { background-color: var(--color-tarjeta) !important; border: 1px solid var(--color-dorado) !important; color: white !important; transition: transform .2s ease, box-shadow .2s ease; }
+#pills-eliminatorias .card-header { background: var(--color-navbar) !important; color: var(--color-dorado) !important; border-bottom: 1px solid var(--color-dorado) !important; }
+#pills-eliminatorias .card-body { background: var(--color-tarjeta) !important; color: white !important; }
+#pills-eliminatorias .card-body span.text-truncate { color: white !important; opacity: 1 !important; font-weight: 600 !important; }
+#pills-eliminatorias .card-body span.text-success, #pills-eliminatorias .card-body span.text-dorado { color: #FFD966 !important; font-weight: 800 !important; }
+#pills-eliminatorias .badge { background: #000 !important; color: white !important; font-weight: bold !important; border-radius: 6px; }
+#pills-eliminatorias .badge.bg-success, #pills-eliminatorias .badge.bg-dorado { background: var(--color-dorado) !important; color: var(--color-fondo) !important; }
+#pills-eliminatorias .card-body .border-bottom { border-color: rgba(255,255,255,.3) !important; }
+#pills-eliminatorias .card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(200,163,77,.25) !important; }
 
-/* ==========================================
-   FONDO PRINCIPAL
-   ========================================== */
-
-body {
-    background-color: var(--color-fondo) !important;
-    color: var(--color-texto) !important;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-}
-
-
-/* ==========================================
-   NAVBAR Y FOOTER
-   ========================================== */
-
-.navbar,
-.bg-navbar,
-footer {
-    background-color: var(--color-navbar) !important;
-}
-
-
-/* ==========================================
-   TARJETAS GENERALES
-   ========================================== */
-
-.card,
-.bg-tarjeta {
-    background-color: var(--color-tarjeta) !important;
-    color: var(--color-texto) !important;
-    border-color: var(--color-dorado) !important;
-}
-
-.card-header,
-.card-footer {
-    background-color: var(--color-navbar) !important;
-    border-color: var(--color-dorado) !important;
-    color: var(--color-texto) !important;
-}
-
+/* Inicio: de 1 a 3 tarjetas iguales */
+.grid-ultimos-mundiales { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,280px),1fr)); gap: 24px; width: 100%; }
+.grid-ultimos-mundiales .mundial-item { display: flex; flex-direction: column; min-width: 0; }
+.grid-ultimos-mundiales .mundial-item > .card { width: 100%; height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+.grid-ultimos-mundiales .imagen-mundial { position: relative; width: 100%; height: 280px; flex: 0 0 280px; display: flex; align-items: center; justify-content: center; padding: 18px; overflow: hidden; box-sizing: border-box; background: var(--color-navbar); }
+.grid-ultimos-mundiales .imagen-mundial::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at center,rgba(255,255,255,.08),transparent 45%),linear-gradient(135deg,#145A32,#0F3D2E); }
+.grid-ultimos-mundiales .imagen-mundial.logo-2022::before { background: radial-gradient(circle at center,rgba(255,255,255,.10),transparent 45%),linear-gradient(135deg,#8d0f46,#6f0d38 45%,#4b0824); }
+.grid-ultimos-mundiales .imagen-mundial.logo-2026::before { background: radial-gradient(circle at center,rgba(255,255,255,.10),transparent 40%),linear-gradient(135deg,#111,#202020 45%,#050505); }
+.grid-ultimos-mundiales .imagen-mundial img { position: relative; z-index: 1; display: block; max-width: 100%; max-height: 100%; width: 100%; height: 100%; object-fit: contain; object-position: center; }
+.grid-ultimos-mundiales .imagen-mundial i { z-index: 1; }
+.grid-ultimos-mundiales .card-body { display: flex; flex-direction: column; flex-grow: 1; }
+.grid-ultimos-mundiales .card-body .btn-dorado { width: 100%; }
 
 /* ==========================================
-   COLORES PERSONALIZADOS
+   TABLAS DE GRUPOS Y MEJORES TERCEROS
    ========================================== */
+.grupos-layout { display: block; }
+.grupos-layout.con-terceros { display: grid; grid-template-columns: minmax(0, 3fr) minmax(260px, 1fr); align-items: start; gap: 18px; }
+.grupos-principales, .terceros-lateral { min-width: 0; }
+.tabla-grupo-card { border: 1px solid var(--color-dorado) !important; }
+.tabla-grupo-card .card-header { color: white !important; }
+.tabla-grupos { font-size: .88rem; white-space: nowrap; }
+.tabla-grupos th, .tabla-grupos td { padding: .7rem .48rem; vertical-align: middle; }
+.tabla-grupos th:nth-child(2) { min-width: 125px; }
 
-.text-dorado {
-    color: var(--color-dorado) !important;
-}
+.posicion-badge { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-size: 15px; font-weight: 800; border: 2px solid transparent; flex: 0 0 auto; }
+.posicion-1 { background: #C8A34D; color: #0F3D2E; border-color: #E5C76B; }
+.posicion-2 { background: #ECECEC; color: #0F3D2E; border-color: #FFFFFF; }
+.posicion-3 { background: #24AD71; color: white; border-color: #6BE0A2; box-shadow: 0 0 8px rgba(36,173,113,.30); }
+.posicion-sin-clasificar { display: inline-flex; width: 32px; height: 32px; align-items: center; justify-content: center; color: #C2C9C5; font-weight: bold; }
+.posicion-mini { width: 24px; height: 24px; font-size: 12px; border-width: 1px; }
+/* Bootstrap table-dark pone el fondo en cada celda; se cambia por medio de --bs-table-bg. */
+.tabla-grupos tbody tr.fila-clasifica-1 > * { --bs-table-bg: #38372A; }
+.tabla-grupos tbody tr.fila-clasifica-2 > * { --bs-table-bg: #303837; }
+.tabla-grupos tbody tr.fila-clasifica-3 > * { --bs-table-bg: #174D39; }
+.tabla-grupos tbody tr:hover > * { filter: brightness(1.10); }
+.leyenda-clasificacion { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 22px; padding: 12px 16px; margin: 0 0 25px; border: 1px solid var(--color-dorado); border-radius: 10px; background: var(--color-navbar); font-size: 13px; color: white; }
+.leyenda-clasificacion > span { display: inline-flex; align-items: center; gap: 8px; }
 
-.bg-dorado {
-    background-color: var(--color-dorado) !important;
-}
+/* Panel lateral: permanece visible al recorrer los grupos en escritorio */
+.terceros-lateral { position: sticky; top: 85px; }
+.panel-terceros { border: 1px solid var(--color-dorado); border-radius: 12px; overflow: hidden; background: var(--color-navbar); box-shadow: 0 8px 24px rgba(0,0,0,.22); }
+.panel-terceros-titulo { background: #11462F; text-align: center; padding: 15px 6px 12px; color: var(--color-dorado); font-weight: 800; font-size: 14px; }
+.panel-terceros-titulo small { display: block; margin-top: 5px; color: #E4ECE6; font-weight: 400; font-size: 11px; }
+.tabla-terceros { font-size: 12px; }
+.tabla-terceros th { font-size: 11px; white-space: nowrap; }
+.tabla-terceros th, .tabla-terceros td { padding: 8px 5px; vertical-align: middle; }
+.tabla-terceros tr.tercero-clasificado > * { --bs-table-bg: #194B39; }
+.tabla-terceros tr.tercero-eliminado > * { --bs-table-bg: #232A28; color: #B7C3BD; }
+.tercero-numero { display: inline-flex; width: 22px; height: 22px; justify-content: center; align-items: center; border-radius: 50%; color: #AABDB1; font-weight: bold; }
+.tercero-numero.tercero-ok { background: #24AD71; color: white; }
+.nombre-tercero { font-weight: 700; }
+.grupo-tercero { font-size: 10px; color: #B5C6BB; }
+.nota-terceros { padding: 10px; background: #0F3D2E; font-size: 10px; color: #B7D3C2; }
 
-.border-dorado {
-    border-color: var(--color-dorado) !important;
-}
+@media (max-width: 1100px) { .grupos-layout.con-terceros { grid-template-columns: minmax(0, 1fr); } .terceros-lateral { position: static; } }
+@media (max-width: 991px) { .grid-ultimos-mundiales { gap: 18px; } .grid-ultimos-mundiales .imagen-mundial { height: 240px; flex-basis: 240px; padding: 15px; } }
+@media (max-width: 576px) { .grid-ultimos-mundiales { grid-template-columns: 1fr; gap: 20px; } .grid-ultimos-mundiales .imagen-mundial { height: 230px; flex-basis: 230px; } .tabla-grupos { font-size: 12px; } .tabla-grupos th,.tabla-grupos td { padding: 8px 5px; } .posicion-badge { width: 28px; height: 28px; font-size: 12px; } }
 
+/* Llave de eliminatorias: estilos existentes preservados */
+/* Eliminatorias - estilos trasladados de detalle_mundial.html */
 
-/* ==========================================
-   BOTONES PERSONALIZADOS
-   ========================================== */
-
-.btn-dorado {
-    background-color: var(--color-dorado) !important;
-    color: var(--color-fondo) !important;
-    font-weight: bold;
-    border: none;
-    transition: all 0.2s ease-in-out;
-}
-
-.btn-dorado:hover {
-    background-color: #b08d3b !important;
-    color: #FFFFFF !important;
-}
-
-.btn-outline-dorado {
-    color: var(--color-dorado) !important;
-    border-color: var(--color-dorado) !important;
-    background-color: transparent;
-    transition: all 0.2s ease-in-out;
-}
-
-.btn-outline-dorado:hover {
-    color: var(--color-fondo) !important;
-    background-color: var(--color-dorado) !important;
-}
-
-
-/* ==========================================
-   ENLACES DE NAVEGACIÓN
-   ========================================== */
-
-.nav-link {
-    color: #FFFFFF !important;
-}
-
-.nav-link:hover {
-    color: var(--color-dorado) !important;
-}
-
-
-/* ==========================================
-   CARRUSEL DE IMÁGENES
-   ========================================== */
-
-.carousel-item img {
-    max-height: 420px;
-    object-fit: cover;
-    width: 100%;
-}
-
-
-/* ==========================================
-   PESTAÑAS DE NAVEGACIÓN
-   ========================================== */
-
-.nav-pills .nav-link {
-    color: var(--color-dorado) !important;
-    background-color: transparent;
-}
-
-.nav-pills .nav-link.active {
-    color: var(--color-fondo) !important;
-    background-color: var(--color-dorado) !important;
-    border-color: var(--color-dorado) !important;
-}
-
-
-/* ==========================================
-   CUADRO DE ELIMINATORIAS
-   ========================================== */
-
-/* Tarjetas de partidos */
-
-#pills-eliminatorias .card {
-    background-color: var(--color-tarjeta) !important;
-    border: 1px solid var(--color-dorado) !important;
-    color: #FFFFFF !important;
-}
-
-/* Encabezados de fechas */
-
-#pills-eliminatorias .card-header {
-    background-color: var(--color-navbar) !important;
-    color: var(--color-dorado) !important;
-    border-bottom: 1px solid var(--color-dorado) !important;
-}
-
-/* Fondo interior */
-
-#pills-eliminatorias .card-body {
-    background-color: var(--color-tarjeta) !important;
-    color: #FFFFFF !important;
-}
-
-/* Nombres de selecciones */
-
-#pills-eliminatorias .card-body span.text-truncate {
-    color: #FFFFFF !important;
-    opacity: 1 !important;
-    font-weight: 600 !important;
-}
-
-/* Equipos ganadores */
-
-#pills-eliminatorias .card-body span.text-success {
-    color: #FFD966 !important;
-    font-weight: 800 !important;
-    opacity: 1 !important;
-}
-
-/* Ganadores de la final */
-
-#pills-eliminatorias .card-body span.text-dorado {
-    color: #FFD966 !important;
-    font-weight: 800 !important;
-}
-
-/* Resultados normales */
-
-#pills-eliminatorias .badge {
-    background-color: #000000 !important;
-    color: #FFFFFF !important;
-    font-weight: bold !important;
-    border-radius: 6px;
-}
-
-/* Resultados de ganadores */
-
-#pills-eliminatorias .badge.bg-success,
-#pills-eliminatorias .badge.bg-dorado {
-    background-color: var(--color-dorado) !important;
-    color: var(--color-fondo) !important;
-    border-color: var(--color-dorado) !important;
-}
-
-/* Separadores */
-
-#pills-eliminatorias .card-body .border-bottom {
-    border-color: rgba(255, 255, 255, 0.3) !important;
-}
-
-/* Títulos de las fases */
-
-#pills-eliminatorias .bracket-col > div:first-child {
-    color: var(--color-dorado) !important;
-    font-weight: bold !important;
-}
-
-/* Tarjetas */
-
-#pills-eliminatorias .bracket-col .card {
-    border-radius: 8px !important;
-    overflow: hidden;
-}
-
-/* Visibilidad de nombres */
-
-#pills-eliminatorias .card-body span {
-    visibility: visible !important;
-}
-
-
-/* ==========================================
-   EFECTOS VISUALES
-   ========================================== */
-
-#pills-eliminatorias .card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-#pills-eliminatorias .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(200, 163, 77, 0.25) !important;
-}
-
-
-/* ==========================================
-   ÚLTIMOS MUNDIALES - GRID ADAPTABLE
-   ========================================== */
-
-/*
-   1 mundial = 1 columna completa
-   2 mundiales = 2 columnas iguales
-   3 mundiales = 3 columnas iguales
-
-   La vista de Django limita a los últimos 3.
-*/
-
-.grid-ultimos-mundiales {
-    display: grid;
-    grid-template-columns: repeat(
-        auto-fit,
-        minmax(min(100%, 280px), 1fr)
-    );
-    gap: 24px;
-    width: 100%;
-}
-
-/* Cada mundial ocupa su columna */
-
-.grid-ultimos-mundiales .mundial-item {
+/* Cada columna comparte la misma altura; el centro de un cruce queda
+   alineado con el punto medio de los dos partidos que lo alimentan. */
+#pills-eliminatorias .llave-columnas { min-width: 1150px; }
+#pills-eliminatorias .llave-columna { min-width: 205px; flex: 1 1 0; }
+#pills-eliminatorias .llave-partidos {
+    height: 1536px;
     display: flex;
     flex-direction: column;
-    min-width: 0;
+    justify-content: space-around;
+    gap: 0;
 }
-
-/* Las tarjetas ocupan la misma altura */
-
-.grid-ultimos-mundiales .mundial-item > .card {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+#pills-eliminatorias .llave-partido { display: block; text-decoration: none; }
+#pills-eliminatorias .llave-partido .card { margin: 0; }
+#pills-eliminatorias .llave-partido:hover .card {
+    box-shadow: 0 0 0 2px #C8A34D !important;
 }
-
-
-/* ==========================================
-   LOGOS DE LOS MUNDIALES - INICIO
-   ========================================== */
-
-/*
-   Todos los logos tienen un contenedor
-   exactamente igual de alto.
-*/
-.grid-ultimos-mundiales .imagen-mundial {
-    width: 100%;
-    height: 280px;
-    min-height: 280px;
-    max-height: 280px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 18px;
-    margin: 0;
-
-    overflow: hidden;
-    box-sizing: border-box;
-    position: relative;
+#pills-eliminatorias .llave-partido:focus-visible { outline: 3px solid #C8A34D; outline-offset: 2px; }
+#pills-eliminatorias .llave-partido .card-body { padding: 7px 9px !important; }
+#pills-eliminatorias .llave-partido .card-header {
+    white-space: nowrap; text-overflow: ellipsis; overflow: hidden;
 }
-
-/* Capa de fondo suave */
-.grid-ultimos-mundiales .imagen-mundial::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    opacity: 0.95;
-}
-
-/* El logo siempre arriba */
-.grid-ultimos-mundiales .imagen-mundial img {
-    position: relative;
-    z-index: 2;
-
-    display: block;
-    width: 100%;
-    height: 100%;
-
-    max-width: 100%;
-    max-height: 100%;
-
-    object-fit: contain;
-    object-position: center;
-}
-
-/* Fondo por defecto */
-.grid-ultimos-mundiales .imagen-mundial::before {
-    background:
-        radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 45%),
-        linear-gradient(135deg, #145A32 0%, #0F3D2E 100%);
-}
-
-/* ==========================================
-   FONDOS PERSONALIZADOS POR MUNDIAL
-   ========================================== */
-
-/* Mundial 2022 - tonos bordó similares al logo */
-.grid-ultimos-mundiales .imagen-mundial.logo-2022::before {
-    background:
-        radial-gradient(circle at center, rgba(255,255,255,0.10), transparent 45%),
-        linear-gradient(135deg, #8d0f46 0%, #6f0d38 45%, #4b0824 100%);
-}
-
-/* Mundial 2026 - tonos negros/grises similares al emblema */
-.grid-ultimos-mundiales .imagen-mundial.logo-2026::before {
-    background:
-        radial-gradient(circle at center, rgba(255,255,255,0.10), transparent 40%),
-        linear-gradient(135deg, #111111 0%, #202020 45%, #050505 100%);
-}
-
-/* Si no existe logo */
-.grid-ultimos-mundiales .imagen-sin-foto::before {
-    background:
-        radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 45%),
-        linear-gradient(135deg, #145A32 0%, #0F3D2E 100%);
-}
-
-
-/* ==========================================
-   CONTENIDO DE LAS TARJETAS
-   ========================================== */
-
-.grid-ultimos-mundiales .card-body {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
-
-.grid-ultimos-mundiales .card-body .btn-dorado {
-    width: 100%;
-}
-
-
-/* ==========================================
-   DISEÑO RESPONSIVE
-   ========================================== */
-
-/* Tablets */
-
-@media (max-width: 991px) {
-
-    .grid-ultimos-mundiales {
-        gap: 18px;
-    }
-
-    .grid-ultimos-mundiales .imagen-mundial {
-        height: 240px;
-        min-height: 240px;
-        max-height: 240px;
-        padding: 15px;
-    }
-}
-
-/* Celulares */
-
-@media (max-width: 576px) {
-
-    .grid-ultimos-mundiales {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
-    .grid-ultimos-mundiales .imagen-mundial {
-        height: 230px;
-        min-height: 230px;
-        max-height: 230px;
-        padding: 15px;
-    }
-}
+#pills-eliminatorias .llave-partido .text-truncate { color: white; }
+#pills-eliminatorias .llave-partido .text-success { color: #FFD966 !important; }
