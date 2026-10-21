@@ -11,6 +11,7 @@
     --color-texto: #FFFFFF;
 }
 
+
 /* ==========================================
    FONDO PRINCIPAL
    ========================================== */
@@ -20,6 +21,7 @@ body {
     color: var(--color-texto) !important;
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
+
 
 /* ==========================================
    NAVBAR Y FOOTER
@@ -31,8 +33,9 @@ footer {
     background-color: var(--color-navbar) !important;
 }
 
+
 /* ==========================================
-   TARJETAS
+   TARJETAS GENERALES
    ========================================== */
 
 .card,
@@ -48,6 +51,7 @@ footer {
     border-color: var(--color-dorado) !important;
     color: var(--color-texto) !important;
 }
+
 
 /* ==========================================
    COLORES PERSONALIZADOS
@@ -65,13 +69,14 @@ footer {
     border-color: var(--color-dorado) !important;
 }
 
+
 /* ==========================================
    BOTONES PERSONALIZADOS
    ========================================== */
 
 .btn-dorado {
     background-color: var(--color-dorado) !important;
-    color: #0F3D2E !important;
+    color: var(--color-fondo) !important;
     font-weight: bold;
     border: none;
     transition: all 0.2s ease-in-out;
@@ -90,9 +95,10 @@ footer {
 }
 
 .btn-outline-dorado:hover {
-    color: #0F3D2E !important;
+    color: var(--color-fondo) !important;
     background-color: var(--color-dorado) !important;
 }
+
 
 /* ==========================================
    ENLACES DE NAVEGACIÓN
@@ -106,6 +112,7 @@ footer {
     color: var(--color-dorado) !important;
 }
 
+
 /* ==========================================
    CARRUSEL DE IMÁGENES
    ========================================== */
@@ -115,6 +122,7 @@ footer {
     object-fit: cover;
     width: 100%;
 }
+
 
 /* ==========================================
    PESTAÑAS DE NAVEGACIÓN
@@ -126,36 +134,41 @@ footer {
 }
 
 .nav-pills .nav-link.active {
-    color: #0F3D2E !important;
+    color: var(--color-fondo) !important;
     background-color: var(--color-dorado) !important;
     border-color: var(--color-dorado) !important;
 }
+
 
 /* ==========================================
    CUADRO DE ELIMINATORIAS
    ========================================== */
 
-/* Tarjetas de los partidos */
+/* Tarjetas de partidos */
+
 #pills-eliminatorias .card {
     background-color: var(--color-tarjeta) !important;
     border: 1px solid var(--color-dorado) !important;
     color: #FFFFFF !important;
 }
 
-/* Encabezados con fechas y horarios */
+/* Encabezados de fechas */
+
 #pills-eliminatorias .card-header {
     background-color: var(--color-navbar) !important;
     color: var(--color-dorado) !important;
     border-bottom: 1px solid var(--color-dorado) !important;
 }
 
-/* Fondo interior de los partidos */
+/* Fondo interior */
+
 #pills-eliminatorias .card-body {
     background-color: var(--color-tarjeta) !important;
     color: #FFFFFF !important;
 }
 
-/* Nombres de las selecciones */
+/* Nombres de selecciones */
+
 #pills-eliminatorias .card-body span.text-truncate {
     color: #FFFFFF !important;
     opacity: 1 !important;
@@ -163,6 +176,7 @@ footer {
 }
 
 /* Equipos ganadores */
+
 #pills-eliminatorias .card-body span.text-success {
     color: #FFD966 !important;
     font-weight: 800 !important;
@@ -170,12 +184,14 @@ footer {
 }
 
 /* Ganadores de la final */
+
 #pills-eliminatorias .card-body span.text-dorado {
     color: #FFD966 !important;
     font-weight: 800 !important;
 }
 
 /* Resultados normales */
+
 #pills-eliminatorias .badge {
     background-color: #000000 !important;
     color: #FFFFFF !important;
@@ -183,41 +199,46 @@ footer {
     border-radius: 6px;
 }
 
-/* Resultados de los equipos ganadores */
+/* Resultados de ganadores */
+
 #pills-eliminatorias .badge.bg-success,
 #pills-eliminatorias .badge.bg-dorado {
     background-color: var(--color-dorado) !important;
-    color: #0F3D2E !important;
+    color: var(--color-fondo) !important;
     border-color: var(--color-dorado) !important;
 }
 
-/* Separadores entre equipos */
+/* Separadores */
+
 #pills-eliminatorias .card-body .border-bottom {
     border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 /* Títulos de las fases */
+
 #pills-eliminatorias .bracket-col > div:first-child {
     color: var(--color-dorado) !important;
     font-weight: bold !important;
 }
 
-/* Espaciado y tamaño de las tarjetas */
+/* Tarjetas */
+
 #pills-eliminatorias .bracket-col .card {
     border-radius: 8px !important;
     overflow: hidden;
 }
 
-/* Evitar que los nombres desaparezcan */
+/* Visibilidad de nombres */
+
 #pills-eliminatorias .card-body span {
     visibility: visible !important;
 }
+
 
 /* ==========================================
    EFECTOS VISUALES
    ========================================== */
 
-/* Animación al pasar por las tarjetas */
 #pills-eliminatorias .card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -225,4 +246,182 @@ footer {
 #pills-eliminatorias .card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(200, 163, 77, 0.25) !important;
+}
+
+
+/* ==========================================
+   ÚLTIMOS MUNDIALES - GRID ADAPTABLE
+   ========================================== */
+
+/*
+   1 mundial = 1 columna completa
+   2 mundiales = 2 columnas iguales
+   3 mundiales = 3 columnas iguales
+
+   La vista de Django limita a los últimos 3.
+*/
+
+.grid-ultimos-mundiales {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(min(100%, 280px), 1fr)
+    );
+    gap: 24px;
+    width: 100%;
+}
+
+/* Cada mundial ocupa su columna */
+
+.grid-ultimos-mundiales .mundial-item {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* Las tarjetas ocupan la misma altura */
+
+.grid-ultimos-mundiales .mundial-item > .card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
+/* ==========================================
+   LOGOS DE LOS MUNDIALES - INICIO
+   ========================================== */
+
+/*
+   Todos los logos tienen un contenedor
+   exactamente igual de alto.
+*/
+.grid-ultimos-mundiales .imagen-mundial {
+    width: 100%;
+    height: 280px;
+    min-height: 280px;
+    max-height: 280px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 18px;
+    margin: 0;
+
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* Capa de fondo suave */
+.grid-ultimos-mundiales .imagen-mundial::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0.95;
+}
+
+/* El logo siempre arriba */
+.grid-ultimos-mundiales .imagen-mundial img {
+    position: relative;
+    z-index: 2;
+
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    max-width: 100%;
+    max-height: 100%;
+
+    object-fit: contain;
+    object-position: center;
+}
+
+/* Fondo por defecto */
+.grid-ultimos-mundiales .imagen-mundial::before {
+    background:
+        radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 45%),
+        linear-gradient(135deg, #145A32 0%, #0F3D2E 100%);
+}
+
+/* ==========================================
+   FONDOS PERSONALIZADOS POR MUNDIAL
+   ========================================== */
+
+/* Mundial 2022 - tonos bordó similares al logo */
+.grid-ultimos-mundiales .imagen-mundial.logo-2022::before {
+    background:
+        radial-gradient(circle at center, rgba(255,255,255,0.10), transparent 45%),
+        linear-gradient(135deg, #8d0f46 0%, #6f0d38 45%, #4b0824 100%);
+}
+
+/* Mundial 2026 - tonos negros/grises similares al emblema */
+.grid-ultimos-mundiales .imagen-mundial.logo-2026::before {
+    background:
+        radial-gradient(circle at center, rgba(255,255,255,0.10), transparent 40%),
+        linear-gradient(135deg, #111111 0%, #202020 45%, #050505 100%);
+}
+
+/* Si no existe logo */
+.grid-ultimos-mundiales .imagen-sin-foto::before {
+    background:
+        radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 45%),
+        linear-gradient(135deg, #145A32 0%, #0F3D2E 100%);
+}
+
+
+/* ==========================================
+   CONTENIDO DE LAS TARJETAS
+   ========================================== */
+
+.grid-ultimos-mundiales .card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.grid-ultimos-mundiales .card-body .btn-dorado {
+    width: 100%;
+}
+
+
+/* ==========================================
+   DISEÑO RESPONSIVE
+   ========================================== */
+
+/* Tablets */
+
+@media (max-width: 991px) {
+
+    .grid-ultimos-mundiales {
+        gap: 18px;
+    }
+
+    .grid-ultimos-mundiales .imagen-mundial {
+        height: 240px;
+        min-height: 240px;
+        max-height: 240px;
+        padding: 15px;
+    }
+}
+
+/* Celulares */
+
+@media (max-width: 576px) {
+
+    .grid-ultimos-mundiales {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .grid-ultimos-mundiales .imagen-mundial {
+        height: 230px;
+        min-height: 230px;
+        max-height: 230px;
+        padding: 15px;
+    }
 }
