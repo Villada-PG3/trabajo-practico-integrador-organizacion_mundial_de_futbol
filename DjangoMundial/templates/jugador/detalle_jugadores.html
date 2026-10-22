@@ -1,142 +1,131 @@
+{% extends 'base.html' %}
 
-{% extends "base.html" %}
-
-{% block title %}Ficha del jugador | MundoFútbol{% endblock %}
+{% block title %}{{ jugador.apellido_nombres }} - Detalles del Jugador{% endblock %}
 
 {% block content %}
-<div class="container py-5">
+<div class="container my-5">
+    <!-- Botón Volver -->
+    <a href="{% url 'jugadores' %}" class="btn btn-outline-success mb-4 rounded-pill fw-bold">
+        <i class="bi bi-arrow-left me-2"></i>Volver a la Lista de Jugadores
+    </a>
 
-    <!-- Encabezado -->
-    <div class="mb-4">
-        <a href="{% url 'jugadores' %}"
-           class="btn btn-outline-light btn-sm mb-3">
-            <i class="fas fa-arrow-left"></i> Volver a jugadores
-        </a>
-
-        <h1 class="text-dorado fw-bold">
-            <i class="fas fa-id-card"></i>
-            {{ jugador.apellido_nombres }}
-        </h1>
-
-        <p class="text-white">
-            Ficha individual del jugador
-        </p>
-    </div>
-
-    <!-- Datos personales y deportivos -->
-    <div class="row g-4">
-
-        <div class="col-lg-6">
-            <div class="card bg-dark border-dorado h-100">
-                <div class="card-header border-dorado">
-                    <h5 class="text-dorado mb-0">
-                        Datos personales
-                    </h5>
+    <!-- Tarjeta Principal del Jugador -->
+    <div class="card bg-dark text-white border-0 shadow-lg overflow-hidden mb-5 rounded-4" style="border: 1px solid rgba(212, 175, 55, 0.3) !important;">
+        <div class="row g-0 align-items-center">
+            
+            <!-- Icono/Avatar del Jugador -->
+            <div class="col-md-4 text-center p-4 bg-gradient" style="background: linear-gradient(135deg, #0f381e 0%, #06190d 100%);">
+                <div class="position-relative d-inline-block">
+                    <div class="rounded-circle bg-dark d-flex align-items-center justify-content-center shadow-lg border border-warning" style="width: 150px; height: 150px; font-size: 4rem; color: #d4af37;">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <span class="position-absolute bottom-0 end-0 badge rounded-pill bg-warning text-dark fs-5 fw-bold border border-dark">
+                        #{{ jugador.numero_camiseta }}
+                    </span>
                 </div>
+                <h3 class="mt-3 text-warning fw-bold mb-1">{{ jugador.apellido_nombres }}</h3>
+                <p class="text-light opacity-75 mb-0 fs-5">{{ jugador.get_posicion_display }}</p>
+            </div>
 
-                <div class="card-body text-white">
-                    <p>
-                        <strong>Apellido y nombres:</strong>
-                        {{ jugador.apellido_nombres }}
-                    </p>
+            <!-- Detalles e Información General -->
+            <div class="col-md-8 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-success fw-bold m-0">Ficha Técnica</h4>
+                    <span class="badge bg-success text-light px-3 py-2 rounded-pill fs-6">
+                        Pasaporte: {{ jugador.pasaporte }}
+                    </span>
+                </div>
+                <hr class="border-secondary opacity-25">
 
-                    <p>
-                        <strong>Número de pasaporte:</strong>
-                        {{ jugador.pasaporte }}
-                    </p>
+                <div class="row g-3">
+                    <div class="col-6 col-md-4">
+                        <div class="p-3 rounded-3 bg-secondary bg-opacity-10 border border-secondary border-opacity-25">
+                            <small class="text-uppercase text-light opacity-50 d-block fw-bold">Selección</small>
+                            <span class="fs-5 fw-semibold text-white">{{ jugador.seleccion.nombre }}</span>
+                        </div>
+                    </div>
 
-                    <p class="mb-0">
-                        <strong>Edad:</strong>
-                        {{ jugador.edad }} años
-                    </p>
+                    <div class="col-6 col-md-4">
+                        <div class="p-3 rounded-3 bg-secondary bg-opacity-10 border border-secondary border-opacity-25">
+                            <small class="text-uppercase text-light opacity-50 d-block fw-bold">Edad</small>
+                            <span class="fs-5 fw-semibold text-white">{{ jugador.edad }} años</span>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4">
+                        <div class="p-3 rounded-3 bg-secondary bg-opacity-10 border border-secondary border-opacity-25">
+                            <small class="text-uppercase text-light opacity-50 d-block fw-bold">Posición</small>
+                            <span class="fs-5 fw-semibold text-white">{{ jugador.get_posicion_display }}</span>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="p-3 rounded-3 bg-secondary bg-opacity-10 border border-secondary border-opacity-25">
+                            <small class="text-uppercase text-light opacity-50 d-block fw-bold">Club Actual</small>
+                            <span class="fs-5 fw-semibold text-white">{{ jugador.equipo_actual }}</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <div class="p-3 rounded-3 bg-secondary bg-opacity-10 border border-secondary border-opacity-25">
+                            <small class="text-uppercase text-light opacity-50 d-block fw-bold">País del Club</small>
+                            <span class="fs-5 fw-semibold text-white">{{ jugador.pais_equipo }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-lg-6">
-            <div class="card bg-dark border-dorado h-100">
-                <div class="card-header border-dorado">
-                    <h5 class="text-dorado mb-0">
-                        Información deportiva
-                    </h5>
+        </div>
+    </div>
+
+    <!-- Sección del Historial en Mundiales -->
+    <div class="card bg-dark text-white border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="card-header bg-gradient p-3" style="background: linear-gradient(90deg, #0f381e 0%, #154c29 100%);">
+            <h4 class="m-0 text-warning fw-bold">
+                <i class="bi bi-trophy-fill me-2"></i>Historial de Participaciones en Copas del Mundo
+            </h4>
+        </div>
+        <div class="card-body p-0">
+            {% if jugador.historiales.all %}
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle mb-0 text-center">
+                        <thead class="table-light text-dark">
+                            <tr>
+                                <th class="text-start ps-4">Mundial / Edición</th>
+                                <th>Sede</th>
+                                <th>Partidos Jugados</th>
+                                <th>Goles Convertidos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for historial in jugador.historiales.all %}
+                                <tr>
+                                    <td class="text-start ps-4 fw-bold text-success">
+                                        Copa Mundial {{ historial.mundial.anio }}
+                                    </td>
+                                    <td>{{ historial.mundial.sede }}</td>
+                                    <td>
+                                        <span class="badge bg-secondary px-3 py-2 rounded-pill fs-6">
+                                            {{ historial.partidos_jugados }} PJ
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fs-6 fw-bold">
+                                            ⚽ {{ historial.goles }} Goles
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-
-                <div class="card-body text-white">
-                    <p>
-                        <strong>Posición:</strong>
-                        {% if jugador.posicion == "ARQ" %}
-                            Arquero
-                        {% elif jugador.posicion == "DEF" %}
-                            Defensa
-                        {% elif jugador.posicion == "MED" %}
-                            Mediocampista
-                        {% elif jugador.posicion == "DEL" %}
-                            Delantero
-                        {% else %}
-                            {{ jugador.posicion }}
-                        {% endif %}
-                    </p>
-
-                    <p>
-                        <strong>Club actual:</strong>
-                        {{ jugador.equipo_actual }}
-                    </p>
-
-                    <p>
-                        <strong>País del club:</strong>
-                        {{ jugador.pais_equipo }}
-                    </p>
-
-                    <p class="mb-0">
-                        <strong>Selección:</strong>
-                        {% if jugador.seleccion %}
-                            {{ jugador.seleccion.nombre }}
-                        {% else %}
-                            Sin selección asignada
-                        {% endif %}
-                    </p>
+            {% else %}
+                <div class="p-4 text-center text-muted">
+                    <i class="bi bi-info-circle fs-2 d-block mb-2"></i>
+                    No hay registros de partidos jugados en Mundiales para este futbolista.
                 </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Historial mundialista -->
-    <div class="card bg-dark border-dorado mt-4">
-        <div class="card-header border-dorado">
-            <h5 class="text-dorado mb-0">
-                <i class="fas fa-trophy"></i> Historial en mundiales
-            </h5>
-        </div>
-
-        <div class="card-body text-white">
-            <p class="mb-0">
-                En esta sección se mostrarán los mundiales en los que
-                participó el jugador, los partidos disputados y sus
-                estadísticas en cada torneo.
-            </p>
+            {% endif %}
         </div>
     </div>
-
-    <!-- Estadísticas individuales -->
-    <div class="card bg-dark border-dorado mt-4">
-        <div class="card-header border-dorado">
-            <h5 class="text-dorado mb-0">
-                <i class="fas fa-chart-bar"></i> Estadísticas individuales
-            </h5>
-        </div>
-
-        <div class="card-body text-white">
-            <p>
-                Acá se mostrarán los goles, las faltas y las tarjetas
-                recibidas, indicando el partido y el minuto de cada evento.
-            </p>
-            <p class="mb-0">
-                Las estadísticas se completarán al conectar esta sección
-                con los registros de partidos y eventos de la base de datos.
-            </p>
-        </div>
-    </div>
-
 </div>
 {% endblock %}
