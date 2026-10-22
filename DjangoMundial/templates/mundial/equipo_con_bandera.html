@@ -1,0 +1,22 @@
+{% load banderas %}
+
+<div class="equipo-partido">
+    {% with url=equipo|bandera %}
+        {% if url %}
+            <img
+                src="{{ url }}"
+                alt="Bandera de {{ equipo }}"
+                class="equipo-partido-bandera"
+                loading="lazy"
+            >
+        {% else %}
+            <div class="equipo-partido-sin-bandera">
+                <i class="fa-solid fa-flag"></i>
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <span class="equipo-partido-nombre">
+        {{ equipo|default:"Por definir" }}
+    </span>
+</div>

@@ -1,448 +1,376 @@
-
 {% extends 'base.html' %}
 {% load static %}
+{% load banderas %}
 
 {% block title %}
 {{ partido.equipo1 }} vs {{ partido.equipo2 }} | MundoFútbol
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/detalle_partido.css' %}">
+<link rel="stylesheet" href="{% static 'css/banderas_partidos.css' %}">
 {% endblock %}
 
 {% block content %}
 
-<div class="detalle-partido">
-
-    <!-- VOLVER -->
-    <a href="{% url 'detalle_mundial' partido.mundial.pk %}"
-       class="btn btn-outline-dorado mb-4">
+<!-- VOLVER -->
+<div class="mb-4">
+    <button type="button"
+            onclick="history.back()"
+            class="btn btn-outline-dorado">
         <i class="fa-solid fa-arrow-left me-2"></i>
-        Volver al Mundial
-    </a>
+        Volver
+    </button>
+</div>
 
-    <!-- MARCADOR -->
-    <section class="dp-marcador">
+<!-- INFORMACIÓN -->
+<div class="text-center mb-4">
 
-        <div class="dp-fase">
-            {{ partido.get_fase_display }}
-            · Mundial {{ partido.mundial.anio }}
-        </div>
+    <h2 class="text-dorado fw-bold">
+        Detalle del Partido
+    </h2>
 
-        <div class="dp-marcador-equipos">
+    <p class="text-light mb-1">
+        {{ partido.get_fase_display|default:partido.fase }}
+    </p>
 
-            <div class="dp-equipo">
-                {{ partido.equipo1 }}
-            </div>
-
-            <div class="dp-resultado">
-                {{ partido.goles1 }} - {{ partido.goles2 }}
-                <span>FINALIZADO</span>
-            </div>
-
-            <div class="dp-equipo">
-                {{ partido.equipo2 }}
-            </div>
-
-        </div>
-
-        {% if partido.info_extra %}
-        <div class="dp-info">
-            <i class="fa-regular fa-calendar me-2"></i>
+    {% if partido.info_extra %}
+        <p class="text-secondary">
             {{ partido.info_extra }}
+        </p>
+    {% endif %}
+
+</div>
+
+
+<!-- ==========================================
+     MARCADOR PRINCIPAL
+     ========================================== -->
+
+<div class="marcador-detalle-partido">
+
+    <!-- EQUIPO IZQUIERDO -->
+    <div class="marcador-detalle-equipo">
+
+        {% include "mundial/equipo_con_bandera.html" with equipo=partido.equipo1 %}
+
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="marcador-detalle-centro">
+
+        <div class="marcador-detalle-resultado">
+
+            <span>{{ partido.goles1|default_if_none:"-" }}</span>
+
+            <span class="marcador-detalle-guion">-</span>
+
+            <span>{{ partido.goles2|default_if_none:"-" }}</span>
+
         </div>
-        {% endif %}
 
-    </section>
+        <div class="marcador-detalle-estado">
+            RESULTADO
+        </div>
 
-    <!-- PESTAÑAS -->
-    <ul class="nav dp-pestanas mt-4" role="tablist">
+    </div>
 
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active"
-                    id="dp-resumen-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#dp-resumen"
-                    type="button"
-                    role="tab">
-                Resumen
-            </button>
-        </li>
+    <!-- EQUIPO DERECHO -->
+    <div class="marcador-detalle-equipo">
 
-        <li class="nav-item" role="presentation">
-            <button class="nav-link"
-                    id="dp-cronologia-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#dp-cronologia"
-                    type="button"
-                    role="tab">
-                Minuto a minuto
-            </button>
-        </li>
+        {% include "mundial/equipo_con_bandera.html" with equipo=partido.equipo2 %}
 
-    </ul>
+    </div>
 
-    <div class="tab-content">
+</div>
 
-        <!-- RESUMEN -->
-        <div class="tab-pane fade show active"
-             id="dp-resumen"
-             role="tabpanel">
 
-            <!-- ESTADÍSTICAS -->
-            <div class="row g-3 mt-2">
+<!-- ==========================================
+     CRONOLOGÍA DE DOS EQUIPOS
+     ========================================== -->
 
-                <div class="col-6 col-lg-3">
-                    <div class="dp-estadistica">
-                        <i class="fa-solid fa-futbol"></i>
-                        <strong>{{ estadisticas.goles }}</strong>
-                        <span>Goles registrados</span>
+<div class="card cronologia-card shadow">
+
+    <!-- TÍTULO -->
+    <div class="cronologia-encabezado">
+
+        <i class="fa-solid fa-clock-rotate-left me-2"></i>
+
+        Cronología del partido
+
+    </div>
+
+    <!-- ENCABEZADOS DE LOS EQUIPOS -->
+    <div class="cronologia-equipos">
+
+        <div class="cronologia-equipo-titulo">
+
+            {% with url=partido.equipo1|bandera %}
+                {% if url %}
+                    <img src="{{ url }}"
+                         alt="Bandera de {{ partido.equipo1 }}"
+                         class="cronologia-bandera">
+                {% endif %}
+            {% endwith %}
+
+            <span>{{ partido.equipo1 }}</span>
+
+        </div>
+
+        <div class="cronologia-centro-titulo">
+            MIN.
+        </div>
+
+        <div class="cronologia-equipo-titulo derecho">
+
+            <span>{{ partido.equipo2 }}</span>
+
+            {% with url=partido.equipo2|bandera %}
+                {% if url %}
+                    <img src="{{ url }}"
+                         alt="Bandera de {{ partido.equipo2 }}"
+                         class="cronologia-bandera">
+                {% endif %}
+            {% endwith %}
+
+        </div>
+
+    </div>
+
+
+    <!-- EVENTOS -->
+    <div class="cronologia-lista">
+
+        {% for evento in eventos %}
+
+        <div class="cronologia-fila">
+
+            <!-- ===================================
+                 ACCIONES DEL EQUIPO IZQUIERDO
+                 =================================== -->
+
+            <div class="cronologia-lado izquierdo">
+
+                {% if evento.equipo == partido.equipo1 %}
+
+                <div class="accion-equipo accion-izquierda">
+
+                    <!-- INFORMACIÓN -->
+                    <div class="accion-informacion">
+
+                        {% if evento.tipo == 'CAMBIO' %}
+
+                            <strong class="accion-jugador">
+                                Cambio
+                            </strong>
+
+                            {% if evento.jugador_sale %}
+                                <span class="accion-sale">
+                                    <i class="fa-solid fa-arrow-down"></i>
+                                    {{ evento.jugador_sale }}
+                                </span>
+                            {% endif %}
+
+                            {% if evento.jugador_entra %}
+                                <span class="accion-entra">
+                                    <i class="fa-solid fa-arrow-up"></i>
+                                    {{ evento.jugador_entra }}
+                                </span>
+                            {% endif %}
+
+                            {% if not evento.jugador_sale and not evento.jugador_entra %}
+                                <span class="accion-descripcion">
+                                    {{ evento.descripcion|default:"Sustitución" }}
+                                </span>
+                            {% endif %}
+
+                        {% else %}
+
+                            <strong class="accion-jugador">
+                                {{ evento.jugador|default:"Jugador" }}
+                            </strong>
+
+                            <span class="accion-descripcion">
+
+                                {% if evento.tipo == 'GOL' %}
+                                    Gol
+                                {% elif evento.tipo == 'PENAL' %}
+                                    Gol de penal
+                                {% elif evento.tipo == 'AUTOGOL' %}
+                                    Gol en contra
+                                {% elif evento.tipo == 'AMARILLA' %}
+                                    Tarjeta amarilla
+                                {% elif evento.tipo == 'ROJA' %}
+                                    Tarjeta roja
+                                {% elif evento.tipo == 'DOBLE_AMARILLA' %}
+                                    Doble amarilla
+                                {% else %}
+                                    {{ evento.get_tipo_display|default:evento.tipo }}
+                                {% endif %}
+
+                            </span>
+
+                        {% endif %}
+
                     </div>
+
+
+                    <!-- ÍCONO -->
+                    <div class="accion-icono">
+
+                        {% if evento.tipo == 'GOL' or evento.tipo == 'PENAL' or evento.tipo == 'AUTOGOL' %}
+
+                            <i class="fa-solid fa-futbol icono-gol"></i>
+
+                        {% elif evento.tipo == 'AMARILLA' %}
+
+                            <span class="tarjeta-icono amarilla"></span>
+
+                        {% elif evento.tipo == 'ROJA' or evento.tipo == 'DOBLE_AMARILLA' %}
+
+                            <span class="tarjeta-icono roja"></span>
+
+                        {% elif evento.tipo == 'CAMBIO' %}
+
+                            <i class="fa-solid fa-right-left icono-cambio"></i>
+
+                        {% else %}
+
+                            <i class="fa-solid fa-circle-info"></i>
+
+                        {% endif %}
+
+                    </div>
+
                 </div>
 
-                <div class="col-6 col-lg-3">
-                    <div class="dp-estadistica">
-                        <span class="dp-tarjeta amarilla"></span>
-                        <strong>{{ estadisticas.amarillas }}</strong>
-                        <span>Amarillas</span>
-                    </div>
-                </div>
-
-                <div class="col-6 col-lg-3">
-                    <div class="dp-estadistica">
-                        <span class="dp-tarjeta roja"></span>
-                        <strong>{{ estadisticas.rojas }}</strong>
-                        <span>Expulsiones</span>
-                    </div>
-                </div>
-
-                <div class="col-6 col-lg-3">
-                    <div class="dp-estadistica">
-                        <i class="fa-solid fa-right-left"></i>
-                        <strong>{{ estadisticas.cambios }}</strong>
-                        <span>Cambios</span>
-                    </div>
-                </div>
+                {% endif %}
 
             </div>
 
-            <!-- GOLES -->
-            <section class="dp-panel">
 
-                <h3 class="dp-panel-titulo">
-                    <i class="fa-solid fa-futbol me-2"></i>
-                    Goles
-                </h3>
+            <!-- ===================================
+                 MINUTO CENTRAL
+                 =================================== -->
 
-                <div class="dp-columnas-equipo">
-                    <span>{{ partido.equipo1 }}</span>
-                    <span>Min.</span>
-                    <span>{{ partido.equipo2 }}</span>
-                </div>
+            <div class="cronologia-minuto">
 
-                {% for evento in goles %}
+                <span>{{ evento.minuto }}</span>
 
-                <div class="dp-evento">
+            </div>
 
-                    <div class="dp-evento-izq">
-                        {% if evento.equipo == partido.equipo1 %}
-                            <strong>
-                                {{ evento.jugador }}
-                                <i class="fa-solid fa-futbol dp-dorado"></i>
-                            </strong>
-                            <small>{{ evento.get_tipo_display }}</small>
+
+            <!-- ===================================
+                 ACCIONES DEL EQUIPO DERECHO
+                 =================================== -->
+
+            <div class="cronologia-lado derecho">
+
+                {% if evento.equipo == partido.equipo2 %}
+
+                <div class="accion-equipo accion-derecha">
+
+                    <!-- ÍCONO -->
+                    <div class="accion-icono">
+
+                        {% if evento.tipo == 'GOL' or evento.tipo == 'PENAL' or evento.tipo == 'AUTOGOL' %}
+
+                            <i class="fa-solid fa-futbol icono-gol"></i>
+
+                        {% elif evento.tipo == 'AMARILLA' %}
+
+                            <span class="tarjeta-icono amarilla"></span>
+
+                        {% elif evento.tipo == 'ROJA' or evento.tipo == 'DOBLE_AMARILLA' %}
+
+                            <span class="tarjeta-icono roja"></span>
+
+                        {% elif evento.tipo == 'CAMBIO' %}
+
+                            <i class="fa-solid fa-right-left icono-cambio"></i>
+
+                        {% else %}
+
+                            <i class="fa-solid fa-circle-info"></i>
+
                         {% endif %}
+
                     </div>
 
-                    <div class="dp-minuto">
-                        {{ evento.minuto }}'
-                    </div>
 
-                    <div class="dp-evento-der">
-                        {% if evento.equipo == partido.equipo2 %}
-                            <strong>
-                                <i class="fa-solid fa-futbol dp-dorado"></i>
-                                {{ evento.jugador }}
+                    <!-- INFORMACIÓN -->
+                    <div class="accion-informacion">
+
+                        {% if evento.tipo == 'CAMBIO' %}
+
+                            <strong class="accion-jugador">
+                                Cambio
                             </strong>
-                            <small>{{ evento.get_tipo_display }}</small>
-                        {% endif %}
-                    </div>
 
-                    {% if evento.equipo != partido.equipo1 and evento.equipo != partido.equipo2 %}
-                        <div class="dp-evento-general">
-                            {{ evento.jugador }}
-                            {% if evento.equipo %}
-                                · {{ evento.equipo }}
+                            {% if evento.jugador_sale %}
+                                <span class="accion-sale">
+                                    <i class="fa-solid fa-arrow-down"></i>
+                                    {{ evento.jugador_sale }}
+                                </span>
                             {% endif %}
-                        </div>
-                    {% endif %}
 
-                </div>
-
-                {% empty %}
-                    <p class="dp-vacio">
-                        No hay goles registrados.
-                    </p>
-                {% endfor %}
-
-            </section>
-
-            <!-- TARJETAS -->
-            <section class="dp-panel">
-
-                <h3 class="dp-panel-titulo">
-                    Tarjetas
-                </h3>
-
-                {% for evento in tarjetas %}
-
-                <div class="dp-evento">
-
-                    <div class="dp-evento-izq">
-                        {% if evento.equipo == partido.equipo1 %}
-                            <strong>{{ evento.jugador }}</strong>
-
-                            {% if evento.tipo == 'AMARILLA' %}
-                                <span class="dp-tarjeta amarilla"></span>
-                            {% else %}
-                                <span class="dp-tarjeta roja"></span>
+                            {% if evento.jugador_entra %}
+                                <span class="accion-entra">
+                                    <i class="fa-solid fa-arrow-up"></i>
+                                    {{ evento.jugador_entra }}
+                                </span>
                             {% endif %}
-                        {% endif %}
-                    </div>
 
-                    <div class="dp-minuto">
-                        {{ evento.minuto }}'
-                    </div>
-
-                    <div class="dp-evento-der">
-                        {% if evento.equipo == partido.equipo2 %}
-                            <strong>{{ evento.jugador }}</strong>
-
-                            {% if evento.tipo == 'AMARILLA' %}
-                                <span class="dp-tarjeta amarilla"></span>
-                            {% else %}
-                                <span class="dp-tarjeta roja"></span>
+                            {% if not evento.jugador_sale and not evento.jugador_entra %}
+                                <span class="accion-descripcion">
+                                    {{ evento.descripcion|default:"Sustitución" }}
+                                </span>
                             {% endif %}
-                        {% endif %}
-                    </div>
 
-                    {% if evento.equipo != partido.equipo1 and evento.equipo != partido.equipo2 %}
-                        <div class="dp-evento-general">
-                            {{ evento.jugador }}
-                            · {{ evento.get_tipo_display }}
-                        </div>
-                    {% endif %}
+                        {% else %}
 
-                </div>
-
-                {% empty %}
-                    <p class="dp-vacio">
-                        No hay tarjetas registradas.
-                    </p>
-                {% endfor %}
-
-            </section>
-
-            <!-- CAMBIOS -->
-            <section class="dp-panel">
-
-                <h3 class="dp-panel-titulo">
-                    Sustituciones
-                </h3>
-
-                {% for evento in cambios %}
-
-                <div class="dp-evento">
-
-                    <div class="dp-evento-izq">
-
-                        {% if evento.equipo == partido.equipo1 %}
-                            <strong class="dp-entra">
-                                <i class="fa-solid fa-arrow-up"></i>
-                                {{ evento.jugador_entra }}
+                            <strong class="accion-jugador">
+                                {{ evento.jugador|default:"Jugador" }}
                             </strong>
 
-                            <small class="dp-sale">
-                                <i class="fa-solid fa-arrow-down"></i>
-                                {{ evento.jugador_sale }}
-                            </small>
+                            <span class="accion-descripcion">
+
+                                {% if evento.tipo == 'GOL' %}
+                                    Gol
+                                {% elif evento.tipo == 'PENAL' %}
+                                    Gol de penal
+                                {% elif evento.tipo == 'AUTOGOL' %}
+                                    Gol en contra
+                                {% elif evento.tipo == 'AMARILLA' %}
+                                    Tarjeta amarilla
+                                {% elif evento.tipo == 'ROJA' %}
+                                    Tarjeta roja
+                                {% elif evento.tipo == 'DOBLE_AMARILLA' %}
+                                    Doble amarilla
+                                {% else %}
+                                    {{ evento.get_tipo_display|default:evento.tipo }}
+                                {% endif %}
+
+                            </span>
+
                         {% endif %}
 
                     </div>
-
-                    <div class="dp-minuto">
-                        {{ evento.minuto }}'
-                    </div>
-
-                    <div class="dp-evento-der">
-
-                        {% if evento.equipo == partido.equipo2 %}
-                            <strong class="dp-entra">
-                                <i class="fa-solid fa-arrow-up"></i>
-                                {{ evento.jugador_entra }}
-                            </strong>
-
-                            <small class="dp-sale">
-                                <i class="fa-solid fa-arrow-down"></i>
-                                {{ evento.jugador_sale }}
-                            </small>
-                        {% endif %}
-
-                    </div>
-
-                    {% if evento.equipo != partido.equipo1 and evento.equipo != partido.equipo2 %}
-                        <div class="dp-evento-general">
-                            {{ evento.equipo }}
-                            · Sustitución
-                        </div>
-                    {% endif %}
 
                 </div>
 
-                {% empty %}
-                    <p class="dp-vacio">
-                        No hay sustituciones registradas.
-                    </p>
-                {% endfor %}
+                {% endif %}
 
-            </section>
+            </div>
 
         </div>
 
-        <!-- MINUTO A MINUTO -->
-        <div class="tab-pane fade"
-             id="dp-cronologia"
-             role="tabpanel">
+        {% empty %}
 
-            <section class="dp-panel">
-
-                <h3 class="dp-panel-titulo">
-                    Minuto a minuto
-                </h3>
-
-                <div class="dp-columnas-equipo">
-                    <span>{{ partido.equipo1 }}</span>
-                    <span>Min.</span>
-                    <span>{{ partido.equipo2 }}</span>
-                </div>
-
-                {% for evento in eventos %}
-
-                <div class="dp-evento">
-
-                    <!-- LADO IZQUIERDO -->
-                    <div class="dp-evento-izq">
-                        {% if evento.equipo == partido.equipo1 %}
-
-                            {% if evento.tipo == 'CAMBIO' %}
-
-                                <strong class="dp-entra">
-                                    <i class="fa-solid fa-arrow-up"></i>
-                                    {{ evento.jugador_entra }}
-                                </strong>
-
-                                <small class="dp-sale">
-                                    <i class="fa-solid fa-arrow-down"></i>
-                                    {{ evento.jugador_sale }}
-                                </small>
-
-                            {% else %}
-
-                                <strong>
-                                    {{ evento.jugador|default:evento.get_tipo_display }}
-
-                                    {% if evento.tipo == 'GOL' or evento.tipo == 'PENAL' or evento.tipo == 'AUTOGOL' %}
-                                        <i class="fa-solid fa-futbol dp-dorado"></i>
-                                    {% elif evento.tipo == 'AMARILLA' %}
-                                        <span class="dp-tarjeta amarilla"></span>
-                                    {% elif evento.tipo == 'ROJA' or evento.tipo == 'DOBLE_AMARILLA' %}
-                                        <span class="dp-tarjeta roja"></span>
-                                    {% endif %}
-                                </strong>
-
-                                <small>{{ evento.get_tipo_display }}</small>
-
-                            {% endif %}
-
-                            {% if evento.descripcion %}
-                                <small>{{ evento.descripcion }}</small>
-                            {% endif %}
-
-                        {% endif %}
-                    </div>
-
-                    <!-- MINUTO -->
-                    <div class="dp-minuto">
-                        {{ evento.minuto }}'
-                    </div>
-
-                    <!-- LADO DERECHO -->
-                    <div class="dp-evento-der">
-                        {% if evento.equipo == partido.equipo2 %}
-
-                            {% if evento.tipo == 'CAMBIO' %}
-
-                                <strong class="dp-entra">
-                                    <i class="fa-solid fa-arrow-up"></i>
-                                    {{ evento.jugador_entra }}
-                                </strong>
-
-                                <small class="dp-sale">
-                                    <i class="fa-solid fa-arrow-down"></i>
-                                    {{ evento.jugador_sale }}
-                                </small>
-
-                            {% else %}
-
-                                <strong>
-                                    {% if evento.tipo == 'GOL' or evento.tipo == 'PENAL' or evento.tipo == 'AUTOGOL' %}
-                                        <i class="fa-solid fa-futbol dp-dorado"></i>
-                                    {% elif evento.tipo == 'AMARILLA' %}
-                                        <span class="dp-tarjeta amarilla"></span>
-                                    {% elif evento.tipo == 'ROJA' or evento.tipo == 'DOBLE_AMARILLA' %}
-                                        <span class="dp-tarjeta roja"></span>
-                                    {% endif %}
-
-                                    {{ evento.jugador|default:evento.get_tipo_display }}
-                                </strong>
-
-                                <small>{{ evento.get_tipo_display }}</small>
-
-                            {% endif %}
-
-                            {% if evento.descripcion %}
-                                <small>{{ evento.descripcion }}</small>
-                            {% endif %}
-
-                        {% endif %}
-                    </div>
-
-                    <!-- EVENTOS NEUTRALES -->
-                    {% if evento.equipo != partido.equipo1 and evento.equipo != partido.equipo2 %}
-                        <div class="dp-evento-general">
-                            <strong>{{ evento.get_tipo_display }}</strong>
-
-                            {% if evento.equipo %}
-                                · {{ evento.equipo }}
-                            {% endif %}
-
-                            {% if evento.descripcion %}
-                                <small>{{ evento.descripcion }}</small>
-                            {% endif %}
-                        </div>
-                    {% endif %}
-
-                </div>
-
-                {% empty %}
-                    <p class="dp-vacio">
-                        Todavía no hay eventos cargados para este partido.
-                    </p>
-                {% endfor %}
-
-            </section>
-
+        <div class="text-center text-light py-5">
+            No hay eventos registrados para este partido.
         </div>
+
+        {% endfor %}
 
     </div>
 

@@ -1,59 +1,44 @@
-
 {% extends 'base.html' %}
 {% load static %}
+{% load banderas %}
 
 {% block title %}
 {{ mundial.nombre }} | MundoFútbol
 {% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/banderas_partidos.css' %}">
+{% endblock %}
+
 {% block content %}
 
-<!-- ==========================================
-     BOTÓN VOLVER
-     ========================================== -->
-
+<!-- VOLVER -->
 <div class="mb-4">
-    <a href="{% url 'mundiales' %}"
-       class="btn btn-outline-dorado px-3">
+    <a href="{% url 'mundiales' %}" class="btn btn-outline-dorado">
         <i class="fa-solid fa-arrow-left me-2"></i>
         Volver a Mundiales
     </a>
 </div>
 
-
-<!-- ==========================================
-     INFORMACIÓN DEL MUNDIAL
-     ========================================== -->
-
+<!-- INFORMACIÓN DEL MUNDIAL -->
 <div class="card bg-navbar text-white shadow border border-dorado rounded-4 mb-4">
-
     <div class="card-body p-4 p-md-5">
-
         <div class="row align-items-center">
 
-            <!-- LOGO -->
             <div class="col-md-3 text-center mb-3 mb-md-0">
-
                 {% if mundial.imagen_logo %}
-
-                    <img src="{{ mundial.imagen_logo.url }}"
-                         class="img-fluid rounded-3 shadow p-2 bg-tarjeta border border-dorado"
-                         style="max-height:150px; width:auto; object-fit:contain;"
-                         alt="Logo {{ mundial.nombre }}">
-
+                    <img
+                        src="{{ mundial.imagen_logo.url }}"
+                        class="img-fluid rounded-3 p-2 bg-tarjeta border border-dorado"
+                        style="max-height:150px; object-fit:contain;"
+                        alt="Logo del Mundial {{ mundial.anio }}"
+                    >
                 {% else %}
-
-                    <div class="p-3 bg-tarjeta border border-dorado rounded-3">
-                        <i class="fa-solid fa-trophy fa-3x text-dorado"></i>
-                    </div>
-
+                    <i class="fa-solid fa-trophy fa-4x text-dorado"></i>
                 {% endif %}
-
             </div>
 
-            <!-- DATOS -->
             <div class="col-md-5">
-
                 <span class="badge bg-tarjeta text-dorado border border-dorado fs-6 px-3 py-2 mb-2">
                     Año {{ mundial.anio }}
                 </span>
@@ -62,137 +47,119 @@
                     {{ mundial.nombre }}
                 </h1>
 
-                <p class="fs-5 text-light mb-2">
+                <p class="fs-5 text-light">
                     <i class="fa-solid fa-location-dot text-dorado me-2"></i>
-                    País anfitrión:
-                    <strong>{{ mundial.sede }}</strong>
+                    Sede: <strong>{{ mundial.sede }}</strong>
                 </p>
 
+                {% if mundial.descripcion %}
+                    <p class="text-light">
+                        {{ mundial.descripcion }}
+                    </p>
+                {% endif %}
             </div>
 
-            <!-- CUADRO DE HONOR -->
             <div class="col-md-4 mt-4 mt-md-0">
-
                 <div class="bg-tarjeta p-3 rounded-3 border border-dorado">
 
-                    <h5 class="fw-bold text-dorado mb-3 text-center border-bottom border-dorado pb-2">
+                    <h5 class="fw-bold text-dorado text-center mb-3">
                         <i class="fa-solid fa-trophy me-2"></i>
                         Cuadro de Honor
                     </h5>
 
-                    <ul class="list-unstyled mb-0">
+                    <p class="mb-2">
+                        <strong>Campeón:</strong>
+                        <span class="text-dorado">
+                            {{ mundial.campeon|default:"-" }}
+                        </span>
+                    </p>
 
-                        <li class="mb-2">
-                            <strong>Campeón:</strong>
-                            <span class="text-dorado">
-                                {{ mundial.campeon|default:"-" }}
-                            </span>
-                        </li>
+                    <p class="mb-2">
+                        <strong>Subcampeón:</strong>
+                        {{ mundial.subcampeon|default:"-" }}
+                    </p>
 
-                        <li class="mb-2">
-                            <strong>Subcampeón:</strong>
-                            {{ mundial.subcampeon|default:"-" }}
-                        </li>
-
-                        <li>
-                            <strong>Tercer puesto:</strong>
-                            {{ mundial.tercer_puesto|default:"-" }}
-                        </li>
-
-                    </ul>
+                    <p class="mb-0">
+                        <strong>Tercer puesto:</strong>
+                        {{ mundial.tercer_puesto|default:"-" }}
+                    </p>
 
                 </div>
-
             </div>
 
         </div>
-
     </div>
-
 </div>
 
-
-<!-- ==========================================
-     PORTADA
-     ========================================== -->
-
+<!-- PORTADA -->
 {% if mundial.imagen_portada %}
-
 <div class="mb-5 rounded-4 overflow-hidden border border-dorado shadow-lg bg-navbar text-center p-2">
-
-    <img src="{{ mundial.imagen_portada.url }}"
-         class="img-fluid rounded-3"
-         style="max-height:400px; width:auto; object-fit:contain;"
-         alt="Portada {{ mundial.nombre }}">
-
+    <img
+        src="{{ mundial.imagen_portada.url }}"
+        class="img-fluid rounded-3"
+        style="max-height:400px; width:auto; object-fit:contain;"
+        alt="Portada del Mundial {{ mundial.anio }}"
+    >
 </div>
-
 {% endif %}
 
-
-<!-- ==========================================
-     PESTAÑAS
-     ========================================== -->
-
+<!-- PESTAÑAS -->
 <div class="d-flex justify-content-center mb-4">
-
     <ul class="nav nav-pills bg-black p-2 rounded-3 border border-dorado"
         id="pills-tab"
         role="tablist">
 
         <li class="nav-item" role="presentation">
-
-            <button class="nav-link active fw-bold text-uppercase px-4 py-2 me-2"
-                    id="pills-grupos-tab"
-                    data-bs-toggle="pill"
-                    data-bs-target="#pills-grupos"
-                    type="button"
-                    role="tab">
-
+            <button
+                class="nav-link active fw-bold text-uppercase px-4 py-2 me-2"
+                id="pills-grupos-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#pills-grupos"
+                type="button"
+                role="tab"
+                aria-controls="pills-grupos"
+                aria-selected="true"
+            >
                 <i class="fa-solid fa-table-cells me-2"></i>
                 Fase de Grupos
-
             </button>
-
         </li>
 
         <li class="nav-item" role="presentation">
-
-            <button class="nav-link fw-bold text-uppercase px-4 py-2"
-                    id="pills-eliminatorias-tab"
-                    data-bs-toggle="pill"
-                    data-bs-target="#pills-eliminatorias"
-                    type="button"
-                    role="tab">
-
+            <button
+                class="nav-link fw-bold text-uppercase px-4 py-2"
+                id="pills-eliminatorias-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#pills-eliminatorias"
+                type="button"
+                role="tab"
+                aria-controls="pills-eliminatorias"
+                aria-selected="false"
+            >
                 <i class="fa-solid fa-sitemap me-2"></i>
                 Cuadro de Eliminatorias
-
             </button>
-
         </li>
 
     </ul>
-
 </div>
-
 
 <div class="tab-content" id="pills-tabContent">
 
-
-    <!-- ==========================================
+    <!-- ===================================
          FASE DE GRUPOS
-         ========================================== -->
+         =================================== -->
 
     <div class="tab-pane fade show active"
          id="pills-grupos"
-         role="tabpanel">
+         role="tabpanel"
+         aria-labelledby="pills-grupos-tab">
 
         {% if tablas_grupos %}
 
-        <div class="row g-4">
+        <div class="row g-4 align-items-stretch">
 
-            <!-- TABLAS DE LOS GRUPOS -->
+            <!-- COLUMNA DE GRUPOS -->
             <div class="{% if mostrar_terceros %}col-12 col-xl-9{% else %}col-12{% endif %}">
 
                 <div class="row g-4">
@@ -203,7 +170,6 @@
 
                         <div class="card bg-black border border-dorado shadow rounded-3 overflow-hidden grupo-card">
 
-                            <!-- NOMBRE DEL GRUPO -->
                             <div class="grupo-titulo">
                                 {{ grupo.nombre|upper }}
                             </div>
@@ -214,7 +180,7 @@
 
                                     <thead>
                                         <tr>
-                                            <th style="width:60px;">#</th>
+                                            <th>#</th>
                                             <th class="text-start">EQUIPOS</th>
                                             <th>PTS</th>
                                             <th>J</th>
@@ -230,102 +196,78 @@
                                     <tbody>
 
                                         {% for fila in grupo.filas %}
-
                                         {% with pos=fila.posicion %}
 
-                                        <tr class="
-                                            {% if fila.numero == 1 %}
-                                                fila-clasifica-1
-                                            {% elif fila.numero == 2 %}
-                                                fila-clasifica-2
-                                            {% elif fila.clasifica_tercero %}
-                                                fila-clasifica-3
-                                            {% endif %}
-                                        ">
+                                        <tr class="{% if fila.numero == 1 %}fila-clasifica-1{% elif fila.numero == 2 %}fila-clasifica-2{% elif fila.clasifica_tercero %}fila-clasifica-3{% endif %}">
 
                                             <!-- POSICIÓN -->
                                             <td>
-
                                                 {% if fila.numero == 1 %}
-
-                                                    <span class="posicion-badge posicion-1">
-                                                        1
-                                                    </span>
-
+                                                    <span class="posicion-badge posicion-1">1</span>
                                                 {% elif fila.numero == 2 %}
-
-                                                    <span class="posicion-badge posicion-2">
-                                                        2
-                                                    </span>
-
+                                                    <span class="posicion-badge posicion-2">2</span>
                                                 {% elif fila.clasifica_tercero %}
-
-                                                    <span class="posicion-badge posicion-3">
-                                                        3
-                                                    </span>
-
+                                                    <span class="posicion-badge posicion-3">3</span>
                                                 {% else %}
-
                                                     <span class="posicion-sin-color">
                                                         {{ fila.numero }}
                                                     </span>
-
                                                 {% endif %}
-
                                             </td>
 
-                                            <!-- EQUIPO -->
+                                            <!-- BANDERA Y EQUIPO -->
                                             <td class="text-start fw-bold text-white">
-                                                {{ pos.equipo }}
+
+                                                <div class="equipo-con-bandera">
+
+                                                    {% with url=pos.equipo|bandera %}
+                                                        {% if url %}
+                                                            <img
+                                                                src="{{ url }}"
+                                                                alt="Bandera de {{ pos.equipo }}"
+                                                                class="bandera-seleccion"
+                                                                loading="lazy"
+                                                            >
+                                                        {% endif %}
+                                                    {% endwith %}
+
+                                                    <span>{{ pos.equipo }}</span>
+
+                                                </div>
+
                                             </td>
 
-                                            <!-- PUNTOS -->
-                                            <td class="fw-bold text-white">
-                                                {{ pos.pts }}
-                                            </td>
-
-                                            <!-- JUGADOS -->
+                                            <td class="fw-bold">{{ pos.pts }}</td>
                                             <td>{{ pos.pj }}</td>
-
-                                            <!-- GOLES -->
-                                            <td>
-                                                {{ pos.gf }}:{{ pos.gc }}
-                                            </td>
+                                            <td>{{ pos.gf }}:{{ pos.gc }}</td>
 
                                             <!-- DIFERENCIA DE GOL -->
                                             <td>
-
                                                 {% if pos.diferencia_gol > 0 %}
                                                     <span class="text-success fw-bold">
                                                         +{{ pos.diferencia_gol }}
                                                     </span>
-
                                                 {% elif pos.diferencia_gol < 0 %}
                                                     <span class="text-danger fw-bold">
                                                         {{ pos.diferencia_gol }}
                                                     </span>
-
                                                 {% else %}
                                                     {{ pos.diferencia_gol }}
                                                 {% endif %}
-
                                             </td>
 
                                             <td>{{ pos.g }}</td>
                                             <td>{{ pos.e }}</td>
                                             <td>{{ pos.p }}</td>
 
-                                            <!-- ÚLTIMOS RESULTADOS -->
+                                            <!-- RESULTADOS RECIENTES -->
                                             <td>
-
                                                 {% for resultado in pos.lista_forma %}
 
                                                     {% if resultado == 'V' %}
                                                         <span class="badge bg-success">V</span>
-
                                                     {% elif resultado == 'E' %}
                                                         <span class="badge bg-secondary">E</span>
-
                                                     {% elif resultado == 'D' %}
                                                         <span class="badge bg-danger">D</span>
                                                     {% endif %}
@@ -333,13 +275,11 @@
                                                 {% empty %}
                                                     <span class="text-secondary">-</span>
                                                 {% endfor %}
-
                                             </td>
 
                                         </tr>
 
                                         {% endwith %}
-
                                         {% endfor %}
 
                                     </tbody>
@@ -347,9 +287,7 @@
                                 </table>
 
                             </div>
-
                         </div>
-
                     </div>
 
                     {% endfor %}
@@ -358,185 +296,162 @@
 
             </div>
 
-
-            <!-- ======================================
-                 TABLA DE MEJORES TERCEROS
-                 SOLO MUNDIAL 2026
-                 ====================================== -->
-
-                {% if mostrar_terceros %}
-
-        <div class="col-12 col-xl-3">
-
-            <aside class="terceros-sidebar">
-
-                <div class="card bg-black border border-dorado shadow rounded-3 overflow-hidden terceros-card">
-
-                    <div class="grupo-titulo terceros-titulo">
-                        <i class="fa-solid fa-ranking-star me-2"></i>
-                        Mejores terceros
-                        <div class="subtitulo-terceros">
-                            Clasifican 8 de 12
-                        </div>
-                    </div>
-
-                    <div class="table-responsive">
-
-                        <table class="table table-dark align-middle mb-0 tabla-terceros">
-                            <thead>
-                                <tr>
-                                    <th style="width: 55px;">#</th>
-                                    <th class="text-start">SELECCIÓN</th>
-                                    <th>PTS</th>
-                                    <th>DG</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-
-                                {% for fila in tabla_terceros %}
-                                {% with pos=fila.posicion %}
-
-                                <tr class="{% if fila.clasificado %}tercero-aprobado{% else %}tercero-eliminado{% endif %}">
-
-                                    <td class="text-center">
-                                        {% if fila.clasificado %}
-                                            <span class="posicion-badge posicion-3">
-                                                {{ fila.numero }}
-                                            </span>
-                                        {% else %}
-                                            <span class="posicion-sin-color">
-                                                {{ fila.numero }}
-                                            </span>
-                                        {% endif %}
-                                    </td>
-
-                                    <td class="text-start">
-                                        <div class="tercero-nombre">
-                                            {{ pos.equipo }}
-                                        </div>
-                                        <div class="tercero-grupo-badge">
-                                            {{ pos.grupo }}
-                                        </div>
-                                    </td>
-
-                                    <td class="fw-bold text-center">
-                                        {{ pos.pts }}
-                                    </td>
-
-                                    <td class="fw-bold text-center">
-                                        {% if pos.diferencia_gol > 0 %}+{% endif %}{{ pos.diferencia_gol }}
-                                    </td>
-
-                                </tr>
-
-                                {% endwith %}
-                                {% endfor %}
-
-                            </tbody>
-                        </table>
-
-                    </div>
-
-                    <div class="card-footer terceros-footer">
-
-                        <div class="leyenda-terceros">
-
-                            <div class="leyenda-item">
-                                <span class="posicion-badge posicion-3 posicion-badge-small">3</span>
-                                <span>Mejor tercero clasificado</span>
-                            </div>
-
-                            <div class="leyenda-item">
-                                <span class="posicion-sin-color">—</span>
-                                <span>No clasifica</span>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </aside>
-
-        </div>
-
-        {% endif %}
-
-        </div>
-
-
-        <!-- ======================================
-             LEYENDA DE POSICIONES
-             ====================================== -->
-
-        <div class="leyenda-posiciones mt-4">
-
-            <div class="leyenda-item">
-
-                <span class="posicion-badge posicion-1 posicion-badge-small">
-                    1
-                </span>
-
-                <span>Primero · Clasificado</span>
-
-            </div>
-
-            <div class="leyenda-item">
-
-                <span class="posicion-badge posicion-2 posicion-badge-small">
-                    2
-                </span>
-
-                <span>Segundo · Clasificado</span>
-
-            </div>
-
+            <!-- COLUMNA DE MEJORES TERCEROS -->
             {% if mostrar_terceros %}
 
-            <div class="leyenda-item">
+            <div class="col-12 col-xl-3 columna-terceros">
 
-                <span class="posicion-badge posicion-3 posicion-badge-small">
-                    3
-                </span>
+                <aside class="terceros-sidebar">
 
-                <span>Mejor tercero · Clasificado</span>
+                    <div class="card bg-black border border-dorado shadow rounded-3 overflow-hidden terceros-card">
+
+                        <div class="grupo-titulo terceros-titulo">
+                            <i class="fa-solid fa-ranking-star me-2"></i>
+                            Mejores terceros
+
+                            <div class="subtitulo-terceros">
+                                Clasifican 8 de 12
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+
+                            <table class="table table-dark align-middle mb-0 tabla-terceros">
+
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th class="text-start">SELECCIÓN</th>
+                                        <th>PTS</th>
+                                        <th>DG</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    {% for fila in tabla_terceros %}
+                                    {% with pos=fila.posicion %}
+
+                                    <tr class="{% if fila.clasificado %}tercero-aprobado{% else %}tercero-eliminado{% endif %}">
+
+                                        <td>
+                                            {% if fila.clasificado %}
+                                                <span class="posicion-badge posicion-3">
+                                                    {{ fila.numero }}
+                                                </span>
+                                            {% else %}
+                                                <span class="posicion-sin-color">
+                                                    {{ fila.numero }}
+                                                </span>
+                                            {% endif %}
+                                        </td>
+
+                                        <td>
+                                            <div class="tercero-nombre equipo-con-bandera">
+
+                                                {% with url=pos.equipo|bandera %}
+                                                    {% if url %}
+                                                        <img
+                                                            src="{{ url }}"
+                                                            class="bandera-seleccion"
+                                                            alt="Bandera de {{ pos.equipo }}"
+                                                            loading="lazy"
+                                                        >
+                                                    {% endif %}
+                                                {% endwith %}
+
+                                                <span>{{ pos.equipo }}</span>
+
+                                            </div>
+
+                                            <div class="tercero-grupo-badge">
+                                                {{ pos.grupo }}
+                                            </div>
+                                        </td>
+
+                                        <td class="fw-bold">{{ pos.pts }}</td>
+
+                                        <td class="fw-bold">
+                                            {% if pos.diferencia_gol > 0 %}+{% endif %}{{ pos.diferencia_gol }}
+                                        </td>
+
+                                    </tr>
+
+                                    {% endwith %}
+                                    {% endfor %}
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <div class="card-footer terceros-footer">
+                            <div class="leyenda-terceros">
+
+                                <div class="leyenda-item">
+                                    <span class="posicion-badge posicion-3 posicion-badge-small">3</span>
+                                    <span>Clasifica a 16vos</span>
+                                </div>
+
+                                <div class="leyenda-item">
+                                    <span class="posicion-sin-color">—</span>
+                                    <span>No clasifica</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </aside>
 
             </div>
 
             {% endif %}
 
+        </div>
+
+        <!-- LEYENDA -->
+        <div class="leyenda-posiciones mt-4">
+
             <div class="leyenda-item">
-
-                <span class="posicion-sin-color">—</span>
-
-                <span>Sin clasificación</span>
-
+                <span class="posicion-badge posicion-1 posicion-badge-small">1</span>
+                <span>Primer puesto</span>
             </div>
+
+            <div class="leyenda-item">
+                <span class="posicion-badge posicion-2 posicion-badge-small">2</span>
+                <span>Segundo puesto</span>
+            </div>
+
+            {% if mostrar_terceros %}
+            <div class="leyenda-item">
+                <span class="posicion-badge posicion-3 posicion-badge-small">3</span>
+                <span>Mejor tercero clasificado</span>
+            </div>
+            {% endif %}
 
         </div>
 
         {% else %}
 
-            <div class="alert bg-navbar text-white border border-dorado text-center py-4">
-
-                No hay tablas de grupos cargadas para este Mundial.
-
-            </div>
+        <div class="alert bg-navbar text-white border border-dorado text-center">
+            No hay tablas de grupos cargadas para este Mundial.
+        </div>
 
         {% endif %}
 
     </div>
 
-
-    <!-- ==========================================
-         CUADRO DE ELIMINATORIAS
-         ========================================== -->
+    <!-- ===================================
+         ELIMINATORIAS CON BANDERAS
+         =================================== -->
 
     <div class="tab-pane fade"
          id="pills-eliminatorias"
-         role="tabpanel">
+         role="tabpanel"
+         aria-labelledby="pills-eliminatorias-tab">
 
         <div class="cuadro-contenedor shadow-lg">
 
@@ -557,42 +472,39 @@
                         <a href="{% url 'detalle_partido' p.pk %}"
                            class="partido-enlace">
 
-                            <div class="partido-tarjeta">
+                            <div class="partido-tarjeta partido-tarjeta-banderas">
 
                                 {% if p.info_extra %}
-
                                 <div class="partido-fecha">
                                     {{ p.info_extra }}
                                 </div>
-
                                 {% endif %}
 
-                                <div class="partido-cuerpo">
+                                <div class="partido-cuerpo partido-cuerpo-nuevo">
 
                                     <!-- EQUIPO 1 -->
-                                    <div class="equipo-fila">
+                                    <div class="partido-equipo-lateral">
+                                        {% include "mundial/equipo_con_bandera.html" with equipo=p.equipo1 %}
+                                    </div>
 
-                                        <span class="equipo-nombre {% if p.goles1 > p.goles2 %}ganador{% endif %}">
-                                            {{ p.equipo1 }}
-                                        </span>
+                                    <!-- MARCADOR -->
+                                    <div class="partido-marcador-central">
 
-                                        <span class="equipo-goles {% if p.goles1 > p.goles2 %}ganador{% endif %}">
-                                            {{ p.goles1 }}
+                                        <div class="partido-resultado-grande">
+                                            <span>{{ p.goles1|default_if_none:"-" }}</span>
+                                            <span class="partido-separador">-</span>
+                                            <span>{{ p.goles2|default_if_none:"-" }}</span>
+                                        </div>
+
+                                        <span class="partido-estado">
+                                            VER PARTIDO
                                         </span>
 
                                     </div>
 
                                     <!-- EQUIPO 2 -->
-                                    <div class="equipo-fila">
-
-                                        <span class="equipo-nombre {% if p.goles2 > p.goles1 %}ganador{% endif %}">
-                                            {{ p.equipo2 }}
-                                        </span>
-
-                                        <span class="equipo-goles {% if p.goles2 > p.goles1 %}ganador{% endif %}">
-                                            {{ p.goles2 }}
-                                        </span>
-
+                                    <div class="partido-equipo-lateral">
+                                        {% include "mundial/equipo_con_bandera.html" with equipo=p.equipo2 %}
                                     </div>
 
                                 </div>
@@ -603,9 +515,9 @@
 
                         {% empty %}
 
-                            <p class="text-secondary text-center small">
-                                Sin partidos
-                            </p>
+                        <p class="text-secondary text-center small">
+                            Sin partidos cargados.
+                        </p>
 
                         {% endfor %}
 
@@ -617,13 +529,12 @@
 
             </div>
 
-
             <!-- TERCER PUESTO -->
             {% if partidos_tercer_puesto %}
 
             <div class="tercer-puesto-contenedor mt-4">
 
-                <h5 class="titulo-fase">
+                <h5 class="titulo-fase text-dorado">
                     Tercer puesto
                 </h5>
 
@@ -632,40 +543,30 @@
                 <a href="{% url 'detalle_partido' p.pk %}"
                    class="partido-enlace">
 
-                    <div class="partido-tarjeta">
+                    <div class="partido-tarjeta partido-tarjeta-banderas">
 
-                        {% if p.info_extra %}
+                        <div class="partido-cuerpo partido-cuerpo-nuevo">
 
-                        <div class="partido-fecha">
-                            {{ p.info_extra }}
-                        </div>
+                            <div class="partido-equipo-lateral">
+                                {% include "mundial/equipo_con_bandera.html" with equipo=p.equipo1 %}
+                            </div>
 
-                        {% endif %}
+                            <div class="partido-marcador-central">
 
-                        <div class="partido-cuerpo">
+                                <div class="partido-resultado-grande">
+                                    <span>{{ p.goles1|default_if_none:"-" }}</span>
+                                    <span class="partido-separador">-</span>
+                                    <span>{{ p.goles2|default_if_none:"-" }}</span>
+                                </div>
 
-                            <div class="equipo-fila">
-
-                                <span class="equipo-nombre">
-                                    {{ p.equipo1 }}
-                                </span>
-
-                                <span class="equipo-goles">
-                                    {{ p.goles1 }}
+                                <span class="partido-estado">
+                                    VER PARTIDO
                                 </span>
 
                             </div>
 
-                            <div class="equipo-fila">
-
-                                <span class="equipo-nombre">
-                                    {{ p.equipo2 }}
-                                </span>
-
-                                <span class="equipo-goles">
-                                    {{ p.goles2 }}
-                                </span>
-
+                            <div class="partido-equipo-lateral">
+                                {% include "mundial/equipo_con_bandera.html" with equipo=p.equipo2 %}
                             </div>
 
                         </div>

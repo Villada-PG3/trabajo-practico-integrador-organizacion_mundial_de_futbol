@@ -1,0 +1,932 @@
+/* ==========================================
+   MUNDOFÚTBOL
+   BANDERAS, PARTIDOS Y CRONOLOGÍA
+   ========================================== */
+
+
+/* ==========================================
+   BANDERAS EN TABLAS DE GRUPOS
+   ========================================== */
+
+.equipo-con-bandera {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.bandera-seleccion {
+    width: 28px;
+    height: 20px;
+    object-fit: cover;
+    border-radius: 3px;
+    flex-shrink: 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+.tabla-terceros .equipo-con-bandera {
+    gap: 7px;
+}
+
+.tabla-terceros .bandera-seleccion {
+    width: 23px;
+    height: 17px;
+}
+
+.tabla-terceros .tercero-nombre {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    overflow-wrap: anywhere;
+}
+
+
+/* ==========================================
+   COMPONENTE BANDERA Y NOMBRE
+   ========================================== */
+
+.equipo-partido {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-width: 0;
+    gap: 10px;
+
+    text-align: center;
+}
+
+.equipo-partido-bandera {
+    width: 58px;
+    height: 39px;
+    object-fit: cover;
+
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.25);
+
+    box-shadow: 0 3px 12px rgba(0,0,0,0.35);
+}
+
+.equipo-partido-sin-bandera {
+    width: 58px;
+    height: 39px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #AABBAC;
+    font-size: 25px;
+}
+
+.equipo-partido-nombre {
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.35;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+}
+
+
+/* ==========================================
+   ELIMINATORIAS - CORREGIR SUPERPOSICIÓN
+   ========================================== */
+
+/*
+   Antes .lista-partidos tenía height:1600px
+   y justify-content:space-around.
+
+   Ahora todos los partidos ocupan
+   su altura natural.
+*/
+
+#pills-eliminatorias .cuadro-contenedor {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 22px;
+}
+
+#pills-eliminatorias .cuadro-columnas {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 22px;
+
+    min-width: 1200px;
+}
+
+#pills-eliminatorias .columna-fase {
+    flex: 1 0 215px;
+    min-width: 215px;
+}
+
+#pills-eliminatorias .lista-partidos {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+
+    gap: 22px !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    overflow: visible !important;
+}
+
+#pills-eliminatorias .partido-enlace {
+    display: block;
+    width: 100%;
+    margin: 0 !important;
+
+    text-decoration: none;
+    flex: 0 0 auto;
+}
+
+#pills-eliminatorias .partido-tarjeta {
+    position: relative;
+    width: 100%;
+
+    margin: 0 !important;
+    overflow: hidden;
+
+    transform: none !important;
+    box-shadow: none;
+
+    border: 1px solid #C8A34D;
+    border-radius: 10px;
+    background-color: #161B18;
+}
+
+/* No agrandar las tarjetas al pasar el mouse */
+
+#pills-eliminatorias .partido-enlace:hover .partido-tarjeta {
+    transform: none !important;
+    box-shadow: 0 0 12px rgba(200,163,77,0.35);
+    border-color: #E5C76B;
+}
+
+#pills-eliminatorias .partido-fecha {
+    background-color: #145A32;
+    color: #C8A34D;
+
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+
+    padding: 9px;
+    border-bottom: 1px solid #C8A34D;
+}
+
+/* Tres espacios: bandera, marcador, bandera */
+
+#pills-eliminatorias .partido-cuerpo-nuevo {
+    display: grid !important;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(57px, auto)
+        minmax(0, 1fr);
+
+    align-items: center;
+    gap: 6px;
+
+    padding: 18px 8px;
+    min-height: 165px;
+
+    background-color: #161B18;
+}
+
+#pills-eliminatorias .partido-equipo-lateral {
+    min-width: 0;
+}
+
+#pills-eliminatorias .partido-equipo-lateral .equipo-partido {
+    gap: 10px;
+}
+
+#pills-eliminatorias .partido-equipo-lateral .equipo-partido-bandera {
+    width: 49px;
+    height: 33px;
+}
+
+#pills-eliminatorias .partido-equipo-lateral .equipo-partido-nombre {
+    font-size: 10px;
+    overflow-wrap: anywhere;
+}
+
+#pills-eliminatorias .partido-marcador-central {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+#pills-eliminatorias .partido-resultado-grande {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    color: #FFFFFF;
+    font-size: 23px;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+#pills-eliminatorias .partido-separador {
+    color: #C8A34D;
+}
+
+#pills-eliminatorias .partido-estado {
+    color: #C8A34D;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+}
+
+#pills-eliminatorias .partido-enlace:hover .partido-cuerpo-nuevo {
+    background-color: #213E30;
+}
+
+
+/* ==========================================
+   MARCADOR PRINCIPAL
+   ========================================== */
+
+.marcador-detalle-partido {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(110px, 1fr)
+        minmax(0, 1fr);
+
+    align-items: center;
+    gap: 20px;
+
+    padding: 40px 20px;
+    margin-bottom: 30px;
+
+    background-color: #121714;
+
+    border: 1px solid #C8A34D;
+    border-radius: 16px;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+}
+
+.marcador-detalle-equipo {
+    min-width: 0;
+}
+
+.marcador-detalle-equipo .equipo-partido {
+    gap: 15px;
+}
+
+.marcador-detalle-equipo .equipo-partido-bandera {
+    width: 95px;
+    height: 64px;
+}
+
+.marcador-detalle-equipo .equipo-partido-nombre {
+    font-size: 16px;
+    font-weight: 900;
+}
+
+.marcador-detalle-centro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.marcador-detalle-resultado {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+
+    color: #FFFFFF;
+    font-size: 55px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.marcador-detalle-guion {
+    color: #C8A34D;
+}
+
+.marcador-detalle-estado {
+    color: #C8A34D;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+
+/* ==========================================
+   CRONOLOGÍA DE DOS LADOS
+   ========================================== */
+
+.cronologia-card {
+    overflow: hidden;
+
+    background-color: #121714 !important;
+    color: #FFFFFF !important;
+
+    border: 1px solid #C8A34D !important;
+    border-radius: 14px;
+}
+
+.cronologia-encabezado {
+    background-color: #145A32;
+    color: #C8A34D;
+
+    text-align: center;
+    padding: 18px;
+
+    font-size: 20px;
+    font-weight: 800;
+
+    border-bottom: 1px solid #C8A34D;
+}
+
+/* Encabezado izquierda-centro-derecha */
+
+.cronologia-equipos {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        75px
+        minmax(0, 1fr);
+
+    align-items: center;
+    gap: 10px;
+
+    padding: 20px 25px;
+
+    background-color: #194C39;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.cronologia-equipo-titulo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 10px;
+    min-width: 0;
+
+    color: #FFFFFF;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.cronologia-equipo-titulo.derecho {
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.cronologia-bandera {
+    width: 37px;
+    height: 25px;
+    object-fit: cover;
+    flex-shrink: 0;
+
+    border-radius: 3px;
+}
+
+.cronologia-centro-titulo {
+    color: #C8A34D;
+    font-size: 12px;
+    font-weight: 800;
+    text-align: center;
+}
+
+/* Lista de eventos */
+
+.cronologia-lista {
+    padding: 8px 25px 20px;
+}
+
+/* Cada fila representa un evento */
+
+.cronologia-fila {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        75px
+        minmax(0, 1fr);
+
+    align-items: center;
+    gap: 10px;
+
+    min-height: 83px;
+    padding: 12px 0;
+
+    border-bottom: 1px solid rgba(255,255,255,0.11);
+}
+
+.cronologia-fila:last-child {
+    border-bottom: none;
+}
+
+/* Minuto central */
+
+.cronologia-minuto {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cronologia-minuto span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 61px;
+    padding: 10px 6px;
+
+    border-radius: 9px;
+
+    background-color: #145A32;
+    color: #C8A34D;
+
+    font-size: 14px;
+    font-weight: 900;
+}
+
+/* Contenedores izquierdo y derecho */
+
+.cronologia-lado {
+    min-width: 0;
+}
+
+.cronologia-lado.izquierdo {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cronologia-lado.derecho {
+    display: flex;
+    justify-content: flex-start;
+}
+
+/* Tarjeta de acción */
+
+.accion-equipo {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    width: 100%;
+    max-width: 450px;
+
+    padding: 14px;
+
+    background-color: #1E8449;
+    border: 1px solid rgba(200,163,77,0.45);
+    border-radius: 10px;
+}
+
+/* Equipo 1: texto hacia el centro */
+
+.accion-izquierda {
+    justify-content: flex-end;
+    text-align: right;
+}
+
+/* Equipo 2: texto desde el centro */
+
+.accion-derecha {
+    justify-content: flex-start;
+    text-align: left;
+}
+
+.accion-informacion {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+
+    min-width: 0;
+    flex: 1;
+}
+
+.accion-jugador {
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.accion-descripcion {
+    color: #DCE8DF;
+    font-size: 12px;
+}
+
+/* Cambios */
+
+.accion-sale {
+    color: #FF8A80;
+    font-size: 12px;
+}
+
+.accion-entra {
+    color: #8CF4AE;
+    font-size: 12px;
+}
+
+/* Íconos */
+
+.accion-icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 27px;
+    flex-shrink: 0;
+
+    font-size: 21px;
+}
+
+.icono-gol {
+    color: #FFFFFF;
+}
+
+.icono-cambio {
+    color: #73F2A4;
+}
+
+.tarjeta-icono {
+    display: inline-block;
+
+    width: 17px;
+    height: 24px;
+
+    border-radius: 3px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.tarjeta-icono.amarilla {
+    background-color: #FFD600;
+}
+
+.tarjeta-icono.roja {
+    background-color: #E53935;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 768px) {
+
+    .marcador-detalle-partido {
+        gap: 8px;
+        padding: 25px 10px;
+    }
+
+    .marcador-detalle-equipo .equipo-partido-bandera {
+        width: 55px;
+        height: 38px;
+    }
+
+    .marcador-detalle-equipo .equipo-partido-nombre {
+        font-size: 11px;
+    }
+
+    .marcador-detalle-resultado {
+        font-size: 32px;
+        gap: 6px;
+    }
+
+    .cronologia-equipos,
+    .cronologia-fila {
+        grid-template-columns:
+            minmax(0, 1fr)
+            54px
+            minmax(0, 1fr);
+
+        gap: 5px;
+    }
+
+    .cronologia-equipos {
+        padding: 15px 8px;
+    }
+
+    .cronologia-lista {
+        padding: 8px;
+    }
+
+    .cronologia-equipo-titulo {
+        font-size: 11px;
+        gap: 5px;
+    }
+
+    .cronologia-bandera {
+        width: 26px;
+        height: 18px;
+    }
+
+    .cronologia-minuto span {
+        min-width: 48px;
+        padding: 8px 3px;
+        font-size: 11px;
+    }
+
+    .accion-equipo {
+        gap: 6px;
+        padding: 8px;
+    }
+
+    .accion-jugador {
+        font-size: 11px;
+    }
+
+    .accion-descripcion,
+    .accion-sale,
+    .accion-entra {
+        font-size: 10px;
+    }
+
+    .accion-icono {
+        min-width: 17px;
+        font-size: 15px;
+    }
+
+    .tarjeta-icono {
+        width: 12px;
+        height: 18px;
+    }
+}
+
+/* ==========================================
+   ELIMINATORIAS - DISEÑO COMPACTO
+   ========================================== */
+
+/* Contenedor general del cuadro */
+
+#pills-eliminatorias .cuadro-contenedor {
+    padding: 16px !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    background-color: #101512;
+}
+
+/* Columnas de las distintas fases */
+
+#pills-eliminatorias .cuadro-columnas {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px !important;
+
+    min-width: 1050px !important;
+}
+
+/* Cada fase ocupa un ancho uniforme */
+
+#pills-eliminatorias .columna-fase {
+    flex: 1 0 190px !important;
+    min-width: 190px !important;
+    max-width: none;
+}
+
+/* Encabezados de fases */
+
+#pills-eliminatorias .titulo-fase {
+    font-size: 13px;
+    padding: 10px 5px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #C8A34D;
+}
+
+/* ==========================================
+   DISTRIBUCIÓN VERTICAL SIMÉTRICA
+   ========================================== */
+
+/*
+   Todos los partidos se distribuyen
+   proporcionalmente dentro de cada fase.
+
+   Para cuadros que comienzan en octavos:
+   altura base de 1080px.
+
+   Para cuadros que comienzan en 16vos:
+   altura ampliada a 1950px.
+*/
+
+#pills-eliminatorias .lista-partidos {
+    display: flex !important;
+    flex-direction: column !important;
+
+    justify-content: space-around !important;
+    align-items: stretch !important;
+
+    height: 1080px !important;
+    min-height: 0 !important;
+    max-height: none !important;
+
+    gap: 0 !important;
+    overflow: visible !important;
+}
+
+/* Si hay 16 partidos en la primera fase */
+
+#pills-eliminatorias .cuadro-columnas:has(
+    > .columna-fase:first-child
+    .lista-partidos > :nth-child(16)
+) .lista-partidos {
+    height: 1950px !important;
+}
+
+/* ==========================================
+   TARJETAS DE PARTIDOS MÁS PEQUEÑAS
+   ========================================== */
+
+#pills-eliminatorias .partido-enlace {
+    display: block;
+    width: 100%;
+
+    margin: 0 !important;
+    flex-shrink: 0;
+}
+
+/* Box de cada partido */
+
+#pills-eliminatorias .partido-tarjeta {
+    width: 100%;
+    height: 105px;
+
+    background-color: #171D19;
+    border: 1px solid #C8A34D;
+    border-radius: 8px;
+
+    overflow: hidden;
+    margin: 0 !important;
+
+    transform: none !important;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+/* El box no se agranda al pasar el cursor */
+
+#pills-eliminatorias .partido-enlace:hover .partido-tarjeta {
+    transform: none !important;
+    border-color: #E3C66E;
+    box-shadow: 0 0 8px rgba(200,163,77,0.35);
+}
+
+/* Fecha compacta */
+
+#pills-eliminatorias .partido-fecha {
+    height: 22px;
+    padding: 4px 2px;
+
+    font-size: 9px;
+    line-height: 13px;
+
+    text-align: center;
+    background-color: #145A32;
+    color: #C8A34D;
+}
+
+/* ==========================================
+   INTERIOR DEL PARTIDO
+   ========================================== */
+
+#pills-eliminatorias .partido-cuerpo-nuevo {
+    display: grid !important;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(52px, auto)
+        minmax(0, 1fr);
+
+    align-items: center;
+
+    gap: 3px !important;
+    padding: 8px 5px !important;
+
+    height: 83px;
+    min-height: 0 !important;
+
+    background-color: #171D19;
+}
+
+/* Si no hay encabezado de fecha,
+   usar el alto completo de la tarjeta */
+
+#pills-eliminatorias .partido-tarjeta:not(:has(.partido-fecha))
+.partido-cuerpo-nuevo {
+    height: 103px;
+}
+
+/* ==========================================
+   BANDERAS MÁS PEQUEÑAS
+   ========================================== */
+
+#pills-eliminatorias .partido-equipo-lateral {
+    min-width: 0;
+}
+
+#pills-eliminatorias .partido-equipo-lateral .equipo-partido {
+    gap: 5px !important;
+}
+
+#pills-eliminatorias .partido-equipo-lateral .equipo-partido-bandera {
+    width: 34px !important;
+    height: 23px !important;
+
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+/* Si todavía no hay bandera */
+
+#pills-eliminatorias .partido-equipo-lateral
+.equipo-partido-sin-bandera {
+    width: 34px;
+    height: 23px;
+    font-size: 16px;
+}
+
+/* Nombre debajo de la bandera */
+
+#pills-eliminatorias .partido-equipo-lateral .equipo-partido-nombre {
+    font-size: 9px !important;
+    font-weight: 800;
+    line-height: 1.15;
+
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+/* ==========================================
+   RESULTADO DEL PARTIDO
+   ========================================== */
+
+#pills-eliminatorias .partido-marcador-central {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 3px !important;
+}
+
+#pills-eliminatorias .partido-resultado-grande {
+    font-size: 19px !important;
+    font-weight: 900;
+
+    gap: 3px !important;
+    white-space: nowrap;
+
+    color: #FFFFFF;
+}
+
+#pills-eliminatorias .partido-separador {
+    color: #C8A34D;
+}
+
+/* Texto debajo del resultado */
+
+#pills-eliminatorias .partido-estado {
+    font-size: 7px !important;
+    font-weight: 800;
+
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+
+    color: #C8A34D;
+}
+
+/* ==========================================
+   TERCER PUESTO
+   ========================================== */
+
+#pills-eliminatorias .tercer-puesto-contenedor {
+    width: 190px;
+    max-width: 100%;
+
+    margin-top: 24px;
+}
+
+#pills-eliminatorias .tercer-puesto-contenedor .partido-tarjeta {
+    height: 105px;
+}
