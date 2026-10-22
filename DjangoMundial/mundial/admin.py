@@ -8,6 +8,7 @@ from .models import (
     Jugador,
     PersonalTecnico,
     Seleccion,
+    PartidoMundial2022,
 )
 
 @admin.register(Confederacion)
@@ -113,3 +114,41 @@ class MundialAdmin(admin.ModelAdmin):
                 obj.imagen_logo.url,
             )
         return "Sin Logo"
+
+
+class PartidoMundial2022Admin(admin.ModelAdmin):
+    list_display = (
+        'fecha',
+        'fase',
+        'grupo',
+        'equipo1',
+        'goles1',
+        'goles2',
+        'equipo2',
+        'estadio',
+    )
+
+    list_filter = (
+        'fase',
+        'grupo',
+        'fecha',
+    )
+
+    search_fields = (
+        'equipo1__nombre',
+        'equipo2__nombre',
+        'estadio',
+    )
+
+    list_select_related = (
+        'equipo1',
+        'equipo2',
+        'mundial',
+    )
+
+
+if not admin.site.is_registered(PartidoMundial2022):
+    admin.site.register(
+        PartidoMundial2022,
+        PartidoMundial2022Admin
+    )

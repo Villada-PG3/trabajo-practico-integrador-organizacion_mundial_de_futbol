@@ -522,3 +522,47 @@ class EventoPartido(models.Model):
             f"{self.get_tipo_display()} - "
             f"{self.minuto}' - {self.jugador}"
         )
+class PartidoMundial2022(models.Model):
+    mundial = models.ForeignKey(
+        'Mundial',
+        on_delete=models.CASCADE,
+        related_name='partidos_2022'
+    )
+
+    equipo1 = models.ForeignKey(
+        'Seleccion',
+        on_delete=models.PROTECT,
+        related_name='partidos_2022_equipo1'
+    )
+
+    equipo2 = models.ForeignKey(
+        'Seleccion',
+        on_delete=models.PROTECT,
+        related_name='partidos_2022_equipo2'
+    )
+
+    fifa_match_id = models.BigIntegerField(unique=True)
+    fecha = models.DateField()
+    hora_local = models.CharField(max_length=5, blank=True)
+    fase = models.CharField(max_length=30)
+    grupo = models.CharField(max_length=20, blank=True)
+
+    goles1 = models.PositiveSmallIntegerField(default=0)
+    goles2 = models.PositiveSmallIntegerField(default=0)
+
+    penales1 = models.PositiveSmallIntegerField(default=0)
+    penales2 = models.PositiveSmallIntegerField(default=0)
+
+    estadio = models.CharField(max_length=150, blank=True)
+
+    class Meta:
+        ordering = ['fecha', 'fifa_match_id']
+        verbose_name = 'Partido del Mundial 2022'
+        verbose_name_plural = 'Partidos del Mundial 2022'
+
+    def __str__(self):
+        return (
+            f'{self.equipo1.nombre} '
+            f'{self.goles1}-{self.goles2} '
+            f'{self.equipo2.nombre}'
+        )
