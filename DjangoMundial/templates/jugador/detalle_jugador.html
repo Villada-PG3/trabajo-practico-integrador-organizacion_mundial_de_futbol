@@ -1,0 +1,651 @@
+```html
+{% extends 'base.html' %}
+
+{% block title %}{{ jugador.apellido_nombres }} | MundoFútbol{% endblock %}
+
+{% block content %}
+
+<style>
+    :root {
+        --mf-bg: #071e17;
+        --mf-card: #103b2c;
+        --mf-card-light: #164b37;
+        --mf-gold: #ffc845;
+        --mf-text: #f4f7f5;
+        --mf-muted: #c4d8ce;
+        --mf-border: rgba(255, 200, 69, .25);
+    }
+
+    .player-page {
+        color: var(--mf-text);
+        padding: 35px 0 55px;
+    }
+
+    .player-page * {
+        box-sizing: border-box;
+    }
+
+    /* Botón volver */
+    .player-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 11px 19px;
+        color: var(--mf-gold);
+        background: #103b2c;
+        border: 1px solid var(--mf-border);
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 700;
+        transition: .25s ease;
+    }
+
+    .player-back:hover {
+        color: #10251b;
+        background: var(--mf-gold);
+        transform: translateY(-2px);
+    }
+
+    /* Tarjetas principales */
+    .player-card,
+    .history-card {
+        background: linear-gradient(145deg, #124631, #09291f);
+        border: 1px solid var(--mf-border);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, .22);
+    }
+
+    .player-card {
+        margin-top: 25px;
+        margin-bottom: 40px;
+    }
+
+    /* Identidad del jugador */
+    .player-identity {
+        min-height: 100%;
+        padding: 42px 22px;
+        text-align: center;
+        background:
+            radial-gradient(circle at 50% 35%,
+                rgba(255, 200, 69, .12), transparent 48%),
+            linear-gradient(160deg, #18583d, #09251b);
+        border-right: 1px solid var(--mf-border);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Círculo con el número de camiseta */
+    .player-shirt {
+        width: 180px;
+        height: 180px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: linear-gradient(145deg, #1b6547, #09271d);
+        border: 3px solid var(--mf-gold);
+        box-shadow:
+            0 0 0 8px rgba(255, 200, 69, .06),
+            0 15px 35px rgba(0, 0, 0, .3);
+    }
+
+    .player-shirt::before {
+        content: "";
+        position: absolute;
+        inset: 10px;
+        border: 1px solid rgba(255, 200, 69, .28);
+        border-radius: 50%;
+    }
+
+    .shirt-number {
+        color: var(--mf-gold);
+        font-size: 5.5rem;
+        line-height: 1;
+        font-weight: 900;
+        letter-spacing: -3px;
+        text-shadow: 0 4px 18px rgba(255, 200, 69, .15);
+    }
+
+    .shirt-label {
+        position: relative;
+        margin-top: -12px;
+        padding: 7px 18px;
+        border: 3px solid #103b2c;
+        border-radius: 30px;
+        background: var(--mf-gold);
+        color: #172117;
+        font-size: .72rem;
+        font-weight: 900;
+        letter-spacing: 2px;
+    }
+
+    .player-name {
+        color: var(--mf-gold);
+        font-size: clamp(1.5rem, 2.5vw, 2rem);
+        line-height: 1.25;
+        font-weight: 850;
+        margin: 22px 0 8px;
+        overflow-wrap: anywhere;
+    }
+
+    .player-position {
+        color: #e0eee7;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+    /* Ficha técnica */
+    .player-details {
+        padding: 32px;
+    }
+
+    .player-details-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .player-section-title {
+        color: #ffffff;
+        font-size: 1.55rem;
+        font-weight: 850;
+        margin: 0;
+    }
+
+    .title-line {
+        height: 3px;
+        width: 65px;
+        background: var(--mf-gold);
+        border-radius: 10px;
+        margin-top: 12px;
+    }
+
+    .passport-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 15px;
+        border: 1px solid var(--mf-border);
+        border-radius: 50px;
+        background: rgba(255, 200, 69, .07);
+        color: #ffffff;
+        font-size: .9rem;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+    }
+
+    .passport-badge i {
+        color: var(--mf-gold);
+    }
+
+    .player-info-grid {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 15px;
+        margin-top: 24px;
+    }
+
+    .info-item {
+        grid-column: span 2;
+        padding: 20px 18px;
+        min-width: 0;
+        background: rgba(255, 255, 255, .045);
+        border: 1px solid rgba(255, 255, 255, .10);
+        border-radius: 13px;
+        transition: .2s ease;
+    }
+
+    .info-item:hover {
+        background: rgba(255, 255, 255, .075);
+        border-color: var(--mf-border);
+        transform: translateY(-2px);
+    }
+
+    .info-item.wide {
+        grid-column: span 3;
+    }
+
+    .info-label {
+        display: block;
+        color: #c0d8cb;
+        font-size: .76rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 9px;
+    }
+
+    .info-label i {
+        color: var(--mf-gold);
+        margin-right: 6px;
+    }
+
+    .info-value {
+        display: block;
+        color: #ffffff;
+        font-size: 1.12rem;
+        line-height: 1.4;
+        font-weight: 750;
+        overflow-wrap: anywhere;
+    }
+
+    /* Historial */
+    .history-header {
+        padding: 23px 27px;
+        background: linear-gradient(100deg, #164b37, #0d3023);
+        border-bottom: 2px solid var(--mf-gold);
+    }
+
+    .history-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--mf-gold);
+        font-size: clamp(1.15rem, 2vw, 1.5rem);
+        line-height: 1.4;
+        font-weight: 850;
+        margin: 0;
+    }
+
+    .history-title i {
+        font-size: 1.5rem;
+    }
+
+    .history-table {
+        width: 100%;
+        margin: 0;
+        border-collapse: collapse;
+        color: #f4f7f5;
+        vertical-align: middle;
+    }
+
+    .history-table thead th {
+        background: #0b2b20;
+        color: var(--mf-gold);
+        padding: 17px 15px;
+        border-bottom: 1px solid var(--mf-border);
+        font-size: .78rem;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        white-space: nowrap;
+    }
+
+    .history-table tbody td {
+        padding: 18px 15px;
+        background: #103b2c;
+        color: #f4f7f5;
+        border-bottom: 1px solid rgba(255, 255, 255, .07);
+    }
+
+    .history-table tbody tr:nth-child(even) td {
+        background: #144431;
+    }
+
+    .history-table tbody tr:hover td {
+        background: #1b523a;
+    }
+
+    .history-edition {
+        color: #ffffff;
+        font-weight: 800;
+    }
+
+    .history-stat {
+        display: inline-block;
+        min-width: 65px;
+        padding: 7px 12px;
+        border-radius: 30px;
+        background: #245642;
+        color: #ffffff;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .history-goals {
+        background: var(--mf-gold);
+        color: #172117;
+    }
+
+    /* Estado sin datos */
+    .history-empty {
+        padding: 48px 20px;
+        text-align: center;
+        background: #0c3023;
+    }
+
+    .history-empty-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 20px;
+        border: 1px solid var(--mf-border);
+        border-radius: 50%;
+        background: rgba(255, 200, 69, .07);
+        color: var(--mf-gold);
+        font-size: 2rem;
+    }
+
+    .history-empty h5 {
+        color: #ffffff;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .history-empty p {
+        max-width: 520px;
+        margin: 0 auto;
+        color: #c4d8ce;
+        line-height: 1.7;
+    }
+
+    /* Adaptación a tabletas y celulares */
+    @media (max-width: 991.98px) {
+        .player-details {
+            padding: 25px;
+        }
+
+        .player-info-grid {
+            gap: 11px;
+        }
+
+        .info-item {
+            padding: 16px 13px;
+        }
+
+        .info-value {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .player-page {
+            padding-top: 22px;
+        }
+
+        .player-identity {
+            min-height: auto;
+            padding: 32px 18px;
+            border-right: 0;
+            border-bottom: 1px solid var(--mf-border);
+        }
+
+        .player-shirt {
+            width: 150px;
+            height: 150px;
+        }
+
+        .shirt-number {
+            font-size: 4.6rem;
+        }
+
+        .player-details {
+            padding: 23px 17px;
+        }
+
+        .player-details-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .player-info-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .info-item,
+        .info-item.wide {
+            grid-column: span 1;
+        }
+
+        .history-header {
+            padding: 20px;
+        }
+
+        .history-table thead th,
+        .history-table tbody td {
+            padding: 13px 12px;
+        }
+
+        .history-table {
+            min-width: 650px;
+        }
+
+        .history-table thead th {
+            white-space: normal;
+        }
+    }
+
+    @media (max-width: 420px) {
+        .player-info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .info-item,
+        .info-item.wide {
+            grid-column: span 1;
+        }
+
+        .passport-badge {
+            font-size: .8rem;
+        }
+    }
+</style>
+
+<div class="container player-page">
+
+    <!-- Volver a la lista -->
+    <a href="{% url 'jugadores' %}" class="player-back">
+        <i class="bi bi-arrow-left"></i>
+        Volver a jugadores
+    </a>
+
+    <!-- Ficha principal -->
+    <section class="player-card">
+        <div class="row g-0">
+
+            <!-- Número de camiseta, sin fotografías -->
+            <div class="col-md-4">
+                <div class="player-identity">
+
+                    <div class="player-shirt">
+                        <span class="shirt-number">
+                            {{ jugador.numero_camiseta|default:"—" }}
+                        </span>
+                    </div>
+
+                    <span class="shirt-label">JUGADOR</span>
+
+                    <h1 class="player-name">
+                        {{ jugador.apellido_nombres }}
+                    </h1>
+
+                    <p class="player-position">
+                        <i class="bi bi-shield-shaded me-2"></i>
+                        {{ jugador.get_posicion_display|default:"Posición no informada" }}
+                    </p>
+
+                </div>
+            </div>
+
+            <!-- Información técnica -->
+            <div class="col-md-8">
+                <div class="player-details">
+
+                    <div class="player-details-header">
+                        <div>
+                            <h2 class="player-section-title">
+                                Ficha técnica
+                            </h2>
+                            <div class="title-line"></div>
+                        </div>
+
+                        <span class="passport-badge">
+                            <i class="bi bi-person-vcard"></i>
+                            Pasaporte:
+                            {{ jugador.pasaporte|default:"No informado" }}
+                        </span>
+                    </div>
+
+                    <div class="player-info-grid">
+
+                        <div class="info-item">
+                            <span class="info-label">
+                                <i class="bi bi-flag-fill"></i>
+                                Selección
+                            </span>
+                            <span class="info-value">
+                                {% if jugador.seleccion %}
+                                    {{ jugador.seleccion.nombre }}
+                                {% else %}
+                                    No informada
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">
+                                <i class="bi bi-calendar3"></i>
+                                Edad
+                            </span>
+                            <span class="info-value">
+                                {% if jugador.edad %}
+                                    {{ jugador.edad }} años
+                                {% else %}
+                                    No informada
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">
+                                <i class="bi bi-person-standing"></i>
+                                Posición
+                            </span>
+                            <span class="info-value">
+                                {{ jugador.get_posicion_display|default:"No informada" }}
+                            </span>
+                        </div>
+
+                        <div class="info-item wide">
+                            <span class="info-label">
+                                <i class="bi bi-dribbble"></i>
+                                Club actual
+                            </span>
+                            <span class="info-value">
+                                {{ jugador.equipo_actual|default:"No informado" }}
+                            </span>
+                        </div>
+
+                        <div class="info-item wide">
+                            <span class="info-label">
+                                <i class="bi bi-globe-americas"></i>
+                                País del club
+                            </span>
+                            <span class="info-value">
+                                {{ jugador.pais_equipo|default:"No informado" }}
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Historial de participaciones -->
+    <section class="history-card">
+
+        <div class="history-header">
+            <h2 class="history-title">
+                <i class="bi bi-trophy-fill"></i>
+                Historial de participaciones en Copas del Mundo
+            </h2>
+        </div>
+
+        <div>
+            {% with historiales=jugador.historiales.all %}
+
+                {% if historiales %}
+
+                    <div class="table-responsive">
+                        <table class="history-table text-center">
+
+                            <thead>
+                                <tr>
+                                    <th class="text-start ps-4">
+                                        Mundial / Edición
+                                    </th>
+                                    <th>Sede</th>
+                                    <th>Partidos jugados</th>
+                                    <th>Goles convertidos</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for historial in historiales %}
+                                    <tr>
+                                        <td class="text-start ps-4">
+                                            <span class="history-edition">
+                                                Copa Mundial {{ historial.mundial.anio }}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            {{ historial.mundial.sede }}
+                                        </td>
+
+                                        <td>
+                                            <span class="history-stat">
+                                                {{ historial.partidos_jugados }} PJ
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <span class="history-stat history-goals">
+                                                <i class="bi bi-dribbble me-1"></i>
+                                                {{ historial.goles }} goles
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                {% else %}
+
+                    <div class="history-empty">
+                        <div class="history-empty-icon">
+                            <i class="bi bi-trophy"></i>
+                        </div>
+
+                        <h5>Sin participaciones registradas</h5>
+
+                        <p>
+                            Todavía no hay registros de partidos jugados
+                            en Copas del Mundo para este futbolista.
+                            Cuando existan datos, aparecerán en esta sección.
+                        </p>
+                    </div>
+
+                {% endif %}
+
+            {% endwith %}
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
+```
