@@ -1,7 +1,7 @@
 
 from collections import defaultdict
 import unicodedata
-
+from django.views.generic import ListView
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -369,14 +369,48 @@ def registro_view(request):
 # MUNDIALES
 # ==========================================
 
-def mundiales(request):
 
-    lista_mundiales = Mundial.objects.all()
+class MundialListView(ListView):
+    """
+    Listado de Mundiales con búsqueda y paginación.
+    """
 
-    return render(request, "mundial/mundiales.html", {
-        "mundiales": lista_mundiales
-    })
+    model = Mundial
 
+    template_name = "mundial/mundiales.html"
+
+    context_object_name = "mundiales"
+
+    paginate_by = 6
+
+    def get_queryset(self):
+
+        mundiales = Mundial.objects.all().order_by("-anio")
+
+        q = self.request.GET.get("q", "").strip()
+
+        if q:
+
+            filtros = (
+                Q(nombre__icontains=q)
+                | Q(sede__icontains=q)
+                | Q(campeon__icontains=q)
+            )
+
+            if q.isdigit():
+                filtros |= Q(anio=int(q))
+
+            mundiales = mundiales.filter(filtros)
+
+        return mundiales
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+
+        context["q"] = self.request.GET.get("q", "").strip()
+
+        return context
 
 def detalle_mundial(request, pk):
 

@@ -48,14 +48,16 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # MODIFICACIÓN CLAVE: Se le indica a Django que busque la carpeta 'templates' en la raíz
-        'DIRS': [BASE_DIR / 'templates'], 
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # Context processor propio de MundoFútbol
+                'mundial.context_processors.confederaciones_menu',
             ],
         },
     },
