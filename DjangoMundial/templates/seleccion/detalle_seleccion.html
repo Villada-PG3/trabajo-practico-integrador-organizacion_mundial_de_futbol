@@ -1,95 +1,410 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load banderas %}
 
-{% block title %}{{ seleccion.nombre }} | MundoFútbol{% endblock %}
+{% block title %}
+{{ seleccion.nombre }} - Mundial {{ anio_elegido }} | MundoFútbol
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/detalle_seleccion.css' %}">
+{% endblock %}
 
 {% block content %}
 
 <div class="mb-4">
     <a href="{% url 'selecciones' %}"
-        class="btn btn-outline-dorado">
-        <i class="fa-solid fa-arrow-left me-1"></i>
+       class="btn btn-outline-dorado">
+        <i class="fa-solid fa-arrow-left me-2"></i>
         Volver a selecciones
     </a>
 </div>
 
+<!-- INFORMACIÓN DE LA SELECCIÓN -->
+<section class="seleccion-portada seleccion-portada-con-selector">
 
-<!-- Información principal -->
+    <!-- SELECTOR DE MUNDIAL -->
+    <form method="get" class="selector-mundial-form">
 
-<div class="card bg-navbar text-white shadow border border-dorado rounded-4 mb-4">
+        <label for="selector-mundial" class="selector-mundial-label">
+            <i class="fa-solid fa-calendar-days me-1"></i>
+            Elegir Mundial
+        </label>
 
-    <div class="card-body p-4 p-md-5">
+        <select
+            id="selector-mundial"
+            name="anio"
+            class="selector-mundial-select"
+            onchange="this.form.submit()"
+        >
 
-        <div class="text-center mb-4">
-            <i class="fa-solid fa-flag fa-4x text-dorado"></i>
-        </div>
+            {% for anio in anios_disponibles %}
 
-        <h1 class="text-center h2 fw-bold text-dorado mb-4">
+                <option value="{{ anio }}"
+                    {% if anio == anio_elegido %}selected{% endif %}>
+                    Mundial {{ anio }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <noscript>
+            <button type="submit" class="btn btn-dorado btn-sm">
+                Ver
+            </button>
+        </noscript>
+
+    </form>
+
+    <div class="seleccion-portada-contenido">
+
+        {% with url=seleccion.nombre|bandera %}
+
+            {% if url %}
+                <img src="{{ url }}"
+                     class="seleccion-bandera-principal"
+                     alt="Bandera de {{ seleccion.nombre }}">
+            {% else %}
+                <i class="fa-solid fa-flag seleccion-icono-principal"></i>
+            {% endif %}
+
+        {% endwith %}
+
+        <h1 class="seleccion-nombre-principal">
             {{ seleccion.nombre }}
         </h1>
 
-        <div class="row g-4">
+        <div class="seleccion-informacion">
 
-            <div class="col-md-4">
-                <div class="text-center">
-                    <small class="text-light opacity-75">
-                        Confederación
-                    </small>
-
-                    <h3 class="h5 fw-bold mt-2">
-                        {{ seleccion.confederacion }}
-                    </h3>
-                </div>
+            <div class="seleccion-dato">
+                <span class="seleccion-dato-etiqueta">
+                    Confederación
+                </span>
+                <strong>
+                    {{ seleccion.confederacion|default:"Sin registrar" }}
+                </strong>
             </div>
 
-            <div class="col-md-4">
-                <div class="text-center">
-                    <small class="text-light opacity-75">
-                        Títulos mundiales
-                    </small>
-
-                    <h3 class="h5 fw-bold text-dorado mt-2">
-                        {{ seleccion.titulos }}
-                    </h3>
-                </div>
+            <div class="seleccion-dato">
+                <span class="seleccion-dato-etiqueta">
+                    Jugadores registrados
+                </span>
+                <strong>{{ total_jugadores }}</strong>
             </div>
 
-            <div class="col-md-4">
-                <div class="text-center">
-                    <small class="text-light opacity-75">
-                        Mundial registrado
-                    </small>
-
-                    {% if seleccion.mundial %}
-                        <h3 class="h5 fw-bold mt-2">
-                            {{ seleccion.mundial }}
-                        </h3>
-                    {% else %}
-                        <h3 class="h5 text-light opacity-50 mt-2">
-                            Sin registrar
-                        </h3>
-                    {% endif %}
-                </div>
+            <div class="seleccion-dato">
+                <span class="seleccion-dato-etiqueta">
+                    Mundial seleccionado
+                </span>
+                <strong>Mundial {{ anio_elegido }}</strong>
             </div>
 
         </div>
 
     </div>
 
-</div>
+</section>
 
+{% if datos_disponibles %}
 
-<!-- Jugadores -->
+<!-- ÚLTIMOS PARTIDOS -->
+<section class="seleccion-panel">
 
-{% for jugador in seleccion.jugadores.all %}
+    <div class="seleccion-panel-titulo">
+        <div>
+            <i class="fa-solid fa-futbol me-2"></i>
+            Últimos partidos
+        </div>
+        <span class="seleccion-panel-subtitulo">
+            Mundial {{ anio_elegido }}
+        </span>
+    </div>
 
-{% empty %}
+    <div class="table-responsive">
 
-    <div class="card bg-tarjeta text-white">
-        <div class="card-body text-center">
-            No hay jugadores registrados para esta selección.
+        <table class="tabla-seleccion-partidos">
+
+            <thead>
+                <tr>
+                    <th>FECHA</th>
+                    <th>R.</th>
+                    <th>RIVAL</th>
+                    <th>FASE</th>
+                    <th class="text-end">RESULTADO</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for item in ultimos_partidos %}
+
+                <tr>
+
+                    <td class="partido-fecha-celda">
+                        {{ item.fecha|date:"d/m/Y" }}
+                    </td>
+
+                    <td>
+                        {% if item.resultado == "V" %}
+                            <span class="resultado-indicador resultado-victoria">V</span>
+                        {% elif item.resultado == "D" %}
+                            <span class="resultado-indicador resultado-derrota">D</span>
+                        {% else %}
+                            <span class="resultado-indicador resultado-empate">E</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <div class="partido-rival">
+
+                            {% with url=item.rival.nombre|bandera %}
+                                {% if url %}
+                                    <img
+                                        src="{{ url }}"
+                                        class="bandera-rival"
+                                        alt="Bandera de {{ item.rival.nombre }}"
+                                    >
+                                {% endif %}
+                            {% endwith %}
+
+                            <span>{{ item.rival.nombre }}</span>
+
+                        </div>
+                    </td>
+
+                    <td class="partido-fase-celda">
+                        {{ item.fase }}
+                    </td>
+
+                    <td class="text-end">
+                        <span class="partido-marcador">
+                            {{ item.goles_propios }} - {{ item.goles_rival }}
+                        </span>
+
+                        {% if item.hubo_penales %}
+                            <span class="partido-penales">
+                                Pen. {{ item.penales_propios }}-{{ item.penales_rival }}
+                            </span>
+                        {% endif %}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="5" class="seleccion-sin-datos">
+                        No hay partidos registrados para esta selección.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+<!-- PLANTEL -->
+<section class="seleccion-panel">
+
+    <div class="seleccion-panel-titulo">
+        <div>
+            <i class="fa-solid fa-users me-2"></i>
+            Plantel
+        </div>
+
+        <span class="seleccion-panel-subtitulo">
+            {{ total_jugadores }} jugadores
+        </span>
+    </div>
+
+    <!-- DIRECTORES TÉCNICOS -->
+    <div class="plantel-categoria">DIRECTOR TÉCNICO</div>
+
+    {% for tecnico in directores_tecnicos %}
+
+        <div class="plantel-fila plantel-fila-tecnico">
+            <div class="plantel-dorsal plantel-dorsal-dt">DT</div>
+
+            <div class="plantel-nombre">
+                <strong>{{ tecnico.nombre }} {{ tecnico.apellido }}</strong>
+                <span>{{ tecnico.get_funcion_display }}</span>
+            </div>
+        </div>
+
+    {% empty %}
+        <div class="seleccion-sin-datos">
+            No hay director técnico registrado.
+        </div>
+    {% endfor %}
+
+    <!-- ARQUEROS -->
+    <div class="plantel-categoria">ARQUEROS</div>
+
+    {% for jugador in arqueros %}
+
+        <a href="{% url 'detalle_jugador' jugador.pk %}"
+           class="plantel-fila plantel-fila-enlace">
+
+            <div class="plantel-dorsal">
+                {{ jugador.numero_camiseta }}
+            </div>
+
+            <div class="plantel-nombre">
+                <strong>{{ jugador.apellido_nombres }}</strong>
+                <span>{{ jugador.equipo_actual }}</span>
+            </div>
+
+            <div class="plantel-edad">
+                {{ jugador.edad }} años
+            </div>
+
+            <i class="fa-solid fa-chevron-right plantel-flecha"></i>
+        </a>
+
+    {% empty %}
+        <div class="seleccion-sin-datos">Sin arqueros registrados.</div>
+    {% endfor %}
+
+    <!-- DEFENSORES -->
+    <div class="plantel-categoria">DEFENSORES</div>
+
+    {% for jugador in defensores %}
+
+        <a href="{% url 'detalle_jugador' jugador.pk %}"
+           class="plantel-fila plantel-fila-enlace">
+
+            <div class="plantel-dorsal">{{ jugador.numero_camiseta }}</div>
+
+            <div class="plantel-nombre">
+                <strong>{{ jugador.apellido_nombres }}</strong>
+                <span>{{ jugador.equipo_actual }}</span>
+            </div>
+
+            <div class="plantel-edad">{{ jugador.edad }} años</div>
+
+            <i class="fa-solid fa-chevron-right plantel-flecha"></i>
+        </a>
+
+    {% empty %}
+        <div class="seleccion-sin-datos">Sin defensores registrados.</div>
+    {% endfor %}
+
+    <!-- MEDIOCAMPISTAS -->
+    <div class="plantel-categoria">MEDIOCAMPISTAS</div>
+
+    {% for jugador in mediocampistas %}
+
+        <a href="{% url 'detalle_jugador' jugador.pk %}"
+           class="plantel-fila plantel-fila-enlace">
+
+            <div class="plantel-dorsal">{{ jugador.numero_camiseta }}</div>
+
+            <div class="plantel-nombre">
+                <strong>{{ jugador.apellido_nombres }}</strong>
+                <span>{{ jugador.equipo_actual }}</span>
+            </div>
+
+            <div class="plantel-edad">{{ jugador.edad }} años</div>
+
+            <i class="fa-solid fa-chevron-right plantel-flecha"></i>
+        </a>
+
+    {% empty %}
+        <div class="seleccion-sin-datos">Sin mediocampistas registrados.</div>
+    {% endfor %}
+
+    <!-- DELANTEROS -->
+    <div class="plantel-categoria">DELANTEROS</div>
+
+    {% for jugador in delanteros %}
+
+        <a href="{% url 'detalle_jugador' jugador.pk %}"
+           class="plantel-fila plantel-fila-enlace">
+
+            <div class="plantel-dorsal">{{ jugador.numero_camiseta }}</div>
+
+            <div class="plantel-nombre">
+                <strong>{{ jugador.apellido_nombres }}</strong>
+                <span>{{ jugador.equipo_actual }}</span>
+            </div>
+
+            <div class="plantel-edad">{{ jugador.edad }} años</div>
+
+            <i class="fa-solid fa-chevron-right plantel-flecha"></i>
+        </a>
+
+    {% empty %}
+        <div class="seleccion-sin-datos">Sin delanteros registrados.</div>
+    {% endfor %}
+
+</section>
+
+<!-- RESTO DEL CUERPO TÉCNICO -->
+{% if otros_tecnicos %}
+
+<section class="seleccion-panel">
+
+    <div class="seleccion-panel-titulo">
+        <div>
+            <i class="fa-solid fa-user-tie me-2"></i>
+            Cuerpo técnico
         </div>
     </div>
 
-{% endfor %}
+    {% for tecnico in otros_tecnicos %}
+
+        <div class="plantel-fila plantel-fila-tecnico">
+
+            <div class="plantel-dorsal plantel-dorsal-dt">
+                <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div class="plantel-nombre">
+                <strong>{{ tecnico.nombre }} {{ tecnico.apellido }}</strong>
+                <span>{{ tecnico.get_funcion_display }}</span>
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+</section>
+
+{% endif %}
+
+{% else %}
+
+<!-- MUNDIALES QUE TODAVÍA NO TIENEN DATOS HISTÓRICOS -->
+<section class="seleccion-panel">
+
+    <div class="seleccion-sin-datos py-5">
+
+        <i class="fa-solid fa-database fa-3x text-dorado mb-3"></i>
+
+        <h3 class="text-dorado">
+            Mundial {{ anio_elegido }}
+        </h3>
+
+        <p class="text-light mb-3">
+            Todavía no están cargados los jugadores y
+            partidos de {{ seleccion.nombre }}
+            correspondientes a este Mundial.
+        </p>
+
+        <a href="?anio=2022" class="btn btn-dorado">
+            Ver Mundial 2022
+        </a>
+
+    </div>
+
+</section>
+
+{% endif %}
 
 {% endblock %}

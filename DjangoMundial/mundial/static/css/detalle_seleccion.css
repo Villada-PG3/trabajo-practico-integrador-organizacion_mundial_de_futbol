@@ -1,0 +1,476 @@
+/* ==========================================
+   DETALLE DE SELECCIÓN - MUNDOFÚTBOL
+   ========================================== */
+
+.seleccion-portada {
+    background: #1E8449;
+    border: 1px solid #C8A34D;
+    border-radius: 16px;
+
+    padding: 45px 30px;
+    margin-bottom: 30px;
+
+    color: #FFFFFF;
+}
+
+.seleccion-portada-contenido {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.seleccion-bandera-principal {
+    width: 105px;
+    height: 72px;
+    object-fit: contain;
+
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.seleccion-icono-principal {
+    color: #C8A34D;
+    font-size: 62px;
+    margin-bottom: 20px;
+}
+
+.seleccion-nombre-principal {
+    color: #C8A34D;
+    font-size: 34px;
+    font-weight: 800;
+
+    margin-bottom: 30px;
+}
+
+.seleccion-informacion {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 30px;
+    width: 100%;
+}
+
+.seleccion-dato {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    min-width: 0;
+}
+
+.seleccion-dato-etiqueta {
+    color: #D4E4DA;
+    font-size: 13px;
+}
+
+.seleccion-dato strong {
+    font-size: 17px;
+    color: #FFFFFF;
+}
+
+
+/* ==========================================
+   PANELES
+   ========================================== */
+
+.seleccion-panel {
+    margin-bottom: 28px;
+
+    border: 1px solid #C8A34D;
+    border-radius: 10px;
+
+    background-color: #19231F;
+    color: #FFFFFF;
+
+    overflow: hidden;
+}
+
+.seleccion-panel-titulo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+    flex-wrap: wrap;
+
+    background-color: #145A32;
+    color: #C8A34D;
+
+    padding: 16px 20px;
+
+    font-size: 19px;
+    font-weight: 800;
+
+    border-bottom: 1px solid #C8A34D;
+}
+
+.seleccion-panel-subtitulo {
+    font-size: 12px;
+    font-weight: 700;
+    color: #D6E5DB;
+}
+
+
+/* ==========================================
+   ÚLTIMOS PARTIDOS
+   ========================================== */
+
+.tabla-seleccion-partidos {
+    width: 100%;
+    border-collapse: collapse;
+    color: #FFFFFF;
+}
+
+.tabla-seleccion-partidos thead th {
+    background-color: #202724;
+
+    padding: 12px 14px;
+
+    color: #BFCFC5;
+    font-size: 11px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+.tabla-seleccion-partidos tbody td {
+    padding: 15px 14px;
+
+    background-color: #19231F;
+    border-bottom: 1px solid #39443D;
+
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.tabla-seleccion-partidos tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tabla-seleccion-partidos tbody tr:hover td {
+    background-color: #273A2E;
+}
+
+.partido-fecha-celda {
+    color: #BAC9C0;
+    white-space: nowrap;
+}
+
+.partido-rival {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    min-width: 140px;
+
+    font-weight: 700;
+}
+
+.bandera-rival {
+    width: 30px;
+    height: 21px;
+
+    object-fit: cover;
+    border-radius: 2px;
+
+    flex-shrink: 0;
+}
+
+.partido-fase-celda {
+    color: #C9D9CF;
+}
+
+.partido-marcador {
+    font-size: 16px;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+.partido-penales {
+    display: block;
+    font-size: 10px;
+    color: #C8A34D;
+    margin-top: 4px;
+    white-space: nowrap;
+}
+
+.resultado-indicador {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 26px;
+    height: 26px;
+
+    border-radius: 6px;
+
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.resultado-victoria {
+    color: #69E6A4;
+    background: #194C39;
+}
+
+.resultado-derrota {
+    color: #FF7777;
+    background: #4A2828;
+}
+
+.resultado-empate {
+    color: #FFD971;
+    background: #4B4026;
+}
+
+
+/* ==========================================
+   PLANTEL
+   ========================================== */
+
+.plantel-categoria {
+    padding: 12px 20px;
+
+    text-align: center;
+
+    background-color: #202724;
+    color: #C8A34D;
+
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 1px;
+
+    border-bottom: 1px solid #39443D;
+}
+
+.plantel-fila {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    padding: 13px 20px;
+
+    background-color: #19231F;
+    border-bottom: 1px solid #39443D;
+
+    min-height: 70px;
+}
+
+.plantel-fila:last-child {
+    border-bottom: none;
+}
+
+.plantel-fila-enlace {
+    text-decoration: none;
+    color: #FFFFFF;
+
+    transition:
+        background-color 0.2s ease,
+        padding-left 0.2s ease;
+}
+
+.plantel-fila-enlace:hover {
+    color: #FFFFFF;
+    background-color: #294333;
+    padding-left: 25px;
+}
+
+.plantel-dorsal {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background-color: #2C3530;
+    border: 1px solid #536056;
+
+    color: #FFFFFF;
+
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.plantel-dorsal-dt {
+    color: #C8A34D;
+    font-size: 12px;
+}
+
+.plantel-nombre {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+    min-width: 0;
+
+    flex: 1;
+}
+
+.plantel-nombre strong {
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.plantel-nombre span {
+    color: #A8BCAF;
+    font-size: 12px;
+}
+
+.plantel-edad {
+    color: #C5D4CA;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.plantel-flecha {
+    color: #C8A34D;
+    font-size: 13px;
+    margin-left: 5px;
+}
+
+.plantel-fila-enlace:hover .plantel-nombre strong {
+    color: #E7C872;
+}
+
+.seleccion-sin-datos {
+    padding: 20px;
+    color: #C1CEC6;
+    text-align: center;
+    font-size: 13px;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 768px) {
+
+    .seleccion-portada {
+        padding: 28px 15px;
+    }
+
+    .seleccion-informacion {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .seleccion-nombre-principal {
+        font-size: 28px;
+    }
+
+    .seleccion-panel-titulo {
+        font-size: 16px;
+        padding: 14px;
+    }
+
+    .plantel-fila {
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .plantel-fila-enlace:hover {
+        padding-left: 15px;
+    }
+
+    .plantel-dorsal {
+        width: 35px;
+        height: 35px;
+        font-size: 12px;
+    }
+
+    .plantel-edad {
+        font-size: 11px;
+    }
+
+    .tabla-seleccion-partidos thead th,
+    .tabla-seleccion-partidos tbody td {
+        padding: 11px 9px;
+    }
+}
+/* ==========================================
+   SELECTOR DE MUNDIAL
+   ========================================== */
+
+.seleccion-portada-con-selector {
+    position: relative;
+    padding-top: 80px;
+}
+
+.selector-mundial-form {
+    position: absolute;
+    top: 20px;
+    right: 22px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    z-index: 2;
+}
+
+.selector-mundial-label {
+    color: #F1E4B9;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.selector-mundial-select {
+    min-width: 150px;
+
+    background-color: #145A32;
+    color: #C8A34D;
+
+    border: 1px solid #C8A34D;
+    border-radius: 8px;
+
+    padding: 10px 12px;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    cursor: pointer;
+    outline: none;
+}
+
+.selector-mundial-select:focus {
+    border-color: #F1D475;
+    box-shadow: 0 0 0 3px rgba(200,163,77,0.18);
+}
+
+.selector-mundial-select option {
+    background: #145A32;
+    color: #FFFFFF;
+}
+
+@media (max-width: 576px) {
+
+    .seleccion-portada-con-selector {
+        padding-top: 95px;
+    }
+
+    .selector-mundial-form {
+        left: 15px;
+        right: 15px;
+        top: 15px;
+
+        justify-content: center;
+    }
+
+    .selector-mundial-label {
+        font-size: 11px;
+    }
+
+    .selector-mundial-select {
+        min-width: 135px;
+        font-size: 12px;
+    }
+}
