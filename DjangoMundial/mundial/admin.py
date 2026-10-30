@@ -11,6 +11,7 @@ from .models import (
     PartidoMundial2022,
 )
 
+
 @admin.register(Confederacion)
 class ConfederacionAdmin(admin.ModelAdmin):
     list_display = ('nombre',)
@@ -47,65 +48,71 @@ class PersonalTecnicoAdmin(admin.ModelAdmin):
 @admin.register(Jugador)
 class JugadorAdmin(admin.ModelAdmin):
     list_display = (
-        "apellido_nombres", "pasaporte", "edad", "posicion",
-        "equipo_actual", "pais_equipo", "numero_camiseta", "seleccion",
+        'apellido_nombres', 'pasaporte', 'edad', 'posicion',
+        'equipo_actual', 'pais_equipo', 'numero_camiseta', 'seleccion',
     )
-    search_fields = ("apellido_nombres", "pasaporte", "equipo_actual")
-    list_filter = ("posicion", "seleccion")
+    search_fields = ('apellido_nombres', 'pasaporte', 'equipo_actual')
+    list_filter = ('posicion', 'seleccion')
+
 
 @admin.register(HistorialJugador)
 class HistorialJugadorAdmin(admin.ModelAdmin):
-    list_display = ("jugador", "mundial", "partidos_jugados", "goles")
-    list_filter = ("mundial",)
-    search_fields = ("jugador__apellido_nombres",)
-    ordering = ("-mundial__anio",)
+    list_display = ('jugador', 'mundial', 'partidos_jugados', 'goles', 'asistencias')
+    list_filter = ('mundial',)
+    search_fields = ('jugador__apellido_nombres',)
+    ordering = ('-mundial__anio',)
+
 
 class EventoPartidoInline(admin.TabularInline):
     model = EventoPartido
     extra = 1
     fields = (
-        "minuto", "tipo", "equipo", "jugador", "jugador_entra",
-        "jugador_sale", "descripcion",
+        'minuto', 'tipo', 'equipo', 'jugador', 'jugador_entra',
+        'jugador_sale', 'descripcion',
     )
+
 
 @admin.register(PartidoEliminatoria)
 class PartidoEliminatoriaAdmin(admin.ModelAdmin):
     list_display = (
-        "mundial", "fase", "orden", "equipo1", "goles1",
-        "equipo2", "goles2", "info_extra",
+        'mundial', 'fase', 'orden', 'equipo1', 'goles1',
+        'equipo2', 'goles2', 'info_extra',
     )
-    list_filter = ("mundial", "fase")
-    list_editable = ("orden",)
-    search_fields = ("equipo1", "equipo2")
-    ordering = ("-mundial__anio", "fase", "orden", "pk")
+    list_filter = ('mundial', 'fase')
+    list_editable = ('orden',)
+    search_fields = ('equipo1', 'equipo2')
+    ordering = ('-mundial__anio', 'fase', 'orden', 'pk')
     inlines = [EventoPartidoInline]
+
 
 class PosicionGrupoInline(admin.TabularInline):
     model = PosicionGrupo
     extra = 4
-    fields = ("grupo", "equipo", "pts", "pj", "gf", "gc", "g", "e", "p", "forma")
+    fields = ('grupo', 'equipo', 'pts', 'pj', 'gf', 'gc', 'g', 'e', 'p', 'forma')
+
 
 class PartidoEliminatoriaInline(admin.TabularInline):
     model = PartidoEliminatoria
     extra = 2
-    fields = ("fase", "orden", "equipo1", "goles1", "equipo2", "goles2", "info_extra")
+    fields = ('fase', 'orden', 'equipo1', 'goles1', 'equipo2', 'goles2', 'info_extra')
+
 
 @admin.register(Mundial)
 class MundialAdmin(admin.ModelAdmin):
-    list_display = ("anio", "sede", "campeon", "mvp_mundial", "maximo_goleador", "mostrar_logo")
-    list_filter = ("anio", "sede")
-    search_fields = ("sede", "campeon", "mvp_mundial", "maximo_goleador")
+    list_display = ('anio', 'sede', 'campeon', 'mvp_mundial', 'maximo_goleador', 'mostrar_logo')
+    list_filter = ('anio', 'sede')
+    search_fields = ('sede', 'campeon', 'mvp_mundial', 'maximo_goleador')
     fieldsets = (
-        ("Información General", {"fields": ("anio", "nombre", "sede", "descripcion")}),
-        ("Imágenes", {"fields": ("imagen_logo", "imagen_portada")}),
-        ("Cuadro de Honor (Podio)", {"fields": ("campeon", "subcampeon", "tercer_puesto")}),
-        ("Premios Individuales", {"fields": (
-            "maximo_goleador", "goles_maximo_goleador", "mvp_mundial", "mejor_arquero"
+        ('Información General', {'fields': ('anio', 'nombre', 'sede', 'descripcion')}),
+        ('Imágenes', {'fields': ('imagen_logo', 'imagen_portada')}),
+        ('Cuadro de Honor (Podio)', {'fields': ('campeon', 'subcampeon', 'tercer_puesto')}),
+        ('Premios Individuales', {'fields': (
+            'maximo_goleador', 'goles_maximo_goleador', 'mvp_mundial', 'mejor_arquero'
         )}),
     )
     inlines = [PosicionGrupoInline, PartidoEliminatoriaInline]
 
-    @admin.display(description="Logo")
+    @admin.display(description='Logo')
     def mostrar_logo(self, obj):
         if obj.imagen_logo:
             return format_html(
@@ -113,42 +120,18 @@ class MundialAdmin(admin.ModelAdmin):
                 'style="object-fit:contain; border-radius:4px;" />',
                 obj.imagen_logo.url,
             )
-        return "Sin Logo"
+        return 'Sin Logo'
 
 
 class PartidoMundial2022Admin(admin.ModelAdmin):
     list_display = (
-        'fecha',
-        'fase',
-        'grupo',
-        'equipo1',
-        'goles1',
-        'goles2',
-        'equipo2',
-        'estadio',
+        'fecha', 'fase', 'grupo', 'equipo1', 'goles1',
+        'goles2', 'equipo2', 'estadio',
     )
-
-    list_filter = (
-        'fase',
-        'grupo',
-        'fecha',
-    )
-
-    search_fields = (
-        'equipo1__nombre',
-        'equipo2__nombre',
-        'estadio',
-    )
-
-    list_select_related = (
-        'equipo1',
-        'equipo2',
-        'mundial',
-    )
+    list_filter = ('fase', 'grupo', 'fecha')
+    search_fields = ('equipo1__nombre', 'equipo2__nombre', 'estadio')
+    list_select_related = ('equipo1', 'equipo2', 'mundial')
 
 
 if not admin.site.is_registered(PartidoMundial2022):
-    admin.site.register(
-        PartidoMundial2022,
-        PartidoMundial2022Admin
-    )
+    admin.site.register(PartidoMundial2022, PartidoMundial2022Admin)

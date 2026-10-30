@@ -1,7 +1,8 @@
-```html
 {% extends 'base.html' %}
 
-{% block title %}{{ jugador.apellido_nombres }} | MundoFútbol{% endblock %}
+{% block title %}
+{{ jugador.apellido_nombres }} | MundoFútbol
+{% endblock %}
 
 {% block content %}
 
@@ -25,14 +26,13 @@
         box-sizing: border-box;
     }
 
-    /* Botón volver */
     .player-back {
         display: inline-flex;
         align-items: center;
         gap: 9px;
         padding: 11px 19px;
         color: var(--mf-gold);
-        background: #103b2c;
+        background: var(--mf-card);
         border: 1px solid var(--mf-border);
         border-radius: 50px;
         text-decoration: none;
@@ -43,10 +43,8 @@
     .player-back:hover {
         color: #10251b;
         background: var(--mf-gold);
-        transform: translateY(-2px);
     }
 
-    /* Tarjetas principales */
     .player-card,
     .history-card {
         background: linear-gradient(145deg, #124631, #09291f);
@@ -61,14 +59,16 @@
         margin-bottom: 40px;
     }
 
-    /* Identidad del jugador */
     .player-identity {
         min-height: 100%;
         padding: 42px 22px;
         text-align: center;
         background:
-            radial-gradient(circle at 50% 35%,
-                rgba(255, 200, 69, .12), transparent 48%),
+            radial-gradient(
+                circle at 50% 35%,
+                rgba(255, 200, 69, .12),
+                transparent 48%
+            ),
             linear-gradient(160deg, #18583d, #09251b);
         border-right: 1px solid var(--mf-border);
         display: flex;
@@ -77,7 +77,6 @@
         justify-content: center;
     }
 
-    /* Círculo con el número de camiseta */
     .player-shirt {
         width: 180px;
         height: 180px;
@@ -106,15 +105,13 @@
         font-size: 5.5rem;
         line-height: 1;
         font-weight: 900;
-        letter-spacing: -3px;
-        text-shadow: 0 4px 18px rgba(255, 200, 69, .15);
     }
 
     .shirt-label {
         position: relative;
         margin-top: -12px;
         padding: 7px 18px;
-        border: 3px solid #103b2c;
+        border: 3px solid var(--mf-card);
         border-radius: 30px;
         background: var(--mf-gold);
         color: #172117;
@@ -138,7 +135,6 @@
         margin: 0;
     }
 
-    /* Ficha técnica */
     .player-details {
         padding: 32px;
     }
@@ -153,7 +149,7 @@
     }
 
     .player-section-title {
-        color: #ffffff;
+        color: #fff;
         font-size: 1.55rem;
         font-weight: 850;
         margin: 0;
@@ -175,13 +171,14 @@
         border: 1px solid var(--mf-border);
         border-radius: 50px;
         background: rgba(255, 200, 69, .07);
-        color: #ffffff;
+        color: #fff;
         font-size: .9rem;
         font-weight: 700;
         overflow-wrap: anywhere;
     }
 
-    .passport-badge i {
+    .passport-badge i,
+    .info-label i {
         color: var(--mf-gold);
     }
 
@@ -205,7 +202,6 @@
     .info-item:hover {
         background: rgba(255, 255, 255, .075);
         border-color: var(--mf-border);
-        transform: translateY(-2px);
     }
 
     .info-item.wide {
@@ -223,21 +219,28 @@
     }
 
     .info-label i {
-        color: var(--mf-gold);
         margin-right: 6px;
     }
 
     .info-value {
         display: block;
-        color: #ffffff;
+        color: #fff;
         font-size: 1.12rem;
         line-height: 1.4;
         font-weight: 750;
         overflow-wrap: anywhere;
     }
 
-    /* Historial */
+    /* =====================================
+       HISTORIAL DE MUNDIALES
+       ===================================== */
+
     .history-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 18px;
         padding: 23px 27px;
         background: linear-gradient(100deg, #164b37, #0d3023);
         border-bottom: 2px solid var(--mf-gold);
@@ -254,66 +257,88 @@
         margin: 0;
     }
 
-    .history-title i {
-        font-size: 1.5rem;
+    .history-year-form {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
     }
 
-    .history-table {
-        width: 100%;
-        margin: 0;
-        border-collapse: collapse;
-        color: #f4f7f5;
-        vertical-align: middle;
+    .history-year-form label {
+        color: #fff;
+        font-weight: 700;
+        font-size: .85rem;
     }
 
-    .history-table thead th {
-        background: #0b2b20;
+    .history-year-form select,
+    .history-year-form button {
+        border: 1px solid var(--mf-gold);
+        border-radius: 9px;
         color: var(--mf-gold);
-        padding: 17px 15px;
-        border-bottom: 1px solid var(--mf-border);
-        font-size: .78rem;
-        text-transform: uppercase;
-        letter-spacing: .5px;
-        white-space: nowrap;
+        background: #0a3023;
+        padding: 10px 13px;
+        font-weight: 750;
+        cursor: pointer;
     }
 
-    .history-table tbody td {
-        padding: 18px 15px;
-        background: #103b2c;
-        color: #f4f7f5;
-        border-bottom: 1px solid rgba(255, 255, 255, .07);
+    .history-year-form select:focus {
+        outline: 2px solid var(--mf-gold);
+        outline-offset: 2px;
     }
 
-    .history-table tbody tr:nth-child(even) td {
-        background: #144431;
+    .history-content {
+        padding: 30px;
     }
 
-    .history-table tbody tr:hover td {
-        background: #1b523a;
+    .history-year-title {
+        color: var(--mf-gold);
+        margin: 0 0 25px;
+        font-size: 1.25rem;
+        font-weight: 850;
     }
 
-    .history-edition {
-        color: #ffffff;
-        font-weight: 800;
+    .history-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 17px;
     }
 
-    .history-stat {
-        display: inline-block;
-        min-width: 65px;
-        padding: 7px 12px;
-        border-radius: 30px;
-        background: #245642;
-        color: #ffffff;
-        font-weight: 800;
-        white-space: nowrap;
+    .history-stat-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 30px 15px;
+        border: 1px solid var(--mf-border);
+        border-radius: 14px;
+        background: #145139;
+        text-align: center;
+        transition: .2s ease;
     }
 
-    .history-goals {
-        background: var(--mf-gold);
-        color: #172117;
+    .history-stat-card:hover {
+        background: #1b6547;
+        transform: translateY(-2px);
     }
 
-    /* Estado sin datos */
+    .history-stat-card i {
+        color: var(--mf-gold);
+        font-size: 1.7rem;
+    }
+
+    .history-stat-card strong {
+        color: var(--mf-gold);
+        font-size: 2.6rem;
+        font-weight: 900;
+        line-height: 1;
+    }
+
+    .history-stat-card span {
+        color: #fff;
+        font-weight: 700;
+    }
+
     .history-empty {
         padding: 48px 20px;
         text-align: center;
@@ -335,7 +360,7 @@
     }
 
     .history-empty h5 {
-        color: #ffffff;
+        color: #fff;
         font-weight: 800;
         margin-bottom: 10px;
     }
@@ -347,7 +372,8 @@
         line-height: 1.7;
     }
 
-    /* Adaptación a tabletas y celulares */
+    /* RESPONSIVE */
+
     @media (max-width: 991.98px) {
         .player-details {
             padding: 25px;
@@ -359,10 +385,6 @@
 
         .info-item {
             padding: 16px 13px;
-        }
-
-        .info-value {
-            font-size: 1rem;
         }
     }
 
@@ -409,17 +431,12 @@
             padding: 20px;
         }
 
-        .history-table thead th,
-        .history-table tbody td {
-            padding: 13px 12px;
+        .history-content {
+            padding: 20px;
         }
 
-        .history-table {
-            min-width: 650px;
-        }
-
-        .history-table thead th {
-            white-space: normal;
+        .history-stats-grid {
+            grid-template-columns: 1fr;
         }
     }
 
@@ -432,27 +449,32 @@
         .info-item.wide {
             grid-column: span 1;
         }
-
-        .passport-badge {
-            font-size: .8rem;
-        }
     }
 </style>
 
+
 <div class="container player-page">
 
-    <!-- Volver a la lista -->
+    <!-- BOTÓN VOLVER -->
+
     <a href="{% url 'jugadores' %}" class="player-back">
         <i class="bi bi-arrow-left"></i>
         Volver a jugadores
     </a>
 
-    <!-- Ficha principal -->
+
+    <!-- =====================================
+         FICHA PRINCIPAL DEL JUGADOR
+         ===================================== -->
+
     <section class="player-card">
+
         <div class="row g-0">
 
-            <!-- Número de camiseta, sin fotografías -->
+            <!-- IDENTIDAD -->
+
             <div class="col-md-4">
+
                 <div class="player-identity">
 
                     <div class="player-shirt">
@@ -461,7 +483,9 @@
                         </span>
                     </div>
 
-                    <span class="shirt-label">JUGADOR</span>
+                    <span class="shirt-label">
+                        JUGADOR
+                    </span>
 
                     <h1 class="player-name">
                         {{ jugador.apellido_nombres }}
@@ -469,17 +493,22 @@
 
                     <p class="player-position">
                         <i class="bi bi-shield-shaded me-2"></i>
-                        {{ jugador.get_posicion_display|default:"Posición no informada" }}
+                        {{ jugador.get_posicion_display }}
                     </p>
 
                 </div>
+
             </div>
 
-            <!-- Información técnica -->
+
+            <!-- INFORMACIÓN TÉCNICA -->
+
             <div class="col-md-8">
+
                 <div class="player-details">
 
                     <div class="player-details-header">
+
                         <div>
                             <h2 class="player-section-title">
                                 Ficha técnica
@@ -492,15 +521,21 @@
                             Pasaporte:
                             {{ jugador.pasaporte|default:"No informado" }}
                         </span>
+
                     </div>
+
 
                     <div class="player-info-grid">
 
+                        <!-- SELECCIÓN -->
+
                         <div class="info-item">
+
                             <span class="info-label">
                                 <i class="bi bi-flag-fill"></i>
                                 Selección
                             </span>
+
                             <span class="info-value">
                                 {% if jugador.seleccion %}
                                     {{ jugador.seleccion.nombre }}
@@ -508,144 +543,241 @@
                                     No informada
                                 {% endif %}
                             </span>
+
                         </div>
 
+
+                        <!-- EDAD -->
+
                         <div class="info-item">
+
                             <span class="info-label">
                                 <i class="bi bi-calendar3"></i>
                                 Edad
                             </span>
+
                             <span class="info-value">
-                                {% if jugador.edad %}
-                                    {{ jugador.edad }} años
-                                {% else %}
-                                    No informada
-                                {% endif %}
+                                {{ jugador.edad }} años
                             </span>
+
                         </div>
 
+
+                        <!-- POSICIÓN -->
+
                         <div class="info-item">
+
                             <span class="info-label">
                                 <i class="bi bi-person-standing"></i>
                                 Posición
                             </span>
+
                             <span class="info-value">
-                                {{ jugador.get_posicion_display|default:"No informada" }}
+                                {{ jugador.get_posicion_display }}
                             </span>
+
                         </div>
 
+
+                        <!-- CLUB -->
+
                         <div class="info-item wide">
+
                             <span class="info-label">
                                 <i class="bi bi-dribbble"></i>
                                 Club actual
                             </span>
+
                             <span class="info-value">
                                 {{ jugador.equipo_actual|default:"No informado" }}
                             </span>
+
                         </div>
 
+
+                        <!-- PAÍS DEL CLUB -->
+
                         <div class="info-item wide">
+
                             <span class="info-label">
                                 <i class="bi bi-globe-americas"></i>
                                 País del club
                             </span>
+
                             <span class="info-value">
                                 {{ jugador.pais_equipo|default:"No informado" }}
                             </span>
+
                         </div>
 
                     </div>
+
                 </div>
+
             </div>
 
         </div>
+
     </section>
 
-    <!-- Historial de participaciones -->
-    <section class="history-card">
+
+    <!-- =====================================
+         HISTORIAL DE MUNDIALES
+         ===================================== -->
+
+    <section class="history-card" id="historial-mundiales">
 
         <div class="history-header">
+
             <h2 class="history-title">
                 <i class="bi bi-trophy-fill"></i>
                 Historial de participaciones en Copas del Mundo
             </h2>
+
+
+            <!-- SELECTOR DE MUNDIAL -->
+
+            {% if historiales %}
+
+                <form method="get" class="history-year-form">
+
+                    <label for="anio-mundial">
+                        Elegir Mundial
+                    </label>
+
+                    <select
+                        id="anio-mundial"
+                        name="anio"
+                        onchange="this.form.submit()"
+                    >
+
+                        {% for historial in historiales %}
+
+                            <option
+                                value="{{ historial.mundial.anio }}"
+                                {% if historial.mundial.anio == anio_elegido %}selected{% endif %}
+                            >
+
+                                {{ historial.mundial.sede }}
+                                {{ historial.mundial.anio }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                    <noscript>
+                        <button type="submit">
+                            Ver
+                        </button>
+                    </noscript>
+
+                </form>
+
+            {% endif %}
+
         </div>
 
-        <div>
-            {% with historiales=jugador.historiales.all %}
 
-                {% if historiales %}
+        <!-- ESTADÍSTICAS DEL MUNDIAL -->
 
-                    <div class="table-responsive">
-                        <table class="history-table text-center">
+        {% if historial_seleccionado %}
 
-                            <thead>
-                                <tr>
-                                    <th class="text-start ps-4">
-                                        Mundial / Edición
-                                    </th>
-                                    <th>Sede</th>
-                                    <th>Partidos jugados</th>
-                                    <th>Goles convertidos</th>
-                                </tr>
-                            </thead>
+            <div class="history-content">
 
-                            <tbody>
-                                {% for historial in historiales %}
-                                    <tr>
-                                        <td class="text-start ps-4">
-                                            <span class="history-edition">
-                                                Copa Mundial {{ historial.mundial.anio }}
-                                            </span>
-                                        </td>
+                <h3 class="history-year-title">
 
-                                        <td>
-                                            {{ historial.mundial.sede }}
-                                        </td>
+                    <i class="bi bi-calendar-event me-2"></i>
 
-                                        <td>
-                                            <span class="history-stat">
-                                                {{ historial.partidos_jugados }} PJ
-                                            </span>
-                                        </td>
+                    {{ historial_seleccionado.mundial.sede }}
+                    {{ historial_seleccionado.mundial.anio }}
 
-                                        <td>
-                                            <span class="history-stat history-goals">
-                                                <i class="bi bi-dribbble me-1"></i>
-                                                {{ historial.goles }} goles
-                                            </span>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
+                </h3>
 
-                        </table>
+
+                <div class="history-stats-grid">
+
+                    <!-- PARTIDOS JUGADOS -->
+
+                    <div class="history-stat-card">
+
+                        <i class="bi bi-calendar-check"></i>
+
+                        <strong>
+                            {{ historial_seleccionado.partidos_jugados }}
+                        </strong>
+
+                        <span>
+                            Partidos jugados
+                        </span>
+
                     </div>
 
-                {% else %}
 
-                    <div class="history-empty">
-                        <div class="history-empty-icon">
-                            <i class="bi bi-trophy"></i>
-                        </div>
+                    <!-- GOLES -->
 
-                        <h5>Sin participaciones registradas</h5>
+                    <div class="history-stat-card">
 
-                        <p>
-                            Todavía no hay registros de partidos jugados
-                            en Copas del Mundo para este futbolista.
-                            Cuando existan datos, aparecerán en esta sección.
-                        </p>
+                        <i class="bi bi-dribbble"></i>
+
+                        <strong>
+                            {{ historial_seleccionado.goles }}
+                        </strong>
+
+                        <span>
+                            Goles convertidos
+                        </span>
+
                     </div>
 
-                {% endif %}
 
-            {% endwith %}
-        </div>
+                    <!-- ASISTENCIAS -->
+
+                    <div class="history-stat-card">
+
+                        <i class="bi bi-arrow-left-right"></i>
+
+                        <strong>
+                            {{ historial_seleccionado.asistencias }}
+                        </strong>
+
+                        <span>
+                            Asistencias
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        {% else %}
+
+            <!-- SIN DATOS -->
+
+            <div class="history-empty">
+
+                <div class="history-empty-icon">
+                    <i class="bi bi-trophy"></i>
+                </div>
+
+                <h5>
+                    Sin participaciones registradas
+                </h5>
+
+                <p>
+                    Todavía no hay estadísticas de Mundiales
+                    cargadas para este futbolista.
+                </p>
+
+            </div>
+
+        {% endif %}
 
     </section>
 
 </div>
 
 {% endblock %}
-```
