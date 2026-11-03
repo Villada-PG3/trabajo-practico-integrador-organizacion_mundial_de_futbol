@@ -32,15 +32,66 @@ class Mundial(models.Model):
 
 class Seleccion(models.Model):
     nombre = models.CharField(max_length=100)
-    confederacion = models.CharField(max_length=50, help_text="Ej: CONMEBOL, UEFA")
+    confederacion = models.CharField(max_length=50)
     titulos = models.PositiveIntegerField(default=0, verbose_name="Títulos Mundiales")
     mundial = models.ForeignKey(
-        Mundial, 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True, 
+        Mundial,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
         related_name="selecciones"
     )
+
+    @property
+    def bandera_url(self):
+        codigos = {
+            "argentina": "ar",
+            "brasil": "br",
+            "alemania": "de",
+            "españa": "es",
+            "francia": "fr",
+            "inglaterra": "gb-eng",
+            "portugal": "pt",
+            "uruguay": "uy",
+            "méxico": "mx",
+            "estados unidos": "us",
+            "japón": "jp",
+            "corea del sur": "kr",
+            "marruecos": "ma",
+            "senegal": "sn",
+            "croacia": "hr",
+            "países bajos": "nl",
+            "bélgica": "be",
+            "suiza": "ch",
+            "canadá": "ca",
+            "australia": "au",
+            "costa rica": "cr",
+            "ecuador": "ec",
+            "colombia": "co",
+            "chile": "cl",
+            "paraguay": "py",
+            "perú": "pe",
+            "arabia saudita": "sa",
+            "qatar": "qa",
+            "camerún": "cm",
+            "ghana": "gh",
+            "túnez": "tn",
+            "egipto": "eg",
+            "nigeria": "ng",
+            "serbia": "rs",
+            "dinamarca": "dk",
+            "polonia": "pl",
+            "gales": "gb-wls",
+            "escocia": "gb-sct",
+            "irán": "ir",
+        }
+
+        codigo = codigos.get(self.nombre.strip().lower())
+
+        if codigo:
+            return f"https://flagcdn.com/w160/{codigo}.png"
+
+        return None
 
     class Meta:
         verbose_name = "Selección"
