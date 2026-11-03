@@ -40,8 +40,27 @@ def detalle_mundial(request, pk):
 
 # --- Vistas de Selección ---
 def selecciones(request):
-    lista_selecciones = Seleccion.objects.all()
-    return render(request, 'seleccion/selecciones.html', {'selecciones': lista_selecciones})
+    lista_selecciones = Seleccion.objects.all().order_by('confederacion', 'nombre')
+
+    confederaciones = (
+        Seleccion.objects
+        .values_list('confederacion', flat=True)
+        .distinct()
+        .order_by('confederacion')
+    )
+
+    selecciones_por_confederacion = []
+
+    for confederacion in confederaciones:
+        selecciones_por_confederacion.append({
+            'nombre': confederacion,
+            'id': confederacion.lower().replace(' ', '-'),
+            'selecciones': lista_selecciones.filter(confederacion=confederacion)
+        })
+
+    return render(request, 'seleccion/selecciones.html', {
+        'confederaciones': selecciones_por_confederacion
+    })
 
 def detalle_seleccion(request, pk):
     seleccion = get_object_or_404(Seleccion, pk=pk)
