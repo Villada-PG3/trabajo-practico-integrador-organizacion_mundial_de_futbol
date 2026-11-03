@@ -63,86 +63,12 @@
 
             <!-- ENLACES -->
             <div class="collapse navbar-collapse" id="navbarNav">
-
-                <ul class="navbar-nav ms-auto align-items-center gap-1">
-
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="{% url 'inicio' %}">
-                            <i class="fa-solid fa-house me-1"></i>
-                            Inicio
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="{% url 'mundiales' %}">
-                            <i class="fa-solid fa-earth-americas me-1"></i>
-                            Mundiales
-                        </a>
-                    </li>
-                    <!-- ==========================================
-<!-- MENÚ CONFEDERACIONES -->
-<li class="nav-item dropdown">
-
-    <a
-        class="nav-link dropdown-toggle fw-semibold"
-        href="#"
-        id="menuConfederaciones"
-        role="button"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-    >
-        <i class="fa-solid fa-globe me-1"></i>
-        Confederaciones
-    </a>
-
-    <ul class="dropdown-menu dropdown-menu-dark">
-
-        <!-- TODAS LAS SELECCIONES -->
-        <li>
-            <a
-                class="dropdown-item"
-                href="{% url 'selecciones' %}"
-            >
-                <i class="fa-solid fa-flag me-2"></i>
-                Todas las selecciones
-            </a>
-        </li>
-
-        <li>
-            <hr class="dropdown-divider">
-        </li>
-
-        <!-- CONFEDERACIONES -->
-        {% for confederacion in confederaciones_menu %}
-
-            <li>
-                <a
-                    class="dropdown-item"
-                    href="{% url 'detalle_confederacion' confederacion.pk %}"
-                >
-                    {{ confederacion.get_nombre_display }}
-                </a>
-            </li>
-
-        {% endfor %}
-
-    </ul>
-
-</li>
-
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="{% url 'jugadores' %}">
-                            <i class="fa-solid fa-user me-1"></i>
-                            Jugadores
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold" href="{% url 'acerca' %}">
-                            <i class="fa-solid fa-circle-info me-1"></i>
-                            Acerca de
-                        </a>
-                    </li>
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'inicio' %}"><i class="fa-solid fa-house me-1"></i> Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'mundiales' %}"><i class="fa-solid fa-earth-americas me-1"></i> Mundiales</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'selecciones' %}"><i class="fa-solid fa-flag me-1"></i> Selecciones</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'jugadores' %}"><i class="fa-solid fa-user me-1"></i> Jugadores</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'acerca' %}"><i class="fa-solid fa-circle-info me-1"></i> Acerca de</a></li>
 
                     <!-- USUARIO AUTENTICADO -->
                     {% if user.is_authenticated %}

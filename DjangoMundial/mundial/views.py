@@ -764,26 +764,8 @@ def detalle_confederacion(request, pk):
 # ==========================================
 
 def selecciones(request):
-
-    confederaciones = Confederacion.objects.prefetch_related(
-
-        "selecciones"
-
-    ).all()
-
-    return render(
-
-        request,
-
-        "seleccion/selecciones.html",
-
-        {
-
-            "confederaciones": confederaciones
-
-        }
-
-    )
+    lista_selecciones = Seleccion.objects.all()
+    return render(request, 'seleccion/selecciones.html', {'selecciones': lista_selecciones})
 
 def detalle_seleccion(request, pk):
 
