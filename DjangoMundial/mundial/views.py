@@ -764,9 +764,26 @@ def detalle_confederacion(request, pk):
 # ==========================================
 
 def selecciones(request):
-    lista_selecciones = Seleccion.objects.all()
-    return render(request, 'seleccion/selecciones.html', {'selecciones': lista_selecciones})
+    lista_selecciones = Seleccion.objects.select_related(
+        'confederacion'
+    ).order_by('confederacion__nombre', 'nombre')
 
+    confederaciones = Confederacion.objects.all().order_by('nombre')
+
+    selecciones_por_confederacion = []
+
+    for confederacion in confederaciones:
+        selecciones_por_confederacion.append({
+            'nombre': confederacion.get_nombre_display(),
+            'id': confederacion.nombre.lower().replace(' ', '-'),
+            'selecciones': lista_selecciones.filter(
+                confederacion=confederacion
+            )
+        })
+
+    return render(request, 'seleccion/selecciones.html', {
+        'confederaciones': selecciones_por_confederacion
+    })
 def detalle_seleccion(request, pk):
 
     seleccion = get_object_or_404(Seleccion, pk=pk)

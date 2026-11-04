@@ -2209,3 +2209,27 @@ footer {
     width: 23px;
     height: 17px;
 }
+
+/* ==========================================
+   NAVBAR - EVITAR TEXTOS EN DOS LÍNEAS
+   ========================================== */
+
+@media (min-width: 1200px) {
+
+    .navbar-nav {
+        flex-wrap: nowrap;
+        align-items: center;
+    }
+
+    .navbar-nav .nav-item {
+        flex-shrink: 0;
+    }
+
+    .navbar .nav-link {
+        white-space: nowrap;
+        font-size: 0.85rem;
+        padding-left: 0.4rem;
+        padding-right: 0.4rem;
+    }
+
+}

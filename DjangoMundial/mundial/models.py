@@ -475,8 +475,55 @@ class Seleccion(models.Model):
         blank=True,
 
         related_name="selecciones",
-
     )
+
+    @property
+    def bandera_url(self):
+        codigos = {
+            "argentina": "ar",
+            "brasil": "br",
+            "alemania": "de",
+            "españa": "es",
+            "francia": "fr",
+            "inglaterra": "gb-eng",
+            "portugal": "pt",
+            "uruguay": "uy",
+            "méxico": "mx",
+            "estados unidos": "us",
+            "japón": "jp",
+            "corea del sur": "kr",
+            "marruecos": "ma",
+            "senegal": "sn",
+            "croacia": "hr",
+            "países bajos": "nl",
+            "bélgica": "be",
+            "suiza": "ch",
+            "canadá": "ca",
+            "australia": "au",
+            "costa rica": "cr",
+            "ecuador": "ec",
+            "colombia": "co",
+            "chile": "cl",
+            "paraguay": "py",
+            "perú": "pe",
+            "arabia saudita": "sa",
+            "qatar": "qa",
+            "camerún": "cm",
+            "ghana": "gh",
+            "túnez": "tn",
+            "egipto": "eg",
+            "nigeria": "ng",
+            "serbia": "rs",
+            "dinamarca": "dk",
+            "polonia": "pl",
+            "gales": "gb-wls",
+            "escocia": "gb-sct",
+            "irán": "ir",
+        }
+        codigo = codigos.get(self.nombre.strip().lower())
+        if codigo:
+            return f"https://flagcdn.com/w160/{codigo}.png"
+        return None
 
     class Meta:
 
