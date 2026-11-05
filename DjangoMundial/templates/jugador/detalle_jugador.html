@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 
 {% block title %}
@@ -231,9 +232,7 @@
         overflow-wrap: anywhere;
     }
 
-    /* =====================================
-       HISTORIAL DE MUNDIALES
-       ===================================== */
+    /* HISTORIAL DE MUNDIALES */
 
     .history-header {
         display: flex;
@@ -372,6 +371,123 @@
         line-height: 1.7;
     }
 
+    /* RENDIMIENTO GENERAL */
+
+    .performance-section {
+        margin-top: 35px;
+        padding-top: 30px;
+        border-top: 1px solid var(--mf-border);
+    }
+
+    .performance-title {
+        color: var(--mf-gold);
+        font-size: 1.5rem;
+        font-weight: 850;
+        margin-bottom: 8px;
+    }
+
+    .performance-description {
+        color: var(--mf-muted);
+        margin-bottom: 22px;
+    }
+
+    .performance-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 17px;
+    }
+
+    .performance-card {
+        padding: 23px 15px;
+        background: linear-gradient(145deg, #164b37, #0c3023);
+        border: 1px solid var(--mf-border);
+        border-radius: 14px;
+        text-align: center;
+    }
+
+    .performance-card i {
+        display: block;
+        color: var(--mf-gold);
+        font-size: 1.5rem;
+        margin-bottom: 12px;
+    }
+
+    .performance-card strong {
+        display: block;
+        color: var(--mf-gold);
+        font-size: 2rem;
+        font-weight: 900;
+    }
+
+    .performance-card span {
+        color: #fff;
+        font-weight: 700;
+        font-size: .9rem;
+    }
+
+    /* TABLA COMPARATIVA */
+
+    .performance-table-wrapper {
+        overflow-x: auto;
+        margin-top: 30px;
+    }
+
+    .performance-table {
+        width: 100%;
+        min-width: 600px;
+        border-collapse: collapse;
+        color: #fff;
+    }
+
+    .performance-table th {
+        color: var(--mf-gold);
+        background: #164b37;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .performance-table td {
+        padding: 14px;
+        text-align: center;
+        border-bottom: 1px solid var(--mf-border);
+    }
+
+    .performance-table tbody tr:hover {
+        background: rgba(255, 255, 255, .05);
+    }
+
+    .performance-table td:first-child {
+        font-weight: 800;
+    }
+
+    .best-world-cup {
+        margin-top: 25px;
+        padding: 23px;
+        background: linear-gradient(145deg, #164b37, #0c3023);
+        border: 1px solid var(--mf-border);
+        border-radius: 14px;
+        text-align: center;
+    }
+
+    .best-world-cup i {
+        display: block;
+        color: var(--mf-gold);
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+    }
+
+    .best-world-cup strong {
+        display: block;
+        color: var(--mf-gold);
+        font-size: 2rem;
+        font-weight: 900;
+    }
+
+    .best-world-cup span {
+        color: #fff;
+        font-weight: 700;
+    }
+
     /* RESPONSIVE */
 
     @media (max-width: 991.98px) {
@@ -438,6 +554,10 @@
         .history-stats-grid {
             grid-template-columns: 1fr;
         }
+
+        .performance-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
     }
 
     @media (max-width: 420px) {
@@ -448,6 +568,10 @@
         .info-item,
         .info-item.wide {
             grid-column: span 1;
+        }
+
+        .performance-grid {
+            grid-template-columns: 1fr;
         }
     }
 </style>
@@ -463,9 +587,7 @@
     </a>
 
 
-    <!-- =====================================
-         FICHA PRINCIPAL DEL JUGADOR
-         ===================================== -->
+    <!-- FICHA PRINCIPAL DEL JUGADOR -->
 
     <section class="player-card">
 
@@ -527,10 +649,7 @@
 
                     <div class="player-info-grid">
 
-                        <!-- SELECCIÓN -->
-
                         <div class="info-item">
-
                             <span class="info-label">
                                 <i class="bi bi-flag-fill"></i>
                                 Selección
@@ -543,14 +662,10 @@
                                     No informada
                                 {% endif %}
                             </span>
-
                         </div>
 
 
-                        <!-- EDAD -->
-
                         <div class="info-item">
-
                             <span class="info-label">
                                 <i class="bi bi-calendar3"></i>
                                 Edad
@@ -559,14 +674,10 @@
                             <span class="info-value">
                                 {{ jugador.edad }} años
                             </span>
-
                         </div>
 
 
-                        <!-- POSICIÓN -->
-
                         <div class="info-item">
-
                             <span class="info-label">
                                 <i class="bi bi-person-standing"></i>
                                 Posición
@@ -575,14 +686,10 @@
                             <span class="info-value">
                                 {{ jugador.get_posicion_display }}
                             </span>
-
                         </div>
 
 
-                        <!-- CLUB -->
-
                         <div class="info-item wide">
-
                             <span class="info-label">
                                 <i class="bi bi-dribbble"></i>
                                 Club actual
@@ -591,14 +698,10 @@
                             <span class="info-value">
                                 {{ jugador.equipo_actual|default:"No informado" }}
                             </span>
-
                         </div>
 
 
-                        <!-- PAÍS DEL CLUB -->
-
                         <div class="info-item wide">
-
                             <span class="info-label">
                                 <i class="bi bi-globe-americas"></i>
                                 País del club
@@ -607,7 +710,6 @@
                             <span class="info-value">
                                 {{ jugador.pais_equipo|default:"No informado" }}
                             </span>
-
                         </div>
 
                     </div>
@@ -621,9 +723,7 @@
     </section>
 
 
-    <!-- =====================================
-         HISTORIAL DE MUNDIALES
-         ===================================== -->
+    <!-- HISTORIAL DE MUNDIALES -->
 
     <section class="history-card" id="historial-mundiales">
 
@@ -657,10 +757,8 @@
                                 value="{{ historial.mundial.anio }}"
                                 {% if historial.mundial.anio == anio_elegido %}selected{% endif %}
                             >
-
                                 {{ historial.mundial.sede }}
                                 {{ historial.mundial.anio }}
-
                             </option>
 
                         {% endfor %}
@@ -680,7 +778,7 @@
         </div>
 
 
-        <!-- ESTADÍSTICAS DEL MUNDIAL -->
+        <!-- ESTADÍSTICAS DEL MUNDIAL SELECCIONADO -->
 
         {% if historial_seleccionado %}
 
@@ -698,8 +796,6 @@
 
                 <div class="history-stats-grid">
 
-                    <!-- PARTIDOS JUGADOS -->
-
                     <div class="history-stat-card">
 
                         <i class="bi bi-calendar-check"></i>
@@ -715,8 +811,6 @@
                     </div>
 
 
-                    <!-- GOLES -->
-
                     <div class="history-stat-card">
 
                         <i class="bi bi-dribbble"></i>
@@ -731,8 +825,6 @@
 
                     </div>
 
-
-                    <!-- ASISTENCIAS -->
 
                     <div class="history-stat-card">
 
@@ -752,10 +844,7 @@
 
             </div>
 
-
         {% else %}
-
-            <!-- SIN DATOS -->
 
             <div class="history-empty">
 
@@ -771,6 +860,200 @@
                     Todavía no hay estadísticas de Mundiales
                     cargadas para este futbolista.
                 </p>
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- RENDIMIENTO GENERAL -->
+
+        {% if historiales %}
+
+            <div class="history-content performance-section">
+
+                <h3 class="performance-title">
+                    <i class="bi bi-graph-up-arrow me-2"></i>
+                    Rendimiento general
+                </h3>
+
+                <p class="performance-description">
+                    Resumen estadístico de todas sus participaciones
+                    registradas en Copas del Mundo.
+                </p>
+
+
+                <div class="performance-grid">
+
+                    <!-- PARTIDOS TOTALES -->
+
+                    <div class="performance-card">
+                        <i class="bi bi-calendar-check"></i>
+
+                        <strong>
+                            {{ partidos_totales }}
+                        </strong>
+
+                        <span>
+                            Partidos jugados
+                        </span>
+                    </div>
+
+
+                    <!-- GOLES TOTALES -->
+
+                    <div class="performance-card">
+                        <i class="bi bi-dribbble"></i>
+
+                        <strong>
+                            {{ goles_totales }}
+                        </strong>
+
+                        <span>
+                            Goles totales
+                        </span>
+                    </div>
+
+
+                    <!-- ASISTENCIAS TOTALES -->
+
+                    <div class="performance-card">
+                        <i class="bi bi-arrow-left-right"></i>
+
+                        <strong>
+                            {{ asistencias_totales }}
+                        </strong>
+
+                        <span>
+                            Asistencias totales
+                        </span>
+                    </div>
+
+
+                    <!-- PROMEDIO DE GOLES -->
+
+                    <div class="performance-card">
+                        <i class="bi bi-bullseye"></i>
+
+                        <strong>
+                            {{ promedio_gol|floatformat:2 }}
+                        </strong>
+
+                        <span>
+                            Promedio de goles por partido
+                        </span>
+                    </div>
+
+
+                    <!-- PROMEDIO DE ASISTENCIAS -->
+
+                    <div class="performance-card">
+                        <i class="bi bi-bar-chart-line"></i>
+
+                        <strong>
+                            {{ promedio_asistencias|floatformat:2 }}
+                        </strong>
+
+                        <span>
+                            Promedio de asistencias por partido
+                        </span>
+                    </div>
+
+
+                    <!-- PARTICIPACIONES DE GOL -->
+
+                    <div class="performance-card">
+                        <i class="bi bi-stars"></i>
+
+                        <strong>
+                            {{ participaciones_gol }}
+                        </strong>
+
+                        <span>
+                            Participaciones de gol
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <!-- TABLA DE RENDIMIENTO POR MUNDIAL -->
+
+                <div class="performance-table-wrapper">
+
+                    <h3 class="performance-title mb-3">
+                        Rendimiento por Mundial
+                    </h3>
+
+                    <table class="performance-table">
+
+                        <thead>
+                            <tr>
+                                <th>Mundial</th>
+                                <th>Partidos</th>
+                                <th>Goles</th>
+                                <th>Asistencias</th>
+                                <th>Promedio de gol</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for estadistica in estadisticas_mundiales %}
+
+                                <tr>
+
+                                    <td>
+                                        {{ estadistica.mundial }}
+                                    </td>
+
+                                    <td>
+                                        {{ estadistica.partidos }}
+                                    </td>
+
+                                    <td>
+                                        {{ estadistica.goles }}
+                                    </td>
+
+                                    <td>
+                                        {{ estadistica.asistencias }}
+                                    </td>
+
+                                    <td>
+                                        {{ estadistica.promedio_gol|floatformat:2 }}
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- MEJOR MUNDIAL -->
+
+                {% if mejor_mundial %}
+
+                    <div class="best-world-cup">
+
+                        <i class="bi bi-trophy-fill"></i>
+
+                        <strong>
+                            {{ mejor_mundial.mundial.anio }}
+                        </strong>
+
+                        <span>
+                            Su Mundial con mayor cantidad de goles:
+                            {{ mejor_mundial.goles }} goles
+                        </span>
+
+                    </div>
+
+                {% endif %}
 
             </div>
 
