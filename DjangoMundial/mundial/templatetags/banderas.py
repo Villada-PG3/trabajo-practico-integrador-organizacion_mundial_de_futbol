@@ -90,11 +90,13 @@ CODIGOS = {
     "camerun": "cm",
     "nigeria": "ng",
     "rd congo": "cd",
+    "rd del congo": "cd",
     "republica democratica del congo": "cd",
     "congo rd": "cd",
     "cabo verde": "cv",
     "mali": "ml",
 }
+
 
 
 @register.filter

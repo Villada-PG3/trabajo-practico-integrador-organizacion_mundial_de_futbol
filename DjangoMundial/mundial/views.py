@@ -763,27 +763,246 @@ def detalle_confederacion(request, pk):
 
 # ==========================================
 
-def selecciones(request):
-    lista_selecciones = Seleccion.objects.select_related(
-        'confederacion'
-    ).order_by('confederacion__nombre', 'nombre')
 
-    confederaciones = Confederacion.objects.all().order_by('nombre')
+# ==========================================
+# SELECCIONES DEL MUNDIAL 2026
+# Fuente: FIFA - 48 selecciones participantes
+# ==========================================
+
+PARTICIPANTES_2026 = {
+    "AFC": [
+        "Arabia Saudita",
+        "Australia",
+        "Corea del Sur",
+        "Irak",
+        "Irán",
+        "Japón",
+        "Jordania",
+        "Qatar",
+        "Uzbekistán",
+    ],
+    "CAF": [
+        "Argelia",
+        "Cabo Verde",
+        "Camerún" if False else "Costa de Marfil",
+        "Egipto",
+        "Ghana",
+        "Marruecos",
+        "RD del Congo",
+        "Senegal",
+        "Sudáfrica",
+        "Túnez",
+    ],
+    "CONCACAF": [
+        "Canadá",
+        "Curazao",
+        "Estados Unidos",
+        "Haití",
+        "México",
+        "Panamá",
+    ],
+    "CONMEBOL": [
+        "Argentina",
+        "Brasil",
+        "Colombia",
+        "Ecuador",
+        "Paraguay",
+        "Uruguay",
+    ],
+    "OFC": [
+        "Nueva Zelanda",
+    ],
+    "UEFA": [
+        "Alemania",
+        "Austria",
+        "Bélgica",
+        "Bosnia y Herzegovina",
+        "Chequia",
+        "Croacia",
+        "Escocia",
+        "España",
+        "Francia",
+        "Inglaterra",
+        "Noruega",
+        "Países Bajos",
+        "Portugal",
+        "Suecia",
+        "Suiza",
+        "Turquía",
+    ],
+}
+
+
+# Diferencias de nombres entre fuentes
+ALIAS_SELECCIONES = {
+    "republica de corea": "corea del sur",
+    "corea republica": "corea del sur",
+    "corea del sur": "corea del sur",
+    "republica checa": "chequia",
+    "czechia": "chequia",
+    "curacao": "curazao",
+    "cabo verde": "cabo verde",
+    "cape verde": "cabo verde",
+    "congo dr": "rd del congo",
+    "republica democratica del congo": "rd del congo",
+    "rd del congo": "rd del congo",
+    "costa de marfil": "costa de marfil",
+    "cote d'ivoire": "costa de marfil",
+    "paises bajos": "paises bajos",
+    "holanda": "paises bajos",
+    "estados unidos": "estados unidos",
+    "usa": "estados unidos",
+    "turkiye": "turquia",
+}
+
+
+def clave_seleccion(nombre):
+    nombre = normalizar_nombre(nombre)
+    return ALIAS_SELECCIONES.get(nombre, nombre)
+
+
+# ==========================================
+# LISTADO DE SELECCIONES
+# ==========================================
+
+def selecciones(request):
+
+    mundiales = Mundial.objects.all().order_by("-anio")
+
+    anios_disponibles = list(
+        mundiales.values_list("anio", flat=True)
+    )
+
+    if 2022 in anios_disponibles:
+        anio_predeterminado = 2022
+    elif anios_disponibles:
+        anio_predeterminado = anios_disponibles[0]
+    else:
+        anio_predeterminado = None
+
+    try:
+        anio_elegido = int(
+            request.GET.get("anio", anio_predeterminado)
+        )
+    except (ValueError, TypeError):
+        anio_elegido = anio_predeterminado
+
+    if anio_elegido not in anios_disponibles:
+        anio_elegido = anio_predeterminado
+
+    # ======================================
+    # OBTENER PARTICIPANTES SEGÚN EL MUNDIAL
+    # ======================================
+
+    ids_participantes = set()
+    nombres_participantes = set()
+
+    if anio_elegido == 2022:
+
+        # Qatar 2022: los 64 partidos guardados
+        partidos = PartidoMundial2022.objects.filter(
+            mundial__anio=2022
+        )
+
+        ids_participantes.update(
+            partidos.values_list("equipo1_id", flat=True)
+        )
+
+        ids_participantes.update(
+            partidos.values_list("equipo2_id", flat=True)
+        )
+
+    elif anio_elegido == 2026:
+
+        # Mundial 2026: los 48 participantes
+        # confirmados oficialmente.
+        for equipos in PARTICIPANTES_2026.values():
+            for equipo in equipos:
+                nombres_participantes.add(
+                    clave_seleccion(equipo)
+                )
+
+    elif anio_elegido is not None:
+
+        # Otros Mundiales: solamente datos cargados
+        posiciones = PosicionGrupo.objects.filter(
+            mundial__anio=anio_elegido
+        ).values_list("equipo", flat=True)
+
+        for equipo in posiciones:
+            nombres_participantes.add(
+                clave_seleccion(equipo)
+            )
+
+        partidos = PartidoEliminatoria.objects.filter(
+            mundial__anio=anio_elegido
+        ).values_list("equipo1", "equipo2")
+
+        for equipo1, equipo2 in partidos:
+            nombres_participantes.add(
+                clave_seleccion(equipo1)
+            )
+            nombres_participantes.add(
+                clave_seleccion(equipo2)
+            )
+
+    # ======================================
+    # SELECCIONES REGISTRADAS EN SQLITE
+    # ======================================
+
+    todas_las_selecciones = list(
+        Seleccion.objects.select_related(
+            "confederacion"
+        ).order_by("nombre")
+    )
+
+    selecciones_filtradas = [
+        seleccion
+        for seleccion in todas_las_selecciones
+        if (
+            seleccion.pk in ids_participantes
+            or clave_seleccion(seleccion.nombre)
+            in nombres_participantes
+        )
+    ]
+
+    # ======================================
+    # AGRUPAR POR CONFEDERACIÓN
+    # ======================================
+
+    confederaciones = Confederacion.objects.all().order_by(
+        "nombre"
+    )
 
     selecciones_por_confederacion = []
 
     for confederacion in confederaciones:
-        selecciones_por_confederacion.append({
-            'nombre': confederacion.get_nombre_display(),
-            'id': confederacion.nombre.lower().replace(' ', '-'),
-            'selecciones': lista_selecciones.filter(
-                confederacion=confederacion
-            )
-        })
 
-    return render(request, 'seleccion/selecciones.html', {
-        'confederaciones': selecciones_por_confederacion
-    })
+        equipos_confederacion = [
+            seleccion
+            for seleccion in selecciones_filtradas
+            if seleccion.confederacion_id == confederacion.pk
+        ]
+
+        if equipos_confederacion:
+
+            selecciones_por_confederacion.append({
+                "nombre": confederacion.get_nombre_display(),
+                "id": confederacion.nombre.lower(),
+                "selecciones": equipos_confederacion,
+            })
+
+    return render(
+        request,
+        "seleccion/selecciones.html",
+        {
+            "confederaciones": selecciones_por_confederacion,
+            "mundiales": mundiales,
+            "anio_elegido": anio_elegido,
+            "total_selecciones": len(selecciones_filtradas),
+        }
+    )
+
 def detalle_seleccion(request, pk):
 
     seleccion = get_object_or_404(Seleccion, pk=pk)

@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
@@ -14,7 +15,7 @@
         rel="stylesheet"
     >
 
-    <!-- FontAwesome para íconos -->
+    <!-- FontAwesome -->
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -28,13 +29,13 @@
 
     <!-- CSS ESPECÍFICO DE CADA PÁGINA -->
     {% block extra_css %}{% endblock %}
-
 </head>
 
 <body class="d-flex flex-column min-vh-100">
 
     <!-- NAVBAR PRINCIPAL -->
     <nav class="navbar navbar-expand-xl border-bottom border-dorado sticky-top shadow-lg py-2">
+
         <div class="container">
 
             <!-- LOGO -->
@@ -100,6 +101,7 @@
                             aria-labelledby="confederacionesDropdown"
                         >
 
+                            <!-- LISTA DE CONFEDERACIONES -->
                             {% for confederacion in confederaciones_menu %}
 
                                 <li>
@@ -121,16 +123,24 @@
 
                             {% endfor %}
 
+                            <!-- SEPARADOR -->
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <!-- VER TODAS LAS SELECCIONES -->
+                            <li>
+                                <a
+                                    class="dropdown-item fw-bold"
+                                    href="{% url 'selecciones' %}"
+                                >
+                                    <i class="fa-solid fa-flag me-2"></i>
+                                    Ver todas las selecciones
+                                </a>
+                            </li>
+
                         </ul>
 
-                    </li>
-
-                    <!-- SELECCIONES -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'selecciones' %}">
-                            <i class="fa-solid fa-flag me-1"></i>
-                            Selecciones
-                        </a>
                     </li>
 
                     <!-- JUGADORES -->
@@ -156,7 +166,10 @@
                         {% if user.is_staff %}
 
                             <li class="nav-item ms-lg-3">
-                                <a class="nav-link" href="{% url 'admin:index' %}">
+                                <a
+                                    class="nav-link"
+                                    href="{% url 'admin:index' %}"
+                                >
                                     <i class="fa-solid fa-screwdriver-wrench me-1"></i>
                                     Administración
                                 </a>
@@ -166,6 +179,7 @@
 
                         <!-- CERRAR SESIÓN -->
                         <li class="nav-item ms-lg-3">
+
                             <form
                                 action="{% url 'logout' %}"
                                 method="post"
@@ -181,13 +195,17 @@
                                     Cerrar sesión
                                 </button>
                             </form>
+
                         </li>
 
                     {% else %}
 
                         <!-- INICIAR SESIÓN -->
                         <li class="nav-item ms-lg-3">
-                            <a class="nav-link" href="{% url 'login' %}">
+                            <a
+                                class="nav-link"
+                                href="{% url 'login' %}"
+                            >
                                 <i class="fa-solid fa-right-to-bracket me-1"></i>
                                 Iniciar sesión
                             </a>
@@ -195,7 +213,10 @@
 
                         <!-- REGISTRARSE -->
                         <li class="nav-item ms-lg-2">
-                            <a class="btn btn-dorado btn-sm" href="{% url 'registro' %}">
+                            <a
+                                class="btn btn-dorado btn-sm"
+                                href="{% url 'registro' %}"
+                            >
                                 Registrarse
                             </a>
                         </li>
@@ -215,7 +236,11 @@
 
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+
+                <div
+                    class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                    role="alert"
+                >
                     {{ message }}
 
                     <button
@@ -225,6 +250,7 @@
                         aria-label="Cerrar"
                     ></button>
                 </div>
+
             {% endfor %}
         {% endif %}
 
@@ -235,6 +261,7 @@
 
     <!-- FOOTER -->
     <footer class="text-center py-4 mt-auto border-top border-dorado">
+
         <div class="container">
 
             <p class="text-light opacity-75 mb-1">
@@ -246,6 +273,7 @@
             </small>
 
         </div>
+
     </footer>
 
     <!-- Bootstrap JS -->

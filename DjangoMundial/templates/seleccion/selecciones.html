@@ -1,20 +1,170 @@
-{% extends 'base.html' %}
 
-{% block title %}Selecciones Nacionales | MundoFútbol{% endblock %}
+{% extends 'base.html' %}
+{% load banderas %}
+
+{% block title %}
+Selecciones Nacionales | MundoFútbol
+{% endblock %}
 
 {% block content %}
 
+<style>
+    .selecciones-encabezado {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .selector-mundial {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 18px;
+        background: #145A32;
+        border: 1px solid #C8A34D;
+        border-radius: 12px;
+    }
+
+    .selector-mundial label {
+        color: #C8A34D;
+        font-weight: bold;
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .selector-mundial select {
+        background: #0F3D2E;
+        color: white;
+        border: 1px solid #C8A34D;
+        border-radius: 8px;
+        padding: 10px 35px 10px 14px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .selector-mundial select:focus {
+        outline: none;
+        border-color: #ffc845;
+        box-shadow: 0 0 0 3px rgba(200, 163, 77, .2);
+    }
+
+    .cantidad-selecciones {
+        color: #c8d9cf;
+        font-size: 14px;
+        margin-top: 8px;
+    }
+
+    .bandera-seleccion {
+        width: 70px;
+        height: 48px;
+        object-fit: contain;
+        border-radius: 5px;
+    }
+
+    @media (max-width: 768px) {
+        .selecciones-encabezado {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .selector-mundial {
+            justify-content: space-between;
+        }
+
+        .selector-mundial select {
+            max-width: 60%;
+        }
+    }
+</style>
+
+
 <div class="container my-4">
 
-    <div class="mb-4">
-        <h1 class="h2 fw-bold text-dorado">
-            <i class="fa-solid fa-flag me-2"></i>
-            Selecciones Nacionales
-        </h1>
-        <p class="text-light opacity-75">
-            Consulta las selecciones participantes y sus principales estadísticas.
-        </p>
+    <!-- ENCABEZADO Y SELECTOR -->
+
+    <div class="selecciones-encabezado">
+
+        <div>
+
+            <h1 class="h2 fw-bold text-dorado mb-2">
+
+                <i class="fa-solid fa-flag me-2"></i>
+
+                Selecciones Nacionales
+
+            </h1>
+
+            <p class="text-light opacity-75 mb-1">
+                Consulta las selecciones participantes
+                y sus principales estadísticas.
+            </p>
+
+            {% if anio_elegido %}
+
+                <p class="cantidad-selecciones">
+
+                    <i class="fa-solid fa-users me-1"></i>
+
+                    {{ total_selecciones }}
+                    selecciones registradas para el
+                    Mundial {{ anio_elegido }}
+
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- SELECTOR DE MUNDIAL -->
+
+        <form method="get" class="selector-mundial">
+
+            <label for="mundial">
+
+                <i class="fa-solid fa-trophy me-2"></i>
+
+                Mundial
+
+            </label>
+
+            <select
+                name="anio"
+                id="mundial"
+                onchange="this.form.submit()"
+            >
+
+                {% for mundial in mundiales %}
+
+                    <option
+                        value="{{ mundial.anio }}"
+                        {% if mundial.anio == anio_elegido %}selected{% endif %}
+                    >
+                        {{ mundial.sede }} {{ mundial.anio }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+            <noscript>
+                <button
+                    type="submit"
+                    class="btn btn-dorado"
+                >
+                    Ver
+                </button>
+            </noscript>
+
+        </form>
+
     </div>
+
+
+    <!-- CONFEDERACIONES -->
 
     {% if confederaciones %}
 
@@ -26,14 +176,26 @@
                 style="scroll-margin-top: 110px;"
             >
 
+                <!-- TÍTULO DE CONFEDERACIÓN -->
+
                 <div class="card bg-navbar border-dorado mb-3">
+
                     <div class="card-body">
+
                         <h2 class="h4 text-dorado mb-0">
+
                             <i class="fa-solid fa-globe me-2"></i>
+
                             {{ confederacion.nombre }}
+
                         </h2>
+
                     </div>
+
                 </div>
+
+
+                <!-- TARJETAS DE SELECCIONES -->
 
                 <div class="row g-4">
 
@@ -43,53 +205,85 @@
 
                             <div class="card bg-tarjeta text-white h-100 shadow border-0 rounded-3">
 
-                                <div class="card-body p-4">
+                                <div class="card-body p-4 d-flex flex-column">
+
+                                    <!-- BANDERA DESDE BANDERAS.PY -->
 
                                     <div class="text-center mb-3">
-                                        {% if seleccion.bandera_url %}
-                                            <img
-                                                src="{{ seleccion.bandera_url }}"
-                                                alt="Bandera de {{ seleccion.nombre }}"
-                                                style="width: 55px; height: 38px; object-fit: cover; border-radius: 4px;"
-                                            >
-                                        {% else %}
-                                            <i class="fa-solid fa-flag fa-3x text-dorado"></i>
-                                        {% endif %}
+
+                                        {% with url_bandera=seleccion.nombre|bandera %}
+
+                                            {% if url_bandera %}
+
+                                                <img
+                                                    src="{{ url_bandera }}"
+                                                    alt="Bandera de {{ seleccion.nombre }}"
+                                                    class="bandera-seleccion"
+                                                    loading="lazy"
+                                                >
+
+                                            {% else %}
+
+                                                <i class="fa-solid fa-flag fa-3x text-dorado"></i>
+
+                                            {% endif %}
+
+                                        {% endwith %}
+
                                     </div>
 
+
+                                    <!-- NOMBRE DE LA SELECCIÓN -->
+
                                     <h3 class="h4 fw-bold text-center mb-3">
+
                                         {{ seleccion.nombre }}
+
                                     </h3>
 
+
+                                    <!-- CONFEDERACIÓN -->
+
                                     <div class="mb-3">
+
                                         <small class="text-light opacity-75">
                                             Confederación
                                         </small>
+
                                         <p class="mb-0 fw-semibold">
-                                            {{ seleccion.confederacion.get_nombre_display }}
+
+                                            {% if seleccion.confederacion %}
+
+                                                {{ seleccion.confederacion.get_nombre_display }}
+
+                                            {% else %}
+
+                                                Sin confederación
+
+                                            {% endif %}
+
                                         </p>
+
                                     </div>
 
+
+                                    <!-- BOTÓN VER SELECCIÓN -->
+
                                     <a
-                                        href="{% url 'detalle_seleccion' seleccion.pk %}"
-                                        class="btn btn-dorado w-100 mt-2"
+                                        href="{% url 'detalle_seleccion' seleccion.pk %}?anio={{ anio_elegido }}"
+                                        class="btn btn-dorado w-100 mt-auto"
                                     >
+
                                         <i class="fa-solid fa-eye me-1"></i>
+
                                         Ver selección
+
                                     </a>
 
                                 </div>
 
                             </div>
 
-                        </div>
-
-                    {% empty %}
-
-                        <div class="col-12">
-                            <p class="text-white-50">
-                                No hay selecciones registradas en esta confederación.
-                            </p>
                         </div>
 
                     {% endfor %}
@@ -100,10 +294,31 @@
 
         {% endfor %}
 
+
     {% else %}
 
-        <div class="alert alert-secondary text-center">
-            No hay selecciones registradas.
+        <!-- SIN SELECCIONES -->
+
+        <div class="card bg-navbar border-dorado">
+
+            <div class="card-body text-center py-5">
+
+                <i class="fa-solid fa-earth-americas fa-3x text-dorado mb-3"></i>
+
+                <h3 class="text-white fw-bold">
+                    Sin selecciones registradas
+                </h3>
+
+                <p class="text-light opacity-75 mb-0">
+
+                    Todavía no hay participaciones
+                    de selecciones registradas para
+                    el Mundial {{ anio_elegido }}.
+
+                </p>
+
+            </div>
+
         </div>
 
     {% endif %}
