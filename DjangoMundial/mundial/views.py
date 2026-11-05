@@ -12,7 +12,7 @@ from django.contrib import messages
 
 from django.contrib.admin.views.decorators import staff_member_required
 
-from django.db.models import Q
+from django.db.models import Q , Sum
 
 from .models import (
 
@@ -1187,6 +1187,7 @@ def jugadores(request):
 
     )
 
+
 def detalle_jugador(request, pk):
     jugador = get_object_or_404(Jugador, pk=pk)
 
@@ -1200,7 +1201,11 @@ def detalle_jugador(request, pk):
     anio_parametro = request.GET.get("anio", "")
 
     try:
-        anio_elegido = int(anio_parametro) if anio_parametro else (anios[0] if anios else None)
+        anio_elegido = (
+            int(anio_parametro)
+            if anio_parametro
+            else (anios[0] if anios else None)
+        )
     except (TypeError, ValueError):
         anio_elegido = anios[0] if anios else None
 
@@ -1208,13 +1213,92 @@ def detalle_jugador(request, pk):
         anio_elegido = anios[0] if anios else None
 
     historial_seleccionado = next(
-        (h for h in historiales if h.mundial.anio == anio_elegido),
+        (
+            h for h in historiales
+            if h.mundial.anio == anio_elegido
+        ),
         None,
     )
 
-    return render(request, "jugador/detalle_jugador.html", {
-        "jugador": jugador,
-        "historiales": historiales,
-        "anio_elegido": anio_elegido,
-        "historial_seleccionado": historial_seleccionado,
-    })
+    # ======================================
+    # ESTADÍSTICAS GENERALES
+    # ======================================
+
+    totales = HistorialJugador.objects.filter(
+        jugador=jugador
+    ).aggregate(
+        partidos=Sum("partidos_jugados"),
+        goles=Sum("goles"),
+        asistencias=Sum("asistencias"),
+    )
+
+    partidos_totales = totales["partidos"] or 0
+    goles_totales = totales["goles"] or 0
+    asistencias_totales = totales["asistencias"] or 0
+
+    promedio_gol = (
+        round(goles_totales / partidos_totales, 2)
+        if partidos_totales else 0
+    )
+
+    promedio_asistencias = (
+        round(asistencias_totales / partidos_totales, 2)
+        if partidos_totales else 0
+    )
+
+    participaciones_gol = (
+        goles_totales + asistencias_totales
+    )
+
+    # ======================================
+    # ESTADÍSTICAS POR MUNDIAL
+    # ======================================
+
+    estadisticas_mundiales = []
+
+    for historial in historiales:
+        partidos = historial.partidos_jugados
+        goles = historial.goles
+        asistencias = historial.asistencias
+
+        estadisticas_mundiales.append({
+            "mundial": historial.mundial,
+            "partidos": partidos,
+            "goles": goles,
+            "asistencias": asistencias,
+            "promedio_gol": (
+                round(goles / partidos, 2)
+                if partidos else 0
+            ),
+        })
+
+    # ======================================
+    # MEJOR MUNDIAL
+    # ======================================
+
+    mejor_mundial = max(
+        historiales,
+        key=lambda h: (h.goles, h.mundial.anio),
+        default=None,
+    )
+
+    return render(
+        request,
+        "jugador/detalle_jugador.html",
+        {
+            "jugador": jugador,
+            "historiales": historiales,
+            "anio_elegido": anio_elegido,
+            "historial_seleccionado": historial_seleccionado,
+
+            "partidos_totales": partidos_totales,
+            "goles_totales": goles_totales,
+            "asistencias_totales": asistencias_totales,
+            "promedio_gol": promedio_gol,
+            "promedio_asistencias": promedio_asistencias,
+            "participaciones_gol": participaciones_gol,
+
+            "estadisticas_mundiales": estadisticas_mundiales,
+            "mejor_mundial": mejor_mundial,
+        },
+    )
