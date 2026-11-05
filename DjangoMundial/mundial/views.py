@@ -1003,86 +1003,78 @@ def selecciones(request):
         }
     )
 
+
 def detalle_seleccion(request, pk):
+    from django.db.models import Q
 
     seleccion = get_object_or_404(Seleccion, pk=pk)
 
-    # Mundiales disponibles en el selector
-
+    # Mundiales disponibles
     anios_disponibles = [
-
         2026, 2022, 2018, 2014,
-
         2010, 2006, 2002, 1998
-
     ]
 
-    # Leer el año elegido en la URL
-
     try:
-
         anio_elegido = int(request.GET.get("anio", "2022"))
-
     except (ValueError, TypeError):
-
         anio_elegido = 2022
 
     if anio_elegido not in anios_disponibles:
-
         anio_elegido = 2022
 
     mundial_seleccionado = Mundial.objects.filter(
-
         anio=anio_elegido
-
     ).first()
 
-    # Inicialmente no asumimos que una selección
-
-    # tenga el mismo plantel en todos los mundiales.
-
+    # Inicializar las consultas
     jugadores = Jugador.objects.none()
-
     plantel_tecnico = PersonalTecnico.objects.none()
-
     ultimos_partidos = []
 
-    if anio_elegido == 2022:
+    # ==========================================
+    # JUGADORES SEGÚN EL MUNDIAL
+    # ==========================================
 
+    if anio_elegido == 2026:
+
+        # Jugadores registrados con historial en 2026
         jugadores = Jugador.objects.filter(
-
-            seleccion=seleccion
-
-        ).order_by(
-
+            seleccion=seleccion,
+            historiales__mundial__anio=2026
+        ).distinct().order_by(
             "numero_camiseta",
-
             "apellido_nombres"
+        )
 
+    elif anio_elegido == 2022:
+
+        # Mantener el comportamiento del plantel 2022
+        jugadores = Jugador.objects.filter(
+            seleccion=seleccion
+        ).order_by(
+            "numero_camiseta",
+            "apellido_nombres"
         )
 
         plantel_tecnico = PersonalTecnico.objects.filter(
-
             seleccion=seleccion
-
-        ).order_by("funcion", "apellido")
-
-        partidos = PartidoMundial2022.objects.filter(
-
-            mundial__anio=2022
-
-        ).filter(
-
-            Q(equipo1=seleccion) | Q(equipo2=seleccion)
-
-        ).select_related(
-
-            "equipo1", "equipo2"
-
         ).order_by(
+            "funcion",
+            "apellido"
+        )
 
-            "-fecha", "-fifa_match_id"
-
+        # Últimos partidos del Mundial 2022
+        partidos = PartidoMundial2022.objects.filter(
+            mundial__anio=2022
+        ).filter(
+            Q(equipo1=seleccion) | Q(equipo2=seleccion)
+        ).select_related(
+            "equipo1",
+            "equipo2"
+        ).order_by(
+            "-fecha",
+            "-fifa_match_id"
         )[:4]
 
         for partido in partidos:
@@ -1090,114 +1082,86 @@ def detalle_seleccion(request, pk):
             es_equipo1 = partido.equipo1_id == seleccion.pk
 
             if es_equipo1:
-
                 rival = partido.equipo2
-
                 gf = partido.goles1
-
                 gc = partido.goles2
-
                 penales_favor = partido.penales1
-
                 penales_contra = partido.penales2
-
             else:
-
                 rival = partido.equipo1
-
                 gf = partido.goles2
-
                 gc = partido.goles1
-
                 penales_favor = partido.penales2
-
                 penales_contra = partido.penales1
 
             hubo_penales = bool(
-
                 penales_favor or penales_contra
-
             )
 
             if hubo_penales and penales_favor != penales_contra:
-
-                resultado = "V" if penales_favor > penales_contra else "D"
-
+                resultado = (
+                    "V" if penales_favor > penales_contra
+                    else "D"
+                )
             elif gf > gc:
-
                 resultado = "V"
-
             elif gf < gc:
-
                 resultado = "D"
-
             else:
-
                 resultado = "E"
 
             ultimos_partidos.append({
-
                 "fecha": partido.fecha,
-
                 "fase": partido.fase,
-
                 "rival": rival,
-
                 "goles_propios": gf,
-
                 "goles_rival": gc,
-
                 "penales_propios": penales_favor,
-
                 "penales_rival": penales_contra,
-
                 "hubo_penales": hubo_penales,
-
                 "resultado": resultado,
-
             })
 
+    # ==========================================
+    # DATOS PARA EL HTML
+    # ==========================================
+
     contexto = {
-
         "seleccion": seleccion,
-
         "anio_elegido": anio_elegido,
-
         "anios_disponibles": anios_disponibles,
-
         "mundial_seleccionado": mundial_seleccionado,
 
         "jugadores": jugadores,
 
         "arqueros": jugadores.filter(posicion="ARQ"),
-
         "defensores": jugadores.filter(posicion="DEF"),
-
         "mediocampistas": jugadores.filter(posicion="MED"),
-
         "delanteros": jugadores.filter(posicion="DEL"),
 
-        "directores_tecnicos": plantel_tecnico.filter(funcion="DT"),
-
-        "otros_tecnicos": plantel_tecnico.exclude(funcion="DT"),
+        "directores_tecnicos": plantel_tecnico.filter(
+            funcion="DT"
+        ),
+        "otros_tecnicos": plantel_tecnico.exclude(
+            funcion="DT"
+        ),
 
         "ultimos_partidos": ultimos_partidos,
-
         "total_jugadores": jugadores.count(),
 
-        "datos_disponibles": anio_elegido == 2022,
-
+        "datos_disponibles": (
+            jugadores.exists()
+            or bool(ultimos_partidos)
+            or plantel_tecnico.exists()
+        ),
     }
 
     return render(
-
         request,
-
         "seleccion/detalle_seleccion.html",
-
         contexto
-
     )
+
 
 # ==========================================
 
