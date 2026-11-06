@@ -107,3 +107,34 @@ def bandera(nombre):
         return ""
 
     return f"https://flagcdn.com/{codigo}.svg"
+
+@register.simple_tag
+def enlace_seleccion(nombre, anio):
+    from django.urls import reverse
+    from mundial.models import Seleccion
+
+    equivalencias = {
+        "republica checa": "chequia",
+        "rd congo": "rd del congo",
+        "republica democratica del congo": "rd del congo",
+        "cote d'ivoire": "costa de marfil",
+        "curacao": "curazao",
+        "holanda": "paises bajos",
+    }
+
+    def nombre_normalizado(texto):
+        texto = normalizar(texto)
+        return equivalencias.get(texto, texto)
+
+    nombre_buscado = nombre_normalizado(nombre)
+
+    for seleccion in Seleccion.objects.all():
+        if nombre_normalizado(seleccion.nombre) == nombre_buscado:
+            url = reverse(
+                "detalle_seleccion",
+                args=[seleccion.pk]
+            )
+            return f"{url}?anio={anio}"
+
+    return ""
+

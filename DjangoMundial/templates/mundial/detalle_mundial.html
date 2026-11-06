@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 {% load static %}
 {% load banderas %}
@@ -8,6 +9,20 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/banderas_partidos.css' %}">
+<style>
+    a.equipo-con-bandera,
+    a.tercero-nombre {
+        color: white;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    a.equipo-con-bandera:hover,
+    a.tercero-nombre:hover {
+        color: #C8A34D !important;
+        text-decoration: underline;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -61,7 +76,6 @@
 
             <div class="col-md-4 mt-4 mt-md-0">
                 <div class="bg-tarjeta p-3 rounded-3 border border-dorado">
-
                     <h5 class="fw-bold text-dorado text-center mb-3">
                         <i class="fa-solid fa-trophy me-2"></i>
                         Cuadro de Honor
@@ -83,7 +97,6 @@
                         <strong>Tercer puesto:</strong>
                         {{ mundial.tercer_puesto|default:"-" }}
                     </p>
-
                 </div>
             </div>
 
@@ -105,9 +118,11 @@
 
 <!-- PESTAÑAS -->
 <div class="d-flex justify-content-center mb-4">
-    <ul class="nav nav-pills bg-black p-2 rounded-3 border border-dorado"
+    <ul
+        class="nav nav-pills bg-black p-2 rounded-3 border border-dorado"
         id="pills-tab"
-        role="tablist">
+        role="tablist"
+    >
 
         <li class="nav-item" role="presentation">
             <button
@@ -146,14 +161,16 @@
 
 <div class="tab-content" id="pills-tabContent">
 
-    <!-- ===================================
+    <!-- ==================================
          FASE DE GRUPOS
-         =================================== -->
+         ================================== -->
 
-    <div class="tab-pane fade show active"
-         id="pills-grupos"
-         role="tabpanel"
-         aria-labelledby="pills-grupos-tab">
+    <div
+        class="tab-pane fade show active"
+        id="pills-grupos"
+        role="tabpanel"
+        aria-labelledby="pills-grupos-tab"
+    >
 
         {% if tablas_grupos %}
 
@@ -215,28 +232,58 @@
                                                 {% endif %}
                                             </td>
 
-                                            <!-- BANDERA Y EQUIPO -->
+                                            <!-- BANDERA Y NOMBRE CLICABLES -->
                                             <td class="text-start fw-bold text-white">
 
-                                                <div class="equipo-con-bandera">
+                                                {% enlace_seleccion pos.equipo mundial.anio as url_equipo %}
 
-                                                    {% with url=pos.equipo|bandera %}
-                                                        {% if url %}
-                                                            <img
-                                                                src="{{ url }}"
-                                                                alt="Bandera de {{ pos.equipo }}"
-                                                                class="bandera-seleccion"
-                                                                loading="lazy"
-                                                            >
-                                                        {% endif %}
-                                                    {% endwith %}
+                                                {% if url_equipo %}
 
-                                                    <span>{{ pos.equipo }}</span>
+                                                    <a
+                                                        href="{{ url_equipo }}"
+                                                        class="equipo-con-bandera text-white text-decoration-none"
+                                                        title="Ver selección {{ pos.equipo }}"
+                                                    >
 
-                                                </div>
+                                                        {% with url=pos.equipo|bandera %}
+                                                            {% if url %}
+                                                                <img
+                                                                    src="{{ url }}"
+                                                                    alt="Bandera de {{ pos.equipo }}"
+                                                                    class="bandera-seleccion"
+                                                                    loading="lazy"
+                                                                >
+                                                            {% endif %}
+                                                        {% endwith %}
+
+                                                        <span>{{ pos.equipo }}</span>
+
+                                                    </a>
+
+                                                {% else %}
+
+                                                    <div class="equipo-con-bandera">
+
+                                                        {% with url=pos.equipo|bandera %}
+                                                            {% if url %}
+                                                                <img
+                                                                    src="{{ url }}"
+                                                                    alt="Bandera de {{ pos.equipo }}"
+                                                                    class="bandera-seleccion"
+                                                                    loading="lazy"
+                                                                >
+                                                            {% endif %}
+                                                        {% endwith %}
+
+                                                        <span>{{ pos.equipo }}</span>
+
+                                                    </div>
+
+                                                {% endif %}
 
                                             </td>
 
+                                            <!-- ESTADÍSTICAS -->
                                             <td class="fw-bold">{{ pos.pts }}</td>
                                             <td>{{ pos.pj }}</td>
                                             <td>{{ pos.gf }}:{{ pos.gc }}</td>
@@ -244,15 +291,21 @@
                                             <!-- DIFERENCIA DE GOL -->
                                             <td>
                                                 {% if pos.diferencia_gol > 0 %}
+
                                                     <span class="text-success fw-bold">
                                                         +{{ pos.diferencia_gol }}
                                                     </span>
+
                                                 {% elif pos.diferencia_gol < 0 %}
+
                                                     <span class="text-danger fw-bold">
                                                         {{ pos.diferencia_gol }}
                                                     </span>
+
                                                 {% else %}
+
                                                     {{ pos.diferencia_gol }}
+
                                                 {% endif %}
                                             </td>
 
@@ -262,12 +315,15 @@
 
                                             <!-- RESULTADOS RECIENTES -->
                                             <td>
+
                                                 {% for resultado in pos.lista_forma %}
 
                                                     {% if resultado == 'V' %}
                                                         <span class="badge bg-success">V</span>
+
                                                     {% elif resultado == 'E' %}
                                                         <span class="badge bg-secondary">E</span>
+
                                                     {% elif resultado == 'D' %}
                                                         <span class="badge bg-danger">D</span>
                                                     {% endif %}
@@ -275,6 +331,7 @@
                                                 {% empty %}
                                                     <span class="text-secondary">-</span>
                                                 {% endfor %}
+
                                             </td>
 
                                         </tr>
@@ -287,7 +344,9 @@
                                 </table>
 
                             </div>
+
                         </div>
+
                     </div>
 
                     {% endfor %}
@@ -306,12 +365,14 @@
                     <div class="card bg-black border border-dorado shadow rounded-3 overflow-hidden terceros-card">
 
                         <div class="grupo-titulo terceros-titulo">
+
                             <i class="fa-solid fa-ranking-star me-2"></i>
                             Mejores terceros
 
                             <div class="subtitulo-terceros">
                                 Clasifican 8 de 12
                             </div>
+
                         </div>
 
                         <div class="table-responsive">
@@ -336,37 +397,73 @@
 
                                         <td>
                                             {% if fila.clasificado %}
+
                                                 <span class="posicion-badge posicion-3">
                                                     {{ fila.numero }}
                                                 </span>
+
                                             {% else %}
+
                                                 <span class="posicion-sin-color">
                                                     {{ fila.numero }}
                                                 </span>
+
                                             {% endif %}
                                         </td>
 
+                                        <!-- NOMBRE Y BANDERA CLICABLES -->
                                         <td>
-                                            <div class="tercero-nombre equipo-con-bandera">
 
-                                                {% with url=pos.equipo|bandera %}
-                                                    {% if url %}
-                                                        <img
-                                                            src="{{ url }}"
-                                                            class="bandera-seleccion"
-                                                            alt="Bandera de {{ pos.equipo }}"
-                                                            loading="lazy"
-                                                        >
-                                                    {% endif %}
-                                                {% endwith %}
+                                            {% enlace_seleccion pos.equipo mundial.anio as url_equipo %}
 
-                                                <span>{{ pos.equipo }}</span>
+                                            {% if url_equipo %}
 
-                                            </div>
+                                                <a
+                                                    href="{{ url_equipo }}"
+                                                    class="tercero-nombre equipo-con-bandera text-white text-decoration-none"
+                                                    title="Ver selección {{ pos.equipo }}"
+                                                >
+
+                                                    {% with url=pos.equipo|bandera %}
+                                                        {% if url %}
+                                                            <img
+                                                                src="{{ url }}"
+                                                                class="bandera-seleccion"
+                                                                alt="Bandera de {{ pos.equipo }}"
+                                                                loading="lazy"
+                                                            >
+                                                        {% endif %}
+                                                    {% endwith %}
+
+                                                    <span>{{ pos.equipo }}</span>
+
+                                                </a>
+
+                                            {% else %}
+
+                                                <div class="tercero-nombre equipo-con-bandera">
+
+                                                    {% with url=pos.equipo|bandera %}
+                                                        {% if url %}
+                                                            <img
+                                                                src="{{ url }}"
+                                                                class="bandera-seleccion"
+                                                                alt="Bandera de {{ pos.equipo }}"
+                                                                loading="lazy"
+                                                            >
+                                                        {% endif %}
+                                                    {% endwith %}
+
+                                                    <span>{{ pos.equipo }}</span>
+
+                                                </div>
+
+                                            {% endif %}
 
                                             <div class="tercero-grupo-badge">
                                                 {{ pos.grupo }}
                                             </div>
+
                                         </td>
 
                                         <td class="fw-bold">{{ pos.pts }}</td>
@@ -387,6 +484,7 @@
                         </div>
 
                         <div class="card-footer terceros-footer">
+
                             <div class="leyenda-terceros">
 
                                 <div class="leyenda-item">
@@ -400,6 +498,7 @@
                                 </div>
 
                             </div>
+
                         </div>
 
                     </div>
@@ -426,10 +525,10 @@
             </div>
 
             {% if mostrar_terceros %}
-            <div class="leyenda-item">
-                <span class="posicion-badge posicion-3 posicion-badge-small">3</span>
-                <span>Mejor tercero clasificado</span>
-            </div>
+                <div class="leyenda-item">
+                    <span class="posicion-badge posicion-3 posicion-badge-small">3</span>
+                    <span>Mejor tercero clasificado</span>
+                </div>
             {% endif %}
 
         </div>
@@ -444,14 +543,16 @@
 
     </div>
 
-    <!-- ===================================
-         ELIMINATORIAS CON BANDERAS
-         =================================== -->
+    <!-- ==================================
+         CUADRO DE ELIMINATORIAS
+         ================================== -->
 
-    <div class="tab-pane fade"
-         id="pills-eliminatorias"
-         role="tabpanel"
-         aria-labelledby="pills-eliminatorias-tab">
+    <div
+        class="tab-pane fade"
+        id="pills-eliminatorias"
+        role="tabpanel"
+        aria-labelledby="pills-eliminatorias-tab"
+    >
 
         <div class="cuadro-contenedor shadow-lg">
 
@@ -469,15 +570,17 @@
 
                         {% for p in fase.partidos %}
 
-                        <a href="{% url 'detalle_partido' p.pk %}"
-                           class="partido-enlace">
+                        <a
+                            href="{% url 'detalle_partido' p.pk %}"
+                            class="partido-enlace"
+                        >
 
                             <div class="partido-tarjeta partido-tarjeta-banderas">
 
                                 {% if p.info_extra %}
-                                <div class="partido-fecha">
-                                    {{ p.info_extra }}
-                                </div>
+                                    <div class="partido-fecha">
+                                        {{ p.info_extra }}
+                                    </div>
                                 {% endif %}
 
                                 <div class="partido-cuerpo partido-cuerpo-nuevo">
@@ -515,9 +618,9 @@
 
                         {% empty %}
 
-                        <p class="text-secondary text-center small">
-                            Sin partidos cargados.
-                        </p>
+                            <p class="text-secondary text-center small">
+                                Sin partidos cargados.
+                            </p>
 
                         {% endfor %}
 
@@ -540,8 +643,10 @@
 
                 {% for p in partidos_tercer_puesto %}
 
-                <a href="{% url 'detalle_partido' p.pk %}"
-                   class="partido-enlace">
+                <a
+                    href="{% url 'detalle_partido' p.pk %}"
+                    class="partido-enlace"
+                >
 
                     <div class="partido-tarjeta partido-tarjeta-banderas">
 
