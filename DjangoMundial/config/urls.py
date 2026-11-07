@@ -1,10 +1,11 @@
+
 """
 URL configuration for config project.
 """
 
 from django.contrib import admin
 from django.urls import path
-from mundial import views
+from mundial import views, panel
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -12,14 +13,66 @@ from django.conf.urls.static import static
 
 urlpatterns = [
 
-    # Administración
-    path('admin/', admin.site.urls),
+    # Administración tradicional
+    path(
+        'admin/',
+        admin.site.urls
+    ),
 
-    # Páginas principales
-    path('', views.inicio, name='inicio'),
-    path('acerca/', views.acerca, name='acerca'),
+    # ======================================
+    # NUEVO PANEL DE ADMINISTRACIÓN
+    # ======================================
 
-    # Autenticación
+    path(
+        'panel/',
+        panel.inicio_panel,
+        name='panel_inicio'
+    ),
+
+    path(
+        'panel/<slug:seccion>/nuevo/',
+        panel.formulario_registro,
+        name='panel_nuevo'
+    ),
+
+    path(
+        'panel/<slug:seccion>/<int:pk>/editar/',
+        panel.formulario_registro,
+        name='panel_editar'
+    ),
+
+    path(
+        'panel/<slug:seccion>/<int:pk>/eliminar/',
+        panel.eliminar_registro,
+        name='panel_eliminar'
+    ),
+
+    path(
+        'panel/<slug:seccion>/',
+        panel.listar_registros,
+        name='panel_listado'
+    ),
+
+    # ======================================
+    # PÁGINAS PRINCIPALES
+    # ======================================
+
+    path(
+        '',
+        views.inicio,
+        name='inicio'
+    ),
+
+    path(
+        'acerca/',
+        views.acerca,
+        name='acerca'
+    ),
+
+    # ======================================
+    # AUTENTICACIÓN
+    # ======================================
+
     path(
         'login/',
         auth_views.LoginView.as_view(
@@ -42,7 +95,10 @@ urlpatterns = [
         name='registro'
     ),
 
-    # Mundiales
+    # ======================================
+    # MUNDIALES
+    # ======================================
+
     path(
         'mundial/',
         views.MundialListView.as_view(),
@@ -55,7 +111,10 @@ urlpatterns = [
         name='detalle_mundial'
     ),
 
-    # Confederaciones
+    # ======================================
+    # CONFEDERACIONES
+    # ======================================
+
     path(
         'confederaciones/',
         views.selecciones,
@@ -68,7 +127,10 @@ urlpatterns = [
         name='detalle_confederacion'
     ),
 
-    # Selecciones
+    # ======================================
+    # SELECCIONES
+    # ======================================
+
     path(
         'seleccion/',
         views.selecciones,
@@ -81,7 +143,10 @@ urlpatterns = [
         name='detalle_seleccion'
     ),
 
-    # Jugadores - Sin modificaciones
+    # ======================================
+    # JUGADORES
+    # ======================================
+
     path(
         'jugador/',
         views.jugadores,
@@ -94,7 +159,10 @@ urlpatterns = [
         name='detalle_jugador'
     ),
 
-    # Detalle de partido
+    # ======================================
+    # DETALLE DE PARTIDO
+    # ======================================
+
     path(
         'partido/<int:partido_id>/',
         views.detalle_partido,

@@ -1,5 +1,6 @@
 
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -9,99 +10,547 @@
 
     <title>{% block title %}MundoFútbol{% endblock %}</title>
 
-    <!-- Bootstrap 5 CSS -->
+    <!-- Bootstrap -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
 
-    <!-- FontAwesome -->
+    <!-- Font Awesome -->
     <link
-        rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    >
-
-    <!-- CSS GENERAL DE MUNDOFÚTBOL -->
-    <link
         rel="stylesheet"
-        href="{% static 'css/estilos.css' %}"
     >
 
-    <!-- CSS ESPECÍFICO DE CADA PÁGINA -->
+    <!-- CSS GENERAL DEL PROYECTO -->
+    <link
+        href="{% static 'css/estilos.css' %}"
+        rel="stylesheet"
+    >
+
+    <!-- ESTILOS DE LA NAVBAR -->
+    <style>
+
+        /* ==========================================
+           NAVBAR MUNDOFÚTBOL
+           ========================================== */
+
+        .navbar.mf-navbar {
+            background: linear-gradient(
+                110deg,
+                #0b3023 0%,
+                #104631 55%,
+                #145A32 100%
+            ) !important;
+
+            border-bottom: 1px solid rgba(200, 163, 77, .55) !important;
+
+            box-shadow: 0 5px 22px rgba(0, 0, 0, .25);
+
+            padding: 12px 0 !important;
+            z-index: 1050;
+        }
+
+        .mf-navbar .mf-container {
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* LOGO */
+
+        .mf-navbar .mf-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 11px;
+
+            color: #e5c46d !important;
+            text-decoration: none;
+
+            flex-shrink: 0;
+            margin-right: 20px;
+        }
+
+        .mf-navbar .mf-brand-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 43px;
+            height: 43px;
+
+            background: linear-gradient(
+                135deg,
+                #efd58a,
+                #c8a34d
+            );
+
+            border-radius: 12px;
+
+            color: #0b3023;
+            font-size: 20px;
+
+            box-shadow: 0 3px 12px rgba(200, 163, 77, .2);
+        }
+
+        .mf-navbar .mf-brand-name {
+            font-weight: 800;
+            font-size: 1.3rem;
+            letter-spacing: -.5px;
+            line-height: 1.15;
+        }
+
+        .mf-navbar .mf-brand-subtitle {
+            display: block;
+
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 1.6px;
+
+            color: #bad0c3;
+
+            margin-top: 3px;
+        }
+
+        /* ENLACES */
+
+        .mf-navbar .mf-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .mf-navbar .nav-link.mf-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            color: #f3f7f4 !important;
+
+            font-size: 13px !important;
+            font-weight: 600;
+
+            padding: 10px 11px !important;
+
+            border-radius: 9px;
+            white-space: nowrap;
+
+            transition:
+                background .2s ease,
+                color .2s ease;
+        }
+
+        .mf-navbar .mf-link i {
+            color: #bbd5c3;
+            font-size: 13px;
+        }
+
+        .mf-navbar .nav-link.mf-link:hover {
+            background: rgba(255, 255, 255, .1);
+            color: #efd58a !important;
+        }
+
+        .mf-navbar .nav-link.mf-link:hover i {
+            color: #efd58a;
+        }
+
+        .mf-navbar .nav-link.mf-link.active {
+            background: rgba(200, 163, 77, .16);
+
+            color: #efd58a !important;
+
+            box-shadow: inset 0 0 0 1px rgba(200, 163, 77, .3);
+        }
+
+        .mf-navbar .nav-link.mf-link.active i {
+            color: #efd58a;
+        }
+
+        /* DROPDOWN */
+
+        .mf-navbar .dropdown-menu {
+            background: #102e23 !important;
+
+            border: 1px solid rgba(200, 163, 77, .35) !important;
+            border-radius: 12px;
+
+            padding: 8px;
+
+            box-shadow: 0 12px 35px rgba(0, 0, 0, .35);
+        }
+
+        .mf-navbar .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 10px 12px;
+
+            color: #ffffff !important;
+
+            font-weight: 500;
+            font-size: 13px;
+
+            border-radius: 8px;
+        }
+
+        .mf-navbar .dropdown-item:hover,
+        .mf-navbar .dropdown-item:focus {
+            background: rgba(200, 163, 77, .18) !important;
+            color: #efd58a !important;
+        }
+
+        .mf-navbar .dropdown-item i {
+            color: #c8a34d;
+        }
+
+        .mf-navbar .dropdown-divider {
+            border-color: rgba(200, 163, 77, .3);
+        }
+
+        /* BOTONES DEL USUARIO */
+
+        .mf-navbar .mf-actions {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+
+        .mf-navbar .mf-admin-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            padding: 10px 14px;
+
+            border-radius: 9px;
+            border: none;
+
+            background: linear-gradient(
+                135deg,
+                #efd58a,
+                #c8a34d
+            );
+
+            color: #0b3023 !important;
+
+            font-size: 13px;
+            font-weight: 750;
+
+            text-decoration: none;
+            white-space: nowrap;
+
+            transition: transform .2s ease, filter .2s ease;
+        }
+
+        .mf-navbar .mf-admin-btn:hover {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
+        }
+
+        .mf-navbar .mf-logout-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            padding: 10px 12px;
+
+            border: 1px solid rgba(255, 255, 255, .2);
+            border-radius: 9px;
+
+            background: rgba(255, 255, 255, .055);
+
+            color: #ffffff;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            white-space: nowrap;
+
+            transition: background .2s ease;
+        }
+
+        .mf-navbar .mf-logout-btn:hover {
+            background: rgba(220, 53, 69, .2);
+            color: #ffd4d8;
+        }
+
+        .mf-navbar .mf-login-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            padding: 10px 13px;
+
+            border: 1px solid rgba(255, 255, 255, .25);
+            border-radius: 9px;
+
+            color: white;
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .mf-navbar .mf-register-btn {
+            padding: 10px 14px;
+
+            background: #c8a34d;
+            color: #0b3023;
+
+            border-radius: 9px;
+
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* MENÚ HAMBURGUESA */
+
+        .mf-navbar .navbar-toggler {
+            color: #efd58a;
+            background: rgba(200, 163, 77, .12);
+
+            border: 1px solid rgba(200, 163, 77, .4);
+            border-radius: 10px;
+
+            padding: 9px 12px;
+
+            box-shadow: none;
+        }
+
+        .mf-navbar .navbar-toggler:focus {
+            box-shadow: 0 0 0 3px rgba(200, 163, 77, .18);
+        }
+
+        /* ==========================================
+           DESKTOP
+           ========================================== */
+
+        @media (min-width: 1200px) {
+
+            .mf-navbar .navbar-collapse {
+                display: flex !important;
+                align-items: center;
+                flex-basis: auto;
+            }
+
+            .mf-navbar .navbar-toggler {
+                display: none !important;
+            }
+
+            .mf-navbar .mf-links {
+                flex-direction: row;
+                flex-wrap: nowrap;
+            }
+
+            .mf-navbar .mf-actions {
+                flex-direction: row;
+            }
+        }
+
+        /* ==========================================
+           TABLET Y CELULAR
+           ========================================== */
+
+        @media (max-width: 1199.98px) {
+
+            .mf-navbar .navbar-collapse:not(.show):not(.collapsing) {
+                display: none !important;
+            }
+
+            .mf-navbar .navbar-collapse.show {
+                display: block !important;
+            }
+
+            .mf-navbar .navbar-collapse {
+                width: 100%;
+                flex-basis: 100%;
+
+                margin-top: 15px;
+            }
+
+            .mf-navbar .mf-links {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 4px;
+            }
+
+            .mf-navbar .nav-link.mf-link {
+                justify-content: flex-start;
+                width: 100%;
+                padding: 12px 14px !important;
+            }
+
+            .mf-navbar .mf-actions {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+
+                margin: 15px 0 0;
+                padding-top: 15px;
+
+                border-top: 1px solid rgba(200, 163, 77, .25);
+            }
+
+            .mf-navbar .mf-actions > * {
+                width: 100%;
+            }
+
+            .mf-navbar .mf-admin-btn,
+            .mf-navbar .mf-logout-btn,
+            .mf-navbar .mf-login-btn,
+            .mf-navbar .mf-register-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .mf-navbar .dropdown-menu {
+                box-shadow: none;
+                margin-top: 5px;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+
+            .mf-navbar .mf-container {
+                padding: 0 15px;
+            }
+
+            .mf-navbar .mf-brand {
+                gap: 9px;
+            }
+
+            .mf-navbar .mf-brand-name {
+                font-size: 1.12rem;
+            }
+
+            .mf-navbar .mf-brand-subtitle {
+                font-size: 8px;
+                letter-spacing: 1px;
+            }
+
+            .mf-navbar .mf-brand-icon {
+                width: 39px;
+                height: 39px;
+            }
+        }
+
+    </style>
+
     {% block extra_css %}{% endblock %}
+
 </head>
 
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- NAVBAR PRINCIPAL -->
-    <nav class="navbar navbar-expand-xl border-bottom border-dorado sticky-top shadow-lg py-2">
+    <!-- ==========================================
+         NAVBAR PRINCIPAL
+         ========================================== -->
 
-        <div class="container">
+    <nav class="navbar navbar-expand-xl mf-navbar sticky-top">
+
+        <div class="mf-container d-flex align-items-center flex-wrap">
 
             <!-- LOGO -->
+
             <a
-                class="navbar-brand fw-bold text-dorado fs-4 d-flex align-items-center"
+                class="navbar-brand mf-brand"
                 href="{% url 'inicio' %}"
             >
-                <i class="fa-solid fa-trophy me-2"></i>
-                MundoFútbol
+
+                <span class="mf-brand-icon">
+                    <i class="fa-solid fa-trophy"></i>
+                </span>
+
+                <span>
+                    <span class="mf-brand-name d-block">
+                        MundoFútbol
+                    </span>
+
+                    <span class="mf-brand-subtitle">
+                        WORLD CUP EXPERIENCE
+                    </span>
+                </span>
+
             </a>
 
-            <!-- BOTÓN MENÚ MÓVIL -->
+            <!-- HAMBURGUESA -->
+
             <button
-                class="navbar-toggler text-white border-0"
+                class="navbar-toggler ms-auto"
                 type="button"
                 data-bs-toggle="collapse"
-                data-bs-target="#navbarNav"
-                aria-controls="navbarNav"
+                data-bs-target="#mfNavbarMenu"
+                aria-controls="mfNavbarMenu"
                 aria-expanded="false"
                 aria-label="Abrir menú"
             >
-                <i class="fa-solid fa-bars text-dorado fs-3"></i>
+                <i class="fa-solid fa-bars"></i>
             </button>
 
-            <!-- ENLACES -->
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- CONTENIDO DEL MENÚ -->
 
-                <ul class="navbar-nav ms-auto align-items-center">
+            <div
+                class="collapse navbar-collapse"
+                id="mfNavbarMenu"
+            >
+
+                <ul class="navbar-nav mf-links ms-xl-auto">
 
                     <!-- INICIO -->
+
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'inicio' %}">
-                            <i class="fa-solid fa-house me-1"></i>
+                        <a
+                            class="nav-link mf-link {% if request.resolver_match.url_name == 'inicio' %}active{% endif %}"
+                            href="{% url 'inicio' %}"
+                        >
+                            <i class="fa-solid fa-house"></i>
                             Inicio
                         </a>
                     </li>
 
                     <!-- MUNDIALES -->
+
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mundiales' %}">
-                            <i class="fa-solid fa-earth-americas me-1"></i>
+                        <a
+                            class="nav-link mf-link {% if request.resolver_match.url_name == 'mundiales' or request.resolver_match.url_name == 'detalle_mundial' %}active{% endif %}"
+                            href="{% url 'mundiales' %}"
+                        >
+                            <i class="fa-solid fa-earth-americas"></i>
                             Mundiales
                         </a>
                     </li>
 
                     <!-- CONFEDERACIONES -->
+
                     <li class="nav-item dropdown">
 
                         <a
-                            class="nav-link dropdown-toggle"
+                            class="nav-link mf-link dropdown-toggle {% if request.resolver_match.url_name == 'selecciones' or request.resolver_match.url_name == 'detalle_seleccion' or request.resolver_match.url_name == 'lista_confederaciones' or request.resolver_match.url_name == 'detalle_confederacion' %}active{% endif %}"
                             href="#"
-                            id="confederacionesDropdown"
+                            id="mfConfederaciones"
                             role="button"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                         >
-                            <i class="fa-solid fa-globe me-1"></i>
+                            <i class="fa-solid fa-globe"></i>
                             Confederaciones
                         </a>
 
                         <ul
                             class="dropdown-menu dropdown-menu-dark"
-                            aria-labelledby="confederacionesDropdown"
+                            aria-labelledby="mfConfederaciones"
                         >
 
-                            <!-- LISTA DE CONFEDERACIONES -->
                             {% for confederacion in confederaciones_menu %}
 
                                 <li>
@@ -109,6 +558,7 @@
                                         class="dropdown-item"
                                         href="{% url 'selecciones' %}#confederacion-{{ confederacion.nombre|lower|slugify }}"
                                     >
+                                        <i class="fa-solid fa-angle-right"></i>
                                         {{ confederacion.get_nombre_display }}
                                     </a>
                                 </li>
@@ -116,25 +566,23 @@
                             {% empty %}
 
                                 <li>
-                                    <span class="dropdown-item-text">
-                                        No hay confederaciones disponibles
+                                    <span class="dropdown-item-text text-white-50">
+                                        No hay confederaciones.
                                     </span>
                                 </li>
 
                             {% endfor %}
 
-                            <!-- SEPARADOR -->
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
 
-                            <!-- VER TODAS LAS SELECCIONES -->
                             <li>
                                 <a
                                     class="dropdown-item fw-bold"
                                     href="{% url 'selecciones' %}"
                                 >
-                                    <i class="fa-solid fa-flag me-2"></i>
+                                    <i class="fa-solid fa-flag"></i>
                                     Ver todas las selecciones
                                 </a>
                             </li>
@@ -144,86 +592,89 @@
                     </li>
 
                     <!-- JUGADORES -->
+
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'jugadores' %}">
-                            <i class="fa-solid fa-user me-1"></i>
+                        <a
+                            class="nav-link mf-link {% if request.resolver_match.url_name == 'jugadores' or request.resolver_match.url_name == 'detalle_jugador' %}active{% endif %}"
+                            href="{% url 'jugadores' %}"
+                        >
+                            <i class="fa-solid fa-users"></i>
                             Jugadores
                         </a>
                     </li>
 
                     <!-- ACERCA DE -->
+
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'acerca' %}">
-                            <i class="fa-solid fa-circle-info me-1"></i>
+                        <a
+                            class="nav-link mf-link {% if request.resolver_match.url_name == 'acerca' %}active{% endif %}"
+                            href="{% url 'acerca' %}"
+                        >
+                            <i class="fa-solid fa-circle-info"></i>
                             Acerca de
                         </a>
                     </li>
 
-                    <!-- USUARIO AUTENTICADO -->
+                </ul>
+
+                <!-- ACCIONES DE USUARIO -->
+
+                <div class="mf-actions ms-xl-3">
+
                     {% if user.is_authenticated %}
 
-                        <!-- ADMINISTRADOR -->
                         {% if user.is_staff %}
 
-                            <li class="nav-item ms-lg-3">
-                                <a
-                                    class="nav-link"
-                                    href="{% url 'admin:index' %}"
-                                >
-                                    <i class="fa-solid fa-screwdriver-wrench me-1"></i>
-                                    Administración
-                                </a>
-                            </li>
+                            <a
+                                href="{% url 'panel_inicio' %}"
+                                class="mf-admin-btn"
+                            >
+                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                                Administración
+                            </a>
 
                         {% endif %}
 
-                        <!-- CERRAR SESIÓN -->
-                        <li class="nav-item ms-lg-3">
+                        <!-- CERRAR SESIÓN CON POST -->
 
-                            <form
-                                action="{% url 'logout' %}"
-                                method="post"
-                                class="mb-0"
+                        <form
+                            action="{% url 'logout' %}"
+                            method="post"
+                            class="m-0"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="mf-logout-btn"
                             >
-                                {% csrf_token %}
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                Cerrar sesión
+                            </button>
 
-                                <button
-                                    type="submit"
-                                    class="nav-link border-0 bg-transparent"
-                                >
-                                    <i class="fa-solid fa-right-from-bracket me-1"></i>
-                                    Cerrar sesión
-                                </button>
-                            </form>
-
-                        </li>
+                        </form>
 
                     {% else %}
 
-                        <!-- INICIAR SESIÓN -->
-                        <li class="nav-item ms-lg-3">
-                            <a
-                                class="nav-link"
-                                href="{% url 'login' %}"
-                            >
-                                <i class="fa-solid fa-right-to-bracket me-1"></i>
-                                Iniciar sesión
-                            </a>
-                        </li>
+                        <a
+                            href="{% url 'login' %}"
+                            class="mf-login-btn"
+                        >
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                            Iniciar sesión
+                        </a>
 
-                        <!-- REGISTRARSE -->
-                        <li class="nav-item ms-lg-2">
-                            <a
-                                class="btn btn-dorado btn-sm"
-                                href="{% url 'registro' %}"
-                            >
-                                Registrarse
-                            </a>
-                        </li>
+                        <a
+                            href="{% url 'registro' %}"
+                            class="mf-register-btn"
+                        >
+                            Registrarse
+                        </a>
 
                     {% endif %}
 
-                </ul>
+                </div>
 
             </div>
 
@@ -231,10 +682,14 @@
 
     </nav>
 
-    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ==========================================
+         CONTENIDO PRINCIPAL
+         ========================================== -->
+
     <main class="container py-4 flex-grow-1">
 
         {% if messages %}
+
             {% for message in messages %}
 
                 <div
@@ -252,6 +707,7 @@
                 </div>
 
             {% endfor %}
+
         {% endif %}
 
         {% block content %}
@@ -260,6 +716,7 @@
     </main>
 
     <!-- FOOTER -->
+
     <footer class="text-center py-4 mt-auto border-top border-dorado">
 
         <div class="container">
@@ -276,11 +733,12 @@
 
     </footer>
 
-    <!-- Bootstrap JS -->
+    <!-- BOOTSTRAP JS -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- JAVASCRIPT ESPECÍFICO DE CADA PÁGINA -->
-    {% block extra_js %}{% endblock %}
+    {% block extra_js %}
+    {% endblock %}
 
 </body>
 </html>
