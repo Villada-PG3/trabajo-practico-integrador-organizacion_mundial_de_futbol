@@ -8,17 +8,13 @@
 {% block content %}
 
 <style>
-    :root {
-        --mf-bg: #071e17;
+    .player-page {
         --mf-card: #103b2c;
-        --mf-card-light: #164b37;
         --mf-gold: #ffc845;
         --mf-text: #f4f7f5;
         --mf-muted: #c4d8ce;
         --mf-border: rgba(255, 200, 69, .25);
-    }
 
-    .player-page {
         color: var(--mf-text);
         padding: 35px 0 55px;
     }
@@ -26,6 +22,8 @@
     .player-page * {
         box-sizing: border-box;
     }
+
+    /* BOTÓN VOLVER */
 
     .player-back {
         display: inline-flex;
@@ -46,6 +44,8 @@
         background: var(--mf-gold);
     }
 
+    /* TARJETAS PRINCIPALES */
+
     .player-card,
     .history-card {
         background: linear-gradient(145deg, #124631, #09291f);
@@ -60,6 +60,8 @@
         margin-bottom: 40px;
     }
 
+    /* IDENTIDAD */
+
     .player-identity {
         min-height: 100%;
         padding: 42px 22px;
@@ -71,7 +73,9 @@
                 transparent 48%
             ),
             linear-gradient(160deg, #18583d, #09251b);
+
         border-right: 1px solid var(--mf-border);
+
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -82,12 +86,16 @@
         width: 180px;
         height: 180px;
         position: relative;
+
         display: flex;
         align-items: center;
         justify-content: center;
+
         border-radius: 50%;
+
         background: linear-gradient(145deg, #1b6547, #09271d);
         border: 3px solid var(--mf-gold);
+
         box-shadow:
             0 0 0 8px rgba(255, 200, 69, .06),
             0 15px 35px rgba(0, 0, 0, .3);
@@ -112,10 +120,13 @@
         position: relative;
         margin-top: -12px;
         padding: 7px 18px;
+
         border: 3px solid var(--mf-card);
         border-radius: 30px;
+
         background: var(--mf-gold);
         color: #172117;
+
         font-size: .72rem;
         font-weight: 900;
         letter-spacing: 2px;
@@ -135,6 +146,8 @@
         font-size: 1.1rem;
         margin: 0;
     }
+
+    /* FICHA TÉCNICA */
 
     .player-details {
         padding: 32px;
@@ -169,10 +182,13 @@
         align-items: center;
         gap: 8px;
         padding: 10px 15px;
+
         border: 1px solid var(--mf-border);
         border-radius: 50px;
+
         background: rgba(255, 200, 69, .07);
         color: #fff;
+
         font-size: .9rem;
         font-weight: 700;
         overflow-wrap: anywhere;
@@ -183,39 +199,41 @@
         color: var(--mf-gold);
     }
 
+    /* TRES TARJETAS DISTRIBUIDAS UNIFORMEMENTE */
+
     .player-info-grid {
         display: grid;
-        grid-template-columns: repeat(6, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 15px;
         margin-top: 24px;
     }
 
     .info-item {
-        grid-column: span 2;
-        padding: 20px 18px;
+        padding: 23px 18px;
         min-width: 0;
+
         background: rgba(255, 255, 255, .045);
         border: 1px solid rgba(255, 255, 255, .10);
         border-radius: 13px;
+
         transition: .2s ease;
     }
 
     .info-item:hover {
         background: rgba(255, 255, 255, .075);
         border-color: var(--mf-border);
-    }
-
-    .info-item.wide {
-        grid-column: span 3;
+        transform: translateY(-2px);
     }
 
     .info-label {
         display: block;
         color: #c0d8cb;
+
         font-size: .76rem;
         font-weight: 800;
         letter-spacing: 1px;
         text-transform: uppercase;
+
         margin-bottom: 9px;
     }
 
@@ -226,9 +244,11 @@
     .info-value {
         display: block;
         color: #fff;
+
         font-size: 1.12rem;
         line-height: 1.4;
         font-weight: 750;
+
         overflow-wrap: anywhere;
     }
 
@@ -240,7 +260,9 @@
         justify-content: space-between;
         flex-wrap: wrap;
         gap: 18px;
+
         padding: 23px 27px;
+
         background: linear-gradient(100deg, #164b37, #0d3023);
         border-bottom: 2px solid var(--mf-gold);
     }
@@ -249,6 +271,7 @@
         display: flex;
         align-items: center;
         gap: 12px;
+
         color: var(--mf-gold);
         font-size: clamp(1.15rem, 2vw, 1.5rem);
         line-height: 1.4;
@@ -273,8 +296,10 @@
     .history-year-form button {
         border: 1px solid var(--mf-gold);
         border-radius: 9px;
+
         color: var(--mf-gold);
         background: #0a3023;
+
         padding: 10px 13px;
         font-weight: 750;
         cursor: pointer;
@@ -308,9 +333,12 @@
         align-items: center;
         justify-content: center;
         gap: 12px;
+
         padding: 30px 15px;
+
         border: 1px solid var(--mf-border);
         border-radius: 14px;
+
         background: #145139;
         text-align: center;
         transition: .2s ease;
@@ -338,6 +366,8 @@
         font-weight: 700;
     }
 
+    /* SIN HISTORIALES */
+
     .history-empty {
         padding: 48px 20px;
         text-align: center;
@@ -348,11 +378,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
+
         width: 76px;
         height: 76px;
+
         margin: 0 auto 20px;
+
         border: 1px solid var(--mf-border);
         border-radius: 50%;
+
         background: rgba(255, 200, 69, .07);
         color: var(--mf-gold);
         font-size: 2rem;
@@ -399,9 +433,11 @@
 
     .performance-card {
         padding: 23px 15px;
+
         background: linear-gradient(145deg, #164b37, #0c3023);
         border: 1px solid var(--mf-border);
         border-radius: 14px;
+
         text-align: center;
     }
 
@@ -460,12 +496,16 @@
         font-weight: 800;
     }
 
+    /* MEJOR MUNDIAL */
+
     .best-world-cup {
         margin-top: 25px;
         padding: 23px;
+
         background: linear-gradient(145deg, #164b37, #0c3023);
         border: 1px solid var(--mf-border);
         border-radius: 14px;
+
         text-align: center;
     }
 
@@ -538,9 +578,8 @@
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
-        .info-item,
-        .info-item.wide {
-            grid-column: span 1;
+        .info-item:first-child {
+            grid-column: span 2;
         }
 
         .history-header {
@@ -565,8 +604,7 @@
             grid-template-columns: 1fr;
         }
 
-        .info-item,
-        .info-item.wide {
+        .info-item:first-child {
             grid-column: span 1;
         }
 
@@ -574,20 +612,23 @@
             grid-template-columns: 1fr;
         }
     }
+
 </style>
 
 
 <div class="container player-page">
 
-    <!-- BOTÓN VOLVER -->
+    <!-- VOLVER A JUGADORES -->
 
     <a href="{% url 'jugadores' %}" class="player-back">
-        <i class="bi bi-arrow-left"></i>
+        <i class="fa-solid fa-arrow-left"></i>
         Volver a jugadores
     </a>
 
 
-    <!-- FICHA PRINCIPAL DEL JUGADOR -->
+    <!-- ==========================================
+         FICHA PRINCIPAL
+         ========================================== -->
 
     <section class="player-card">
 
@@ -614,7 +655,7 @@
                     </h1>
 
                     <p class="player-position">
-                        <i class="bi bi-shield-shaded me-2"></i>
+                        <i class="fa-solid fa-shield-halved me-2"></i>
                         {{ jugador.get_posicion_display }}
                     </p>
 
@@ -639,7 +680,7 @@
                         </div>
 
                         <span class="passport-badge">
-                            <i class="bi bi-person-vcard"></i>
+                            <i class="fa-solid fa-id-card"></i>
                             Pasaporte:
                             {{ jugador.pasaporte|default:"No informado" }}
                         </span>
@@ -647,69 +688,61 @@
                     </div>
 
 
+                    <!-- SOLO TRES TARJETAS -->
+
                     <div class="player-info-grid">
 
+                        <!-- SELECCIÓN -->
+
                         <div class="info-item">
+
                             <span class="info-label">
-                                <i class="bi bi-flag-fill"></i>
+                                <i class="fa-solid fa-flag"></i>
                                 Selección
                             </span>
 
                             <span class="info-value">
+
                                 {% if jugador.seleccion %}
                                     {{ jugador.seleccion.nombre }}
                                 {% else %}
                                     No informada
                                 {% endif %}
+
                             </span>
+
                         </div>
 
 
+                        <!-- EDAD -->
+
                         <div class="info-item">
+
                             <span class="info-label">
-                                <i class="bi bi-calendar3"></i>
+                                <i class="fa-solid fa-calendar-days"></i>
                                 Edad
                             </span>
 
                             <span class="info-value">
                                 {{ jugador.edad }} años
                             </span>
+
                         </div>
 
 
+                        <!-- POSICIÓN -->
+
                         <div class="info-item">
+
                             <span class="info-label">
-                                <i class="bi bi-person-standing"></i>
+                                <i class="fa-solid fa-user"></i>
                                 Posición
                             </span>
 
                             <span class="info-value">
                                 {{ jugador.get_posicion_display }}
                             </span>
-                        </div>
 
-
-                        <div class="info-item wide">
-                            <span class="info-label">
-                                <i class="bi bi-dribbble"></i>
-                                Club actual
-                            </span>
-
-                            <span class="info-value">
-                                {{ jugador.equipo_actual|default:"No informado" }}
-                            </span>
-                        </div>
-
-
-                        <div class="info-item wide">
-                            <span class="info-label">
-                                <i class="bi bi-globe-americas"></i>
-                                País del club
-                            </span>
-
-                            <span class="info-value">
-                                {{ jugador.pais_equipo|default:"No informado" }}
-                            </span>
                         </div>
 
                     </div>
@@ -723,14 +756,16 @@
     </section>
 
 
-    <!-- HISTORIAL DE MUNDIALES -->
+    <!-- ==========================================
+         HISTORIAL DE MUNDIALES
+         ========================================== -->
 
     <section class="history-card" id="historial-mundiales">
 
         <div class="history-header">
 
             <h2 class="history-title">
-                <i class="bi bi-trophy-fill"></i>
+                <i class="fa-solid fa-trophy"></i>
                 Historial de participaciones en Copas del Mundo
             </h2>
 
@@ -785,20 +820,19 @@
             <div class="history-content">
 
                 <h3 class="history-year-title">
-
-                    <i class="bi bi-calendar-event me-2"></i>
-
+                    <i class="fa-solid fa-calendar-days me-2"></i>
                     {{ historial_seleccionado.mundial.sede }}
                     {{ historial_seleccionado.mundial.anio }}
-
                 </h3>
 
 
                 <div class="history-stats-grid">
 
+                    <!-- PARTIDOS -->
+
                     <div class="history-stat-card">
 
-                        <i class="bi bi-calendar-check"></i>
+                        <i class="fa-solid fa-calendar-check"></i>
 
                         <strong>
                             {{ historial_seleccionado.partidos_jugados }}
@@ -811,9 +845,11 @@
                     </div>
 
 
+                    <!-- GOLES -->
+
                     <div class="history-stat-card">
 
-                        <i class="bi bi-dribbble"></i>
+                        <i class="fa-solid fa-futbol"></i>
 
                         <strong>
                             {{ historial_seleccionado.goles }}
@@ -826,9 +862,11 @@
                     </div>
 
 
+                    <!-- ASISTENCIAS -->
+
                     <div class="history-stat-card">
 
-                        <i class="bi bi-arrow-left-right"></i>
+                        <i class="fa-solid fa-arrows-left-right"></i>
 
                         <strong>
                             {{ historial_seleccionado.asistencias }}
@@ -849,7 +887,7 @@
             <div class="history-empty">
 
                 <div class="history-empty-icon">
-                    <i class="bi bi-trophy"></i>
+                    <i class="fa-solid fa-trophy"></i>
                 </div>
 
                 <h5>
@@ -866,14 +904,16 @@
         {% endif %}
 
 
-        <!-- RENDIMIENTO GENERAL -->
+        <!-- ======================================
+             RENDIMIENTO GENERAL
+             ====================================== -->
 
         {% if historiales %}
 
             <div class="history-content performance-section">
 
                 <h3 class="performance-title">
-                    <i class="bi bi-graph-up-arrow me-2"></i>
+                    <i class="fa-solid fa-chart-line me-2"></i>
                     Rendimiento general
                 </h3>
 
@@ -883,101 +923,52 @@
                 </p>
 
 
+                <!-- TOTALES -->
+
                 <div class="performance-grid">
 
-                    <!-- PARTIDOS TOTALES -->
-
                     <div class="performance-card">
-                        <i class="bi bi-calendar-check"></i>
-
-                        <strong>
-                            {{ partidos_totales }}
-                        </strong>
-
-                        <span>
-                            Partidos jugados
-                        </span>
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <strong>{{ partidos_totales }}</strong>
+                        <span>Partidos jugados</span>
                     </div>
 
-
-                    <!-- GOLES TOTALES -->
-
                     <div class="performance-card">
-                        <i class="bi bi-dribbble"></i>
-
-                        <strong>
-                            {{ goles_totales }}
-                        </strong>
-
-                        <span>
-                            Goles totales
-                        </span>
+                        <i class="fa-solid fa-futbol"></i>
+                        <strong>{{ goles_totales }}</strong>
+                        <span>Goles totales</span>
                     </div>
 
-
-                    <!-- ASISTENCIAS TOTALES -->
-
                     <div class="performance-card">
-                        <i class="bi bi-arrow-left-right"></i>
-
-                        <strong>
-                            {{ asistencias_totales }}
-                        </strong>
-
-                        <span>
-                            Asistencias totales
-                        </span>
+                        <i class="fa-solid fa-arrows-left-right"></i>
+                        <strong>{{ asistencias_totales }}</strong>
+                        <span>Asistencias totales</span>
                     </div>
 
-
-                    <!-- PROMEDIO DE GOLES -->
-
                     <div class="performance-card">
-                        <i class="bi bi-bullseye"></i>
-
-                        <strong>
-                            {{ promedio_gol|floatformat:2 }}
-                        </strong>
-
-                        <span>
-                            Promedio de goles por partido
-                        </span>
+                        <i class="fa-solid fa-bullseye"></i>
+                        <strong>{{ promedio_gol|floatformat:2 }}</strong>
+                        <span>Promedio de goles por partido</span>
                     </div>
 
-
-                    <!-- PROMEDIO DE ASISTENCIAS -->
-
                     <div class="performance-card">
-                        <i class="bi bi-bar-chart-line"></i>
-
-                        <strong>
-                            {{ promedio_asistencias|floatformat:2 }}
-                        </strong>
-
-                        <span>
-                            Promedio de asistencias por partido
-                        </span>
+                        <i class="fa-solid fa-chart-column"></i>
+                        <strong>{{ promedio_asistencias|floatformat:2 }}</strong>
+                        <span>Promedio de asistencias por partido</span>
                     </div>
 
-
-                    <!-- PARTICIPACIONES DE GOL -->
-
                     <div class="performance-card">
-                        <i class="bi bi-stars"></i>
-
-                        <strong>
-                            {{ participaciones_gol }}
-                        </strong>
-
-                        <span>
-                            Participaciones de gol
-                        </span>
+                        <i class="fa-solid fa-star"></i>
+                        <strong>{{ participaciones_gol }}</strong>
+                        <span>Participaciones de gol</span>
                     </div>
 
                 </div>
 
 
-                <!-- TABLA DE RENDIMIENTO POR MUNDIAL -->
+                <!-- ==================================
+                     RENDIMIENTO POR MUNDIAL
+                     ================================== -->
 
                 <div class="performance-table-wrapper">
 
@@ -1034,13 +1025,15 @@
                 </div>
 
 
-                <!-- MEJOR MUNDIAL -->
+                <!-- ==================================
+                     MEJOR MUNDIAL
+                     ================================== -->
 
                 {% if mejor_mundial %}
 
                     <div class="best-world-cup">
 
-                        <i class="bi bi-trophy-fill"></i>
+                        <i class="fa-solid fa-trophy"></i>
 
                         <strong>
                             {{ mejor_mundial.mundial.anio }}
