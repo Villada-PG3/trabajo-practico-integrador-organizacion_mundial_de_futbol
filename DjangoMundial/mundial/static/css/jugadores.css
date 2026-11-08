@@ -1,0 +1,661 @@
+
+/* ==========================================
+   MUNDOFÚTBOL - EXPLORADOR DE JUGADORES
+   ========================================== */
+
+.jugadores-page {
+    --jp-fondo: #0b2c21;
+    --jp-panel: #103b2c;
+    --jp-dorado: #c8a34d;
+    --jp-dorado-claro: #f0d78a;
+    --jp-texto: #f4f7f5;
+    --jp-muted: #b6c9be;
+    --jp-borde: rgba(200, 163, 77, 0.3);
+
+    color: var(--jp-texto);
+    padding-bottom: 45px;
+}
+
+.jugadores-page * {
+    box-sizing: border-box;
+}
+
+/* ENCABEZADO */
+
+.jp-hero {
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(
+            circle at 95% 15%,
+            rgba(200, 163, 77, 0.15),
+            transparent 38%
+        ),
+        linear-gradient(120deg, #0b2c21, #16563c);
+
+    border: 1px solid var(--jp-borde);
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 22px;
+}
+
+.jp-hero-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 22px;
+}
+
+.jp-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--jp-dorado-claro);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.jp-title {
+    color: #fff;
+    font-size: clamp(1.8rem, 3.5vw, 2.9rem);
+    font-weight: 850;
+    line-height: 1.2;
+    letter-spacing: -0.8px;
+    margin: 0 0 12px;
+}
+
+.jp-title span {
+    color: var(--jp-dorado-claro);
+}
+
+.jp-subtitle {
+    color: #c7d9cf;
+    line-height: 1.7;
+    max-width: 650px;
+    margin: 0;
+}
+
+.jp-counter {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(8, 35, 25, 0.7);
+    border: 1px solid var(--jp-borde);
+    border-radius: 15px;
+    padding: 17px 23px;
+}
+
+.jp-counter-icon {
+    width: 49px;
+    height: 49px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0b2c21;
+    background: var(--jp-dorado);
+    border-radius: 12px;
+    font-size: 1.25rem;
+}
+
+.jp-counter strong {
+    display: block;
+    color: var(--jp-dorado-claro);
+    font-size: 1.8rem;
+    line-height: 1.1;
+}
+
+.jp-counter span {
+    color: var(--jp-muted);
+    font-size: 0.8rem;
+}
+
+/* FILTROS */
+
+.jp-filtros {
+    background: linear-gradient(145deg, #103b2c, #0d3125);
+    border: 1px solid var(--jp-borde);
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.jp-filtros-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.jp-filtros-title {
+    color: var(--jp-dorado-claro);
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.jp-clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #c7d9cf;
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: color 0.2s ease;
+}
+
+.jp-clear:hover {
+    color: var(--jp-dorado-claro);
+}
+
+.jp-label {
+    display: block;
+    color: #d0e0d5;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    margin-bottom: 9px;
+}
+
+.jp-input-wrap {
+    position: relative;
+}
+
+.jp-input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--jp-dorado);
+    pointer-events: none;
+}
+
+.jugadores-page .jp-control {
+    display: block;
+    width: 100%;
+    min-height: 47px;
+    background: #08251b !important;
+    color: #fff !important;
+    border: 1px solid rgba(190, 214, 198, 0.25) !important;
+    border-radius: 10px;
+    padding: 11px 13px;
+    font-size: 0.9rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.jugadores-page .jp-input-wrap .jp-control {
+    padding-left: 43px;
+}
+
+.jugadores-page .jp-control::placeholder {
+    color: #8aa99a;
+    opacity: 1;
+}
+
+.jugadores-page .jp-control:focus {
+    outline: none;
+    border-color: var(--jp-dorado) !important;
+    box-shadow: 0 0 0 3px rgba(200, 163, 77, 0.12) !important;
+}
+
+.jugadores-page select.jp-control option {
+    background: #08251b;
+    color: #fff;
+}
+
+.jp-filter-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.jp-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 12px 21px;
+
+    background: linear-gradient(135deg, #efd58a, #c8a34d);
+    color: #09291f !important;
+
+    border: 0;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 0.86rem;
+    text-decoration: none;
+    cursor: pointer;
+
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.jp-btn-primary:hover {
+    filter: brightness(1.07);
+    transform: translateY(-1px);
+}
+
+/* RESULTADOS */
+
+.jp-results-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.jp-results-title {
+    color: #fff;
+    font-size: 1.18rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.jp-results-title i {
+    color: var(--jp-dorado);
+}
+
+.jp-results-subtitle {
+    color: var(--jp-muted);
+    font-size: 0.82rem;
+    margin: 5px 0 0;
+}
+
+.jp-view-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px;
+    border: 1px solid var(--jp-borde);
+    border-radius: 11px;
+    background: #0b3023;
+}
+
+.jp-view-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: #b9d0c1;
+    border: 0;
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: 0.83rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.jp-view-btn.active {
+    background: var(--jp-dorado);
+    color: #09291f;
+}
+
+/* TABLA */
+
+.jp-table-wrap {
+    overflow: hidden;
+    border: 1px solid var(--jp-borde);
+    border-radius: 17px;
+    background: #172720;
+}
+
+.jp-table-scroll {
+    overflow-x: auto;
+}
+
+.jp-table {
+    width: 100%;
+    min-width: 790px;
+    border-collapse: collapse;
+    color: #fff;
+}
+
+.jp-table thead {
+    background: #0b281e;
+}
+
+.jp-table th {
+    padding: 17px 15px;
+    color: var(--jp-dorado-claro);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--jp-borde);
+    white-space: nowrap;
+}
+
+.jp-table td {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.085);
+    vertical-align: middle;
+    font-size: 0.87rem;
+}
+
+.jp-table tbody tr {
+    background: #1a2924;
+    transition: background 0.2s ease;
+}
+
+.jp-table tbody tr:nth-child(even) {
+    background: #20312a;
+}
+
+.jp-table tbody tr:hover {
+    background: #284737;
+}
+
+.jp-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.jp-player-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.jp-dorsal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+
+    background: rgba(200, 163, 77, 0.12);
+    border: 1px solid rgba(200, 163, 77, 0.4);
+    border-radius: 50%;
+    color: var(--jp-dorado-claro);
+    font-weight: 800;
+}
+
+.jp-player-link {
+    color: #fff;
+    font-weight: 750;
+    text-decoration: none;
+}
+
+.jp-player-link:hover {
+    color: var(--jp-dorado-claro);
+    text-decoration: underline;
+}
+
+.jp-team {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: #e4ede6;
+    text-decoration: none;
+}
+
+.jp-team:hover {
+    color: var(--jp-dorado-claro);
+}
+
+.jp-flag {
+    width: 26px;
+    height: 18px;
+    object-fit: cover;
+    border-radius: 3px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.jp-muted {
+    color: var(--jp-muted);
+}
+
+.jp-position {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 7px;
+    font-size: 0.74rem;
+    font-weight: 750;
+    color: #e6f1e9;
+    background: #23563c;
+}
+
+.jp-position.pos-ARQ {
+    color: #c0f6db;
+    background: #176143;
+}
+
+.jp-position.pos-DEF {
+    color: #bbdefb;
+    background: #23496c;
+}
+
+.jp-position.pos-MED {
+    color: #ffe29a;
+    background: #624e1c;
+}
+
+.jp-position.pos-DEL {
+    color: #ffbcbc;
+    background: #672f31;
+}
+
+.jp-stat-number {
+    font-weight: 800;
+    font-size: 1rem;
+    color: #f6f7f4;
+}
+
+.jp-stat-highlight {
+    color: var(--jp-dorado-claro);
+}
+
+.jp-btn-ficha {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    color: var(--jp-dorado-claro);
+    text-decoration: none;
+
+    border: 1px solid rgba(200, 163, 77, 0.65);
+    border-radius: 9px;
+    padding: 9px 13px;
+
+    font-size: 0.78rem;
+    font-weight: 750;
+    white-space: nowrap;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.jp-btn-ficha:hover {
+    background: var(--jp-dorado);
+    color: #09291f;
+}
+
+/* TARJETAS */
+
+.jp-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    background: linear-gradient(155deg, #185239, #0d3023);
+    border: 1px solid var(--jp-borde);
+    border-radius: 16px;
+    padding: 21px;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.jp-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--jp-dorado);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+.jp-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.jp-card h3 {
+    color: #fff;
+    font-size: 1.12rem;
+    font-weight: 800;
+    margin: 0 0 9px;
+    overflow-wrap: anywhere;
+}
+
+.jp-card-team {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #d2e2d7;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+}
+
+.jp-card-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: auto;
+    margin-bottom: 18px;
+}
+
+.jp-card-stat {
+    background: rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 10px;
+    padding: 12px 7px;
+    text-align: center;
+}
+
+.jp-card-stat strong {
+    display: block;
+    color: var(--jp-dorado-claro);
+    font-size: 1.35rem;
+    font-weight: 850;
+}
+
+.jp-card-stat span {
+    color: #c2d5ca;
+    font-size: 0.71rem;
+}
+
+.jp-card-info {
+    color: #d2e2d7;
+    margin-top: auto;
+    margin-bottom: 18px;
+}
+
+.jp-card-button {
+    width: 100%;
+    margin-top: auto;
+}
+
+/* SIN RESULTADOS */
+
+.jp-empty {
+    text-align: center;
+    background: #103b2c;
+    border: 1px dashed var(--jp-borde);
+    border-radius: 16px;
+    padding: 55px 20px;
+}
+
+.jp-empty > i {
+    color: var(--jp-dorado);
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.jp-empty h3 {
+    color: #fff;
+    font-weight: 800;
+}
+
+.jp-empty p {
+    color: var(--jp-muted);
+    margin-bottom: 20px;
+}
+
+/* PAGINACIÓN */
+
+.jp-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 27px;
+}
+
+.jp-page-link,
+.jp-page-current {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 40px;
+    padding: 9px 14px;
+
+    border: 1px solid var(--jp-borde);
+    border-radius: 9px;
+    color: var(--jp-dorado-claro);
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+
+.jp-page-link:hover {
+    background: rgba(200, 163, 77, 0.14);
+    color: #fff;
+}
+
+.jp-page-current {
+    color: #09291f;
+    background: var(--jp-dorado);
+    font-weight: 800;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 767px) {
+    .jp-hero {
+        padding: 23px;
+    }
+
+    .jp-filtros {
+        padding: 18px;
+    }
+
+    .jp-counter {
+        width: 100%;
+    }
+
+    .jp-filter-actions .jp-btn-primary {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .jugadores-page *,
+    .jugadores-page *::before,
+    .jugadores-page *::after {
+        transition: none !important;
+    }
+}

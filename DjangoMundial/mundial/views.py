@@ -1169,23 +1169,236 @@ def detalle_seleccion(request, pk):
 
 # ==========================================
 
-def jugadores(request):
 
-    lista_jugadores = Jugador.objects.all()
+def jugadores(request):
+    from django.core.paginator import Paginator
+    from django.db.models import OuterRef, Subquery, IntegerField
+
+    # ==========================================
+    # MUNDIALES CON HISTORIALES REGISTRADOS
+    # ==========================================
+
+    anios_disponibles = list(
+        HistorialJugador.objects
+        .order_by("-mundial__anio")
+        .values_list("mundial__anio", flat=True)
+        .distinct()
+    )
+
+    anio_parametro = request.GET.get("anio")
+
+    if anio_parametro is None:
+        # Al entrar por primera vez, mostrar el último Mundial.
+        anio_elegido = (
+            anios_disponibles[0]
+            if anios_disponibles else None
+        )
+    elif anio_parametro == "":
+        # Todos los Mundiales, sin mezclar estadísticas.
+        anio_elegido = None
+    else:
+        try:
+            anio_elegido = int(anio_parametro)
+        except (ValueError, TypeError):
+            anio_elegido = None
+
+        if anio_elegido not in anios_disponibles:
+            anio_elegido = None
+
+    # ==========================================
+    # FILTROS RECIBIDOS POR GET
+    # ==========================================
+
+    q = request.GET.get("q", "").strip()
+    seleccion_id = request.GET.get("seleccion", "").strip()
+    posicion = request.GET.get("posicion", "").strip()
+    orden = request.GET.get("orden", "nombre").strip()
+
+    posiciones_validas = {"ARQ", "DEF", "MED", "DEL"}
+
+    ordenes_validos = {
+        "nombre",
+        "nombre_desc",
+        "goles",
+        "asistencias",
+        "partidos",
+        "camiseta",
+    }
+
+    if posicion not in posiciones_validas:
+        posicion = ""
+
+    if orden not in ordenes_validos:
+        orden = "nombre"
+
+    if not seleccion_id.isdigit():
+        seleccion_id = ""
+
+    # ==========================================
+    # JUGADORES DEL MUNDIAL SELECCIONADO
+    # ==========================================
+
+    lista_base = Jugador.objects.select_related(
+        "seleccion",
+        "seleccion__confederacion"
+    )
+
+    if anio_elegido is not None:
+        lista_base = lista_base.filter(
+            historiales__mundial__anio=anio_elegido
+        ).distinct()
+
+    # Selecciones disponibles según el Mundial.
+    selecciones_disponibles = list(
+        lista_base
+        .exclude(seleccion__isnull=True)
+        .order_by("seleccion__nombre")
+        .values("seleccion_id", "seleccion__nombre")
+        .distinct()
+    )
+
+    # ==========================================
+    # APLICAR BÚSQUEDA Y FILTROS
+    # ==========================================
+
+    lista_jugadores = lista_base
+
+    if q:
+        lista_jugadores = lista_jugadores.filter(
+            apellido_nombres__icontains=q
+        )
+
+    if seleccion_id:
+        lista_jugadores = lista_jugadores.filter(
+            seleccion_id=int(seleccion_id)
+        )
+
+    if posicion:
+        lista_jugadores = lista_jugadores.filter(
+            posicion=posicion
+        )
+
+    # ==========================================
+    # ESTADÍSTICAS EXCLUSIVAS DE ESE MUNDIAL
+    # ==========================================
+
+    if anio_elegido is not None:
+
+        historial_mundial = (
+            HistorialJugador.objects
+            .filter(
+                jugador_id=OuterRef("pk"),
+                mundial__anio=anio_elegido
+            )
+            .order_by("pk")
+        )
+
+        lista_jugadores = lista_jugadores.annotate(
+            pj_mundial=Subquery(
+                historial_mundial.values(
+                    "partidos_jugados"
+                )[:1],
+                output_field=IntegerField()
+            ),
+            goles_mundial=Subquery(
+                historial_mundial.values(
+                    "goles"
+                )[:1],
+                output_field=IntegerField()
+            ),
+            asistencias_mundial=Subquery(
+                historial_mundial.values(
+                    "asistencias"
+                )[:1],
+                output_field=IntegerField()
+            )
+        )
+
+    # ==========================================
+    # ORDENAR RESULTADOS
+    # ==========================================
+
+    if orden == "nombre_desc":
+        lista_jugadores = lista_jugadores.order_by(
+            "-apellido_nombres", "pk"
+        )
+
+    elif orden == "camiseta":
+        lista_jugadores = lista_jugadores.order_by(
+            "numero_camiseta", "apellido_nombres"
+        )
+
+    elif orden == "goles" and anio_elegido is not None:
+        lista_jugadores = lista_jugadores.order_by(
+            "-goles_mundial",
+            "-asistencias_mundial",
+            "apellido_nombres"
+        )
+
+    elif orden == "asistencias" and anio_elegido is not None:
+        lista_jugadores = lista_jugadores.order_by(
+            "-asistencias_mundial",
+            "-goles_mundial",
+            "apellido_nombres"
+        )
+
+    elif orden == "partidos" and anio_elegido is not None:
+        lista_jugadores = lista_jugadores.order_by(
+            "-pj_mundial",
+            "apellido_nombres"
+        )
+
+    else:
+        lista_jugadores = lista_jugadores.order_by(
+            "apellido_nombres", "pk"
+        )
+
+    # ==========================================
+    # PAGINACIÓN
+    # ==========================================
+
+    total_jugadores = lista_jugadores.count()
+
+    paginador = Paginator(lista_jugadores, 30)
+
+    pagina = paginador.get_page(
+        request.GET.get("page")
+    )
+
+    # Mantener los filtros al cambiar de página.
+    parametros = request.GET.copy()
+    parametros.pop("page", None)
+
+    filtros_url = parametros.urlencode()
+
+    # ==========================================
+    # CONTEXTO PARA EL HTML
+    # ==========================================
+
+    contexto = {
+        "jugadores": pagina,
+        "pagina": pagina,
+        "total_jugadores": total_jugadores,
+
+        "anios_disponibles": anios_disponibles,
+        "anio_elegido": anio_elegido,
+
+        "selecciones_disponibles": selecciones_disponibles,
+        "seleccion_id": seleccion_id,
+
+        "q": q,
+        "posicion_elegida": posicion,
+        "orden_elegido": orden,
+
+        "filtros_url": filtros_url,
+    }
 
     return render(
-
         request,
-
         "jugador/jugadores.html",
-
-        {
-
-            "jugadores": lista_jugadores
-
-        }
-
+        contexto
     )
+
 
 
 def detalle_jugador(request, pk):

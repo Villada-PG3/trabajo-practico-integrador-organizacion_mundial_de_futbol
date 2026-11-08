@@ -53,6 +53,42 @@ urlpatterns = [
         name='panel_listado'
     ),
 
+    
+# ==========================================
+# PANEL POR MUNDIAL
+# ==========================================
+
+path(
+    'panel/mundial/<int:mundial_id>/',
+    panel.administrar_mundial,
+    name='panel_mundial'
+),
+
+path(
+    'panel/mundial/<int:mundial_id>/<slug:seccion>/nuevo/',
+    panel.formulario_mundial,
+    name='panel_mundial_nuevo'
+),
+
+path(
+    'panel/mundial/<int:mundial_id>/<slug:seccion>/<int:pk>/editar/',
+    panel.formulario_mundial,
+    name='panel_mundial_editar'
+),
+
+path(
+    'panel/mundial/<int:mundial_id>/<slug:seccion>/<int:pk>/eliminar/',
+    panel.eliminar_mundial_registro,
+    name='panel_mundial_eliminar'
+),
+
+path(
+    'panel/mundial/<int:mundial_id>/<slug:seccion>/',
+    panel.listado_mundial,
+    name='panel_mundial_listado'
+),
+
+
     # ======================================
     # PÁGINAS PRINCIPALES
     # ======================================

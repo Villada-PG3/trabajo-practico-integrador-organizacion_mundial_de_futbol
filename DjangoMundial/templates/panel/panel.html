@@ -1,298 +1,140 @@
 
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
 Administración | MundoFútbol
 {% endblock %}
 
 {% block extra_css %}
-<style>
-    .panel-admin {
-        --panel-fondo: #0F3D2E;
-        --panel-verde: #145A32;
-        --panel-tarjeta: #1E8449;
-        --panel-dorado: #C8A34D;
-        color: white;
-    }
-
-    .panel-encabezado {
-        background: linear-gradient(135deg, #145A32, #0F3D2E);
-        border: 1px solid #C8A34D;
-        border-radius: 18px;
-        padding: 30px;
-        margin-bottom: 30px;
-    }
-
-    .panel-titulo {
-        color: #C8A34D;
-        font-weight: 800;
-        margin-bottom: 8px;
-    }
-
-    .panel-subtitulo {
-        color: #d3e3da;
-        margin-bottom: 0;
-    }
-
-    .panel-tarjeta {
-        display: block;
-        background: #1E8449;
-        color: white;
-        border: 1px solid rgba(200, 163, 77, .35);
-        border-radius: 15px;
-        padding: 25px;
-        height: 100%;
-        text-decoration: none;
-        transition: transform .2s, border-color .2s, box-shadow .2s;
-    }
-
-    .panel-tarjeta:hover {
-        color: white;
-        transform: translateY(-4px);
-        border-color: #C8A34D;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, .2);
-    }
-
-    .panel-tarjeta-icono {
-        color: #C8A34D;
-        font-size: 28px;
-        margin-bottom: 20px;
-    }
-
-    .panel-tarjeta h3 {
-        font-weight: 700;
-        font-size: 20px;
-        margin-bottom: 10px;
-    }
-
-    .panel-tarjeta p {
-        color: #d9e9df;
-        font-size: 14px;
-        margin-bottom: 15px;
-    }
-
-    .panel-cantidad {
-        display: inline-block;
-        background: #0F3D2E;
-        color: #C8A34D;
-        padding: 6px 12px;
-        border-radius: 8px;
-        font-size: 13px;
-        font-weight: 700;
-    }
-
-    .panel-contenedor {
-        background: #145A32;
-        border: 1px solid rgba(200, 163, 77, .45);
-        border-radius: 15px;
-        padding: 24px;
-    }
-
-    .panel-buscador {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin-bottom: 24px;
-    }
-
-    .panel-buscador input {
-        flex: 1;
-        min-width: 220px;
-        background: #0F3D2E;
-        border: 1px solid #C8A34D;
-        border-radius: 8px;
-        padding: 11px 15px;
-        color: white;
-    }
-
-    .panel-buscador input:focus {
-        outline: none;
-        border-color: #f0c761;
-    }
-
-    .panel-tabla {
-        width: 100%;
-        color: white;
-    }
-
-    .panel-tabla th {
-        background: #0F3D2E;
-        color: #C8A34D;
-        padding: 15px;
-        font-size: 13px;
-        text-transform: uppercase;
-        white-space: nowrap;
-    }
-
-    .panel-tabla td {
-        background: #1E8449;
-        color: white;
-        padding: 14px;
-        border-bottom: 1px solid rgba(255,255,255,.12);
-        font-size: 14px;
-        vertical-align: middle;
-    }
-
-    .panel-tabla tr:hover td {
-        background: #20784e;
-    }
-
-    .panel-acciones {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .panel-btn-editar,
-    .panel-btn-eliminar {
-        border-radius: 7px;
-        padding: 8px 11px;
-        text-decoration: none;
-        font-size: 13px;
-        white-space: nowrap;
-    }
-
-    .panel-btn-editar {
-        background: #C8A34D;
-        color: #0F3D2E;
-    }
-
-    .panel-btn-eliminar {
-        background: #812e34;
-        color: white;
-    }
-
-    .panel-btn-editar:hover {
-        background: #e1b85f;
-        color: #0F3D2E;
-    }
-
-    .panel-btn-eliminar:hover {
-        background: #a6373f;
-        color: white;
-    }
-
-    .panel-formulario label {
-        color: #C8A34D;
-        font-weight: 600;
-        margin-bottom: 7px;
-        display: block;
-    }
-
-    .panel-formulario .form-control,
-    .panel-formulario .form-select {
-        background: #0F3D2E;
-        color: white;
-        border: 1px solid #668573;
-        padding: 11px 13px;
-    }
-
-    .panel-formulario .form-control:focus,
-    .panel-formulario .form-select:focus {
-        background: #0F3D2E;
-        color: white;
-        border-color: #C8A34D;
-        box-shadow: 0 0 0 3px rgba(200,163,77,.2);
-    }
-
-    .panel-formulario .form-control::placeholder {
-        color: #b4c9be;
-    }
-
-    .panel-formulario .form-text {
-        color: #c4d6ca;
-    }
-
-    .panel-formulario .errorlist {
-        color: #ffaaaa;
-        margin-top: 8px;
-    }
-
-    .panel-paginacion a,
-    .panel-paginacion span {
-        display: inline-block;
-        padding: 7px 13px;
-        border: 1px solid #C8A34D;
-        border-radius: 7px;
-        color: #C8A34D;
-        text-decoration: none;
-    }
-
-    .panel-paginacion a:hover {
-        background: #C8A34D;
-        color: #0F3D2E;
-    }
-
-    .panel-paginacion span {
-        background: #C8A34D;
-        color: #0F3D2E;
-        font-weight: bold;
-    }
-
-    @media (max-width: 768px) {
-        .panel-encabezado {
-            padding: 20px;
-        }
-
-        .panel-contenedor {
-            padding: 14px;
-        }
-    }
-</style>
+<link rel="stylesheet" href="{% static 'css/panel.css' %}">
 {% endblock %}
 
 {% block content %}
 
-<div class="panel-admin container my-4">
+<div class="mf-panel container-fluid py-4">
 
     <!-- ======================================
-         INICIO DEL PANEL
+         NAVEGACIÓN DE MUNDIALES
+         ====================================== -->
+
+    <nav class="mf-panel-nav">
+
+        <a
+            href="{% url 'panel_inicio' %}"
+            class="mf-panel-tab {% if pagina == 'inicio' or pagina == 'formulario_mundial' %}active{% endif %}"
+        >
+            <i class="fa-solid fa-trophy"></i>
+            Mundiales
+        </a>
+
+        {% for item in mundiales_panel %}
+
+            <a
+                href="{% url 'panel_mundial' item.pk %}"
+                class="mf-panel-tab {% if mundial.pk == item.pk %}active{% endif %}"
+            >
+                <i class="fa-solid fa-earth-americas"></i>
+                {{ item.nombre }}
+            </a>
+
+        {% endfor %}
+
+    </nav>
+
+
+    <!-- ======================================
+         PÁGINA PRINCIPAL
          ====================================== -->
 
     {% if pagina == "inicio" %}
 
-        <div class="panel-encabezado">
+        <section class="mf-panel-hero">
 
-            <h1 class="panel-titulo">
-                <i class="fa-solid fa-screwdriver-wrench me-2"></i>
-                Panel de Administración
-            </h1>
+            <div>
 
-            <p class="panel-subtitulo">
-                Gestioná la información de MundoFútbol
-                desde un solo lugar.
-            </p>
+                <span class="mf-panel-kicker">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Centro de administración
+                </span>
 
-            <p class="text-white-50 mt-3 mb-0">
-                <i class="fa-solid fa-user-shield me-2"></i>
-                Sesión iniciada como:
-                <strong>{{ request.user.username }}</strong>
-            </p>
+                <h1>Gestionar Mundiales</h1>
 
+                <p>
+                    Creá una Copa del Mundo y administrá
+                    todos sus datos desde su propia pestaña.
+                </p>
+
+            </div>
+
+            {% if puede_crear_mundial %}
+                <a
+                    href="{% url 'panel_nuevo' 'mundiales' %}"
+                    class="mf-panel-primary"
+                >
+                    <i class="fa-solid fa-plus"></i>
+                    Añadir Mundial
+                </a>
+            {% endif %}
+
+        </section>
+
+
+        <div class="mf-panel-section-title">
+            <h2>
+                <i class="fa-solid fa-trophy"></i>
+                Mundiales registrados
+            </h2>
+
+            <span>
+                {{ mundiales_panel|length }} ediciones
+            </span>
         </div>
+
 
         <div class="row g-4">
 
-            {% for tarjeta in tarjetas %}
+            {% for item in mundiales_panel %}
 
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-xl-4">
 
                     <a
-                        href="{% url 'panel_listado' tarjeta.clave %}"
-                        class="panel-tarjeta"
+                        href="{% url 'panel_mundial' item.pk %}"
+                        class="mf-mundial-card"
                     >
 
-                        <div class="panel-tarjeta-icono">
-                            <i class="fa-solid {{ tarjeta.icono }}"></i>
+                        <div class="mf-mundial-card-top">
+
+                            <div class="mf-mundial-logo">
+
+                                {% if item.imagen_logo %}
+                                    <img
+                                        src="{{ item.imagen_logo.url }}"
+                                        alt="Logo {{ item.nombre }}"
+                                    >
+                                {% else %}
+                                    <i class="fa-solid fa-trophy"></i>
+                                {% endif %}
+
+                            </div>
+
+                            <span class="mf-year-badge">
+                                {{ item.anio }}
+                            </span>
+
                         </div>
 
-                        <h3>{{ tarjeta.titulo }}</h3>
+                        <h3>{{ item.nombre }}</h3>
 
-                        <p>{{ tarjeta.descripcion }}</p>
+                        <p>
+                            <i class="fa-solid fa-location-dot me-2"></i>
+                            {{ item.sede }}
+                        </p>
 
-                        <span class="panel-cantidad">
-                            {{ tarjeta.cantidad }} registros
-                        </span>
+                        <div class="mf-mundial-card-bottom">
+                            <span>Administrar edición</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
 
                     </a>
 
@@ -301,9 +143,10 @@ Administración | MundoFútbol
             {% empty %}
 
                 <div class="col-12">
-                    <div class="panel-contenedor">
-                        No tenés permisos para consultar
-                        las secciones de administración.
+                    <div class="mf-panel-empty">
+                        <i class="fa-solid fa-trophy"></i>
+                        <h3>No hay Mundiales registrados</h3>
+                        <p>Creá el primero para comenzar a administrarlo.</p>
                     </div>
                 </div>
 
@@ -311,88 +154,304 @@ Administración | MundoFútbol
 
         </div>
 
+
         <div class="mt-4">
             <a
                 href="{% url 'admin:index' %}"
-                class="btn btn-outline-light"
+                class="mf-panel-secondary"
             >
-                <i class="fa-solid fa-gear me-2"></i>
-                Abrir administrador clásico
+                <i class="fa-solid fa-gear"></i>
+                Administrador clásico de Django
             </a>
         </div>
 
 
     <!-- ======================================
-         LISTADO DE REGISTROS
+         ADMINISTRAR UN MUNDIAL
+         ====================================== -->
+
+    {% elif pagina == "mundial" %}
+
+        <section class="mf-panel-hero">
+
+            <div>
+
+                <a
+                    href="{% url 'panel_inicio' %}"
+                    class="mf-panel-back"
+                >
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Todos los Mundiales
+                </a>
+
+                <span class="mf-panel-kicker">
+                    <i class="fa-solid fa-trophy"></i>
+                    Edición {{ mundial.anio }}
+                </span>
+
+                <h1>{{ mundial.nombre }}</h1>
+
+                <p>
+                    {{ mundial.sede }}
+                    · Gestioná la información de esta edición.
+                </p>
+
+            </div>
+
+            {% if puede_editar_mundial %}
+                <a
+                    href="{% url 'panel_editar' 'mundiales' mundial.pk %}"
+                    class="mf-panel-primary"
+                >
+                    <i class="fa-solid fa-pen"></i>
+                    Editar Mundial
+                </a>
+            {% endif %}
+
+        </section>
+
+
+        <div class="mf-panel-section-title">
+            <h2>
+                <i class="fa-solid fa-layer-group"></i>
+                Secciones de {{ mundial.anio }}
+            </h2>
+        </div>
+
+
+        <div class="row g-3 mb-4">
+
+            {% for tarjeta in tarjetas %}
+
+                <div class="col-md-6 col-xl-4">
+
+                    <a
+                        href="{% url 'panel_mundial_listado' mundial.pk tarjeta.clave %}"
+                        class="mf-section-card"
+                    >
+
+                        <div class="mf-section-icon">
+                            <i class="fa-solid {{ tarjeta.icono }}"></i>
+                        </div>
+
+                        <h3>{{ tarjeta.titulo }}</h3>
+
+                        <p>{{ tarjeta.descripcion }}</p>
+
+                        <div class="mf-section-footer">
+                            <span>
+                                {{ tarjeta.cantidad }} registros
+                            </span>
+
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- SELECCIONES PARTICIPANTES -->
+
+        <section class="mf-panel-box mb-4">
+
+            <div class="mf-box-header">
+                <h2>
+                    <i class="fa-solid fa-flag"></i>
+                    Selecciones participantes
+                </h2>
+
+                <span>
+                    {{ total_participantes }} selecciones identificadas
+                </span>
+            </div>
+
+            <p class="mf-panel-help">
+                Se muestran las selecciones vinculadas a
+                jugadores, posiciones o partidos de este Mundial.
+            </p>
+
+            <div class="mf-selecciones-grid">
+
+                {% for seleccion in participantes %}
+
+                    <div class="mf-seleccion-item">
+
+                        <i class="fa-solid fa-flag"></i>
+
+                        <span>{{ seleccion.nombre }}</span>
+
+                        <small>
+                            {{ seleccion.confederacion.get_nombre_display }}
+                        </small>
+
+                    </div>
+
+                {% empty %}
+
+                    <p class="mf-panel-muted">
+                        Todavía no hay selecciones asociadas
+                        a los datos de este Mundial.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+        <!-- CUERPO TÉCNICO -->
+
+        <section class="mf-panel-box">
+
+            <div class="mf-box-header">
+                <h2>
+                    <i class="fa-solid fa-user-tie"></i>
+                    Cuerpo técnico
+                </h2>
+            </div>
+
+            <p class="mf-panel-help">
+                Vista de referencia: los técnicos están relacionados
+                con su selección, pero todavía no con una edición
+                específica del Mundial.
+            </p>
+
+            <div class="table-responsive">
+
+                <table class="mf-panel-table">
+
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Selección</th>
+                            <th>Función</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for tecnico in tecnicos %}
+
+                            <tr>
+                                <td>
+                                    {{ tecnico.nombre }}
+                                    {{ tecnico.apellido }}
+                                </td>
+
+                                <td>
+                                    {{ tecnico.seleccion.nombre }}
+                                </td>
+
+                                <td>
+                                    {{ tecnico.get_funcion_display }}
+                                </td>
+                            </tr>
+
+                        {% empty %}
+
+                            <tr>
+                                <td colspan="3" class="text-center">
+                                    No hay personal técnico registrado.
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+    <!-- ======================================
+         LISTADO DE UNA SECCIÓN
          ====================================== -->
 
     {% elif pagina == "listado" %}
 
-        <div class="panel-encabezado">
+        <section class="mf-panel-hero">
 
-            <a
-                href="{% url 'panel_inicio' %}"
-                class="text-white text-decoration-none"
-            >
-                <i class="fa-solid fa-arrow-left me-2"></i>
-                Volver al panel
-            </a>
+            <div>
 
-            <h1 class="panel-titulo mt-3">
-                <i class="fa-solid {{ configuracion.icono }} me-2"></i>
-                {{ configuracion.titulo }}
-            </h1>
+                <a
+                    href="{% url 'panel_mundial' mundial.pk %}"
+                    class="mf-panel-back"
+                >
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Volver a {{ mundial.nombre }}
+                </a>
 
-            <p class="panel-subtitulo">
-                {{ configuracion.descripcion }}
-            </p>
+                <span class="mf-panel-kicker">
+                    Mundial {{ mundial.anio }}
+                </span>
 
-        </div>
+                <h1>{{ configuracion.titulo }}</h1>
 
-        <div class="panel-contenedor">
-
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
-
-                <h2 class="h5 text-dorado mb-0">
-                    Registros
-                </h2>
-
-                {% if puede_agregar %}
-                    <a
-                        href="{% url 'panel_nuevo' seccion %}"
-                        class="btn btn-dorado"
-                    >
-                        <i class="fa-solid fa-plus me-2"></i>
-                        Agregar registro
-                    </a>
-                {% endif %}
+                <p>{{ configuracion.descripcion }}</p>
 
             </div>
 
+            {% if puede_agregar %}
+
+                <a
+                    href="{% url 'panel_mundial_nuevo' mundial.pk seccion %}"
+                    class="mf-panel-primary"
+                >
+                    <i class="fa-solid fa-plus"></i>
+                    Añadir registro
+                </a>
+
+            {% endif %}
+
+        </section>
+
+
+        <section class="mf-panel-box">
+
+            <div class="mf-box-header">
+
+                <h2>
+                    <i class="fa-solid {{ configuracion.icono }}"></i>
+                    Registros de {{ mundial.anio }}
+                </h2>
+
+                <span>
+                    {{ pagina_registros.paginator.count }} registros
+                </span>
+
+            </div>
+
+
             <!-- BUSCADOR -->
 
-            <form
-                method="get"
-                class="panel-buscador"
-            >
+            <form method="get" class="mf-panel-search">
 
                 <input
                     type="search"
                     name="q"
                     value="{{ busqueda }}"
-                    placeholder="Buscar registros..."
+                    placeholder="Buscar por nombre, selección o fase..."
                     aria-label="Buscar registros"
                 >
 
-                <button type="submit" class="btn btn-dorado">
-                    <i class="fa-solid fa-magnifying-glass me-1"></i>
+                <button type="submit" class="mf-panel-primary">
+                    <i class="fa-solid fa-magnifying-glass"></i>
                     Buscar
                 </button>
 
                 {% if busqueda %}
                     <a
-                        href="{% url 'panel_listado' seccion %}"
-                        class="btn btn-outline-light"
+                        href="{% url 'panel_mundial_listado' mundial.pk seccion %}"
+                        class="mf-panel-secondary"
                     >
                         Limpiar
                     </a>
@@ -400,19 +459,22 @@ Administración | MundoFútbol
 
             </form>
 
+
             <!-- TABLA -->
 
             <div class="table-responsive">
 
-                <table class="panel-tabla">
+                <table class="mf-panel-table">
 
                     <thead>
                         <tr>
+
                             {% for encabezado in encabezados %}
                                 <th>{{ encabezado }}</th>
                             {% endfor %}
 
                             <th>Acciones</th>
+
                         </tr>
                     </thead>
 
@@ -427,30 +489,35 @@ Administración | MundoFútbol
                                 {% endfor %}
 
                                 <td>
-                                    <div class="panel-acciones">
+
+                                    <div class="mf-actions">
 
                                         {% if puede_editar %}
+
                                             <a
-                                                href="{% url 'panel_editar' seccion fila.pk %}"
-                                                class="panel-btn-editar"
-                                                title="Editar registro"
+                                                href="{% url 'panel_mundial_editar' mundial.pk seccion fila.pk %}"
+                                                class="mf-action-edit"
                                             >
                                                 <i class="fa-solid fa-pen"></i>
                                                 Editar
                                             </a>
+
                                         {% endif %}
 
                                         {% if puede_eliminar %}
+
                                             <a
-                                                href="{% url 'panel_eliminar' seccion fila.pk %}"
-                                                class="panel-btn-eliminar"
+                                                href="{% url 'panel_mundial_eliminar' mundial.pk seccion fila.pk %}"
+                                                class="mf-action-delete"
                                                 title="Eliminar registro"
                                             >
                                                 <i class="fa-solid fa-trash"></i>
                                             </a>
+
                                         {% endif %}
 
                                     </div>
+
                                 </td>
 
                             </tr>
@@ -459,14 +526,10 @@ Administración | MundoFútbol
 
                             <tr>
                                 <td
-                                    colspan="12"
+                                    colspan="10"
                                     class="text-center py-5"
                                 >
-                                    <i class="fa-solid fa-folder-open fa-2x mb-3"></i>
-
-                                    <p class="mb-0">
-                                        No se encontraron registros.
-                                    </p>
+                                    No hay registros para mostrar.
                                 </td>
                             </tr>
 
@@ -478,18 +541,22 @@ Administración | MundoFútbol
 
             </div>
 
+
             <!-- PAGINACIÓN -->
 
             {% if pagina_registros.has_other_pages %}
 
-                <div class="panel-paginacion d-flex justify-content-center flex-wrap gap-2 mt-4">
+                <div class="mf-pagination">
 
                     {% if pagina_registros.has_previous %}
+
                         <a
-                            href="?q={{ busqueda|urlencode }}&page={{ pagina_registros.previous_page_number }}"
+                            href="?q={{ busqueda|urlencode }}&amp;page={{ pagina_registros.previous_page_number }}"
                         >
+                            <i class="fa-solid fa-arrow-left"></i>
                             Anterior
                         </a>
+
                     {% endif %}
 
                     <span>
@@ -499,56 +566,63 @@ Administración | MundoFútbol
                     </span>
 
                     {% if pagina_registros.has_next %}
+
                         <a
-                            href="?q={{ busqueda|urlencode }}&page={{ pagina_registros.next_page_number }}"
+                            href="?q={{ busqueda|urlencode }}&amp;page={{ pagina_registros.next_page_number }}"
                         >
                             Siguiente
+                            <i class="fa-solid fa-arrow-right"></i>
                         </a>
+
                     {% endif %}
 
                 </div>
 
             {% endif %}
 
-        </div>
+        </section>
 
 
     <!-- ======================================
-         AGREGAR O MODIFICAR
+         FORMULARIO DE MUNDIAL
          ====================================== -->
 
-    {% elif pagina == "formulario" %}
+    {% elif pagina == "formulario_mundial" %}
 
-        <div class="panel-encabezado">
+        <section class="mf-panel-hero">
 
-            <a
-                href="{% url 'panel_listado' seccion %}"
-                class="text-white text-decoration-none"
-            >
-                <i class="fa-solid fa-arrow-left me-2"></i>
-                Volver al listado
-            </a>
+            <div>
 
-            <h1 class="panel-titulo mt-3">
-                {% if editando %}
-                    Modificar registro
-                {% else %}
-                    Agregar registro
-                {% endif %}
-            </h1>
+                <a
+                    href="{% url 'panel_inicio' %}"
+                    class="mf-panel-back"
+                >
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Volver a Mundiales
+                </a>
 
-            <p class="panel-subtitulo">
-                {{ configuracion.titulo }}
-            </p>
+                <h1>
+                    {% if editando %}
+                        Editar Mundial
+                    {% else %}
+                        Añadir Mundial
+                    {% endif %}
+                </h1>
 
-        </div>
+                <p>
+                    Completá la información general de la edición.
+                </p>
 
-        <div class="panel-contenedor">
+            </div>
+
+        </section>
+
+        <section class="mf-panel-box">
 
             <form
                 method="post"
                 enctype="multipart/form-data"
-                class="panel-formulario"
+                class="mf-panel-form"
             >
 
                 {% csrf_token %}
@@ -561,25 +635,23 @@ Administración | MundoFútbol
 
                         <div class="col-md-6">
 
-                            <div class="mb-2">
+                            <label for="{{ campo.id_for_label }}">
+                                {{ campo.label }}
+                            </label>
 
-                                {{ campo.label_tag }}
+                            {{ campo }}
 
-                                {{ campo }}
+                            {% if campo.help_text %}
+                                <p class="mf-field-help">
+                                    {{ campo.help_text }}
+                                </p>
+                            {% endif %}
 
-                                {% if campo.help_text %}
-                                    <div class="form-text">
-                                        {{ campo.help_text }}
-                                    </div>
-                                {% endif %}
-
-                                {% if campo.errors %}
-                                    <div class="text-danger small mt-2">
-                                        {{ campo.errors }}
-                                    </div>
-                                {% endif %}
-
-                            </div>
+                            {% if campo.errors %}
+                                <div class="mf-field-error">
+                                    {{ campo.errors }}
+                                </div>
+                            {% endif %}
 
                         </div>
 
@@ -587,19 +659,19 @@ Administración | MundoFútbol
 
                 </div>
 
-                <div class="d-flex flex-wrap gap-3 mt-4">
+                <div class="mf-form-actions">
 
                     <button
                         type="submit"
-                        class="btn btn-dorado px-4"
+                        class="mf-panel-primary"
                     >
-                        <i class="fa-solid fa-floppy-disk me-2"></i>
-                        Guardar cambios
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Guardar Mundial
                     </button>
 
                     <a
-                        href="{% url 'panel_listado' seccion %}"
-                        class="btn btn-outline-light"
+                        href="{% url 'panel_inicio' %}"
+                        class="mf-panel-secondary"
                     >
                         Cancelar
                     </a>
@@ -608,38 +680,152 @@ Administración | MundoFútbol
 
             </form>
 
-        </div>
+        </section>
 
 
     <!-- ======================================
-         CONFIRMACIÓN DE ELIMINACIÓN
+         FORMULARIO DE UNA SECCIÓN
+         ====================================== -->
+
+    {% elif pagina == "formulario" %}
+
+        <section class="mf-panel-hero">
+
+            <div>
+
+                <a
+                    href="{% url 'panel_mundial_listado' mundial.pk seccion %}"
+                    class="mf-panel-back"
+                >
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Volver al listado
+                </a>
+
+                <span class="mf-panel-kicker">
+                    {{ mundial.nombre }}
+                </span>
+
+                <h1>
+                    {% if editando %}
+                        Editar registro
+                    {% else %}
+                        Añadir registro
+                    {% endif %}
+                </h1>
+
+                <p>{{ configuracion.titulo }}</p>
+
+            </div>
+
+        </section>
+
+        <section class="mf-panel-box">
+
+            <div class="mf-form-notice">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                <span>
+                    Este registro estará asociado al
+                    <strong>Mundial {{ mundial.anio }}</strong>.
+                </span>
+
+            </div>
+
+            <form
+                method="post"
+                enctype="multipart/form-data"
+                class="mf-panel-form"
+            >
+
+                {% csrf_token %}
+
+                {{ formulario.non_field_errors }}
+
+                <div class="row g-4">
+
+                    {% for campo in formulario %}
+
+                        <div class="col-md-6">
+
+                            <label for="{{ campo.id_for_label }}">
+                                {{ campo.label }}
+                            </label>
+
+                            {{ campo }}
+
+                            {% if campo.help_text %}
+                                <p class="mf-field-help">
+                                    {{ campo.help_text }}
+                                </p>
+                            {% endif %}
+
+                            {% if campo.errors %}
+                                <div class="mf-field-error">
+                                    {{ campo.errors }}
+                                </div>
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <div class="mf-form-actions">
+
+                    <button
+                        type="submit"
+                        class="mf-panel-primary"
+                    >
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Guardar cambios
+                    </button>
+
+                    <a
+                        href="{% url 'panel_mundial_listado' mundial.pk seccion %}"
+                        class="mf-panel-secondary"
+                    >
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+    <!-- ======================================
+         ELIMINAR REGISTRO
          ====================================== -->
 
     {% elif pagina == "eliminar" %}
 
-        <div class="panel-encabezado">
+        <section class="mf-panel-hero">
 
-            <a
-                href="{% url 'panel_listado' seccion %}"
-                class="text-white text-decoration-none"
-            >
-                <i class="fa-solid fa-arrow-left me-2"></i>
-                Volver al listado
-            </a>
+            <div>
+                <a
+                    href="{% url 'panel_mundial_listado' mundial.pk seccion %}"
+                    class="mf-panel-back"
+                >
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Volver al listado
+                </a>
 
-            <h1 class="panel-titulo mt-3">
-                Eliminar registro
-            </h1>
+                <h1>Eliminar registro</h1>
+                <p>{{ configuracion.titulo }}</p>
+            </div>
 
-        </div>
+        </section>
 
-        <div class="panel-contenedor">
+        <section class="mf-panel-box">
 
-            <h2 class="h4 text-white mb-3">
+            <h2 class="h4 text-white">
                 ¿Querés eliminar este registro?
             </h2>
 
-            <p class="text-light">
+            <p class="my-4">
                 <strong>{{ registro }}</strong>
             </p>
 
@@ -650,41 +836,43 @@ Administración | MundoFútbol
                 </p>
 
                 <form method="post">
+
                     {% csrf_token %}
 
                     <button
                         type="submit"
-                        class="btn btn-danger me-2"
+                        class="mf-action-delete"
                     >
-                        <i class="fa-solid fa-trash me-2"></i>
-                        Sí, eliminar
+                        <i class="fa-solid fa-trash"></i>
+                        Confirmar eliminación
                     </button>
 
                     <a
-                        href="{% url 'panel_listado' seccion %}"
-                        class="btn btn-outline-light"
+                        href="{% url 'panel_mundial_listado' mundial.pk seccion %}"
+                        class="mf-panel-secondary ms-2"
                     >
                         Cancelar
                     </a>
+
                 </form>
 
             {% else %}
 
                 <div class="alert alert-warning">
-                    Este registro tiene información relacionada
-                    y no puede eliminarse desde este panel.
+                    Este registro tiene información relacionada.
+                    Por seguridad, no puede eliminarse desde el panel.
                 </div>
 
                 <a
-                    href="{% url 'panel_listado' seccion %}"
-                    class="btn btn-outline-light"
+                    href="{% url 'panel_mundial_listado' mundial.pk seccion %}"
+                    class="mf-panel-secondary"
                 >
                     Volver
                 </a>
 
             {% endif %}
 
-        </div>
+        </section>
 
     {% endif %}
 
