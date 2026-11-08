@@ -887,7 +887,28 @@ ALIAS_SELECCIONES = {
     "holanda": "paises bajos",
     "estados unidos": "estados unidos",
     "usa": "estados unidos",
-    "turkiye": "turquia",
+    "turkiye": "turquia",    # Nombres en inglés usados por los eventos de 2026
+    "south korea": "corea del sur",
+    "south africa": "sudafrica",
+    "bosnia and herzegovina": "bosnia y herzegovina",
+    "saudi arabia": "arabia saudita",
+    "ivory coast": "costa de marfil",
+    "morocco": "marruecos",
+    "switzerland": "suiza",
+    "scotland": "escocia",
+    "brazil": "brasil",
+    "germany": "alemania",
+    "japan": "japon",
+    "iran": "iran",
+    "iraq": "irak",
+    "australia": "australia",
+    "canada": "canada",
+    "mexico": "mexico",
+    "czechia": "chequia",
+    "usa": "estados unidos",
+    "united states": "estados unidos",
+    "netherlands": "paises bajos",
+    "new zealand": "nueva zelanda",
 }
 
 
@@ -1583,36 +1604,113 @@ def partidos_grupos_mundial(request, pk):
 # DETALLE DE PARTIDO DE FASE DE GRUPOS
 # =========================================
 def detalle_partido_grupo(request, tipo, partido_id):
-    from .models import PartidoGrupo, PartidoMundial2022, EventoGrupo, EstadisticaJugadorPartido
+    from .models import (
+        PartidoGrupo,
+        PartidoMundial2022,
+        EventoGrupo,
+        EstadisticaJugadorPartido,
+    )
+
     if tipo == "qatar":
-        partido = get_object_or_404(PartidoMundial2022.objects.select_related("mundial", "equipo1", "equipo2"), pk=partido_id, mundial__anio=2022)
+        partido = get_object_or_404(
+            PartidoMundial2022.objects.select_related(
+                "mundial", "equipo1", "equipo2"
+            ),
+            pk=partido_id,
+            mundial__anio=2022,
+        )
+
         if not partido.grupo:
             raise Http404("Este partido no pertenece a una fase de grupos.")
-        eventos = list(EventoGrupo.objects.filter(partido_qatar=partido))
+
+        eventos = list(
+            EventoGrupo.objects.filter(partido_qatar=partido)
+        )
         estadisticas_jugadores = []
         jugado = True
+
     elif tipo == "grupo":
-        partido = get_object_or_404(PartidoGrupo.objects.select_related("mundial", "equipo1", "equipo2"), pk=partido_id)
-        eventos = list(EventoGrupo.objects.filter(partido_grupo=partido))
-        estadisticas_jugadores = list(EstadisticaJugadorPartido.objects.filter(partido_grupo=partido).select_related("jugador", "jugador__seleccion"))
+        partido = get_object_or_404(
+            PartidoGrupo.objects.select_related(
+                "mundial", "equipo1", "equipo2"
+            ),
+            pk=partido_id,
+        )
+
+        eventos = list(
+            EventoGrupo.objects.filter(partido_grupo=partido)
+        )
+
+        estadisticas_jugadores = list(
+            EstadisticaJugadorPartido.objects.filter(
+                partido_grupo=partido
+            ).select_related("jugador", "jugador__seleccion")
+        )
+
         jugado = partido.jugado
+
     else:
         raise Http404("Tipo de partido desconocido.")
+
+    # Normalizar los nombres para que coincidan aunque los eventos
+    # estén guardados en inglés y las selecciones estén en español.
+    equipo1_clave = clave_seleccion(partido.equipo1.nombre)
+    equipo2_clave = clave_seleccion(partido.equipo2.nombre)
+
+    for evento in eventos:
+        evento.equipo_clave = clave_seleccion(evento.equipo)
+
     def orden_evento(evento):
         try:
-            partes = str(evento.minuto).replace("'", "").split("+")
-            return (int(partes[0]), int(partes[1]) if len(partes)>1 else 0, evento.pk)
+            partes = str(evento.minuto).replace("'", "").strip().split("+")
+            return (
+                int(partes[0]),
+                int(partes[1]) if len(partes) > 1 else 0,
+                evento.pk,
+            )
         except (ValueError, TypeError, IndexError):
             return (999, 0, evento.pk)
+
     eventos.sort(key=orden_evento)
+
     tipos_gol = {"GOL", "PENAL", "AUTOGOL"}
     tipos_tarjeta = {"AMARILLA", "ROJA", "DOBLE_AMARILLA"}
-    return render(request, "mundial/detalle_partido_grupo.html", {
-        "partido": partido, "tipo_partido": tipo, "jugado": jugado,
-        "eventos": eventos, "goles": [e for e in eventos if e.tipo in tipos_gol],
-        "tarjetas": [e for e in eventos if e.tipo in tipos_tarjeta],
-        "cambios": [e for e in eventos if e.tipo == "CAMBIO"],
-        "faltas": [e for e in eventos if e.tipo == "FALTA"],
-        "estadisticas_jugadores": estadisticas_jugadores,
-        "hay_estadisticas": tipo == "grupo",
-    })
+
+    goles = [
+        evento for evento in eventos
+        if evento.tipo in tipos_gol
+    ]
+
+    tarjetas = [
+        evento for evento in eventos
+        if evento.tipo in tipos_tarjeta
+    ]
+
+    cambios = [
+        evento for evento in eventos
+        if evento.tipo == "CAMBIO"
+    ]
+
+    faltas = [
+        evento for evento in eventos
+        if evento.tipo == "FALTA"
+    ]
+
+    return render(
+        request,
+        "mundial/detalle_partido_grupo.html",
+        {
+            "partido": partido,
+            "tipo_partido": tipo,
+            "jugado": jugado,
+            "eventos": eventos,
+            "equipo1_clave": equipo1_clave,
+            "equipo2_clave": equipo2_clave,
+            "goles": goles,
+            "tarjetas": tarjetas,
+            "cambios": cambios,
+            "faltas": faltas,
+            "estadisticas_jugadores": estadisticas_jugadores,
+            "hay_estadisticas": tipo == "grupo",
+        },
+    )
