@@ -1,3 +1,4 @@
+from django.http import Http404
 from collections import defaultdict
 
 import unicodedata
@@ -33,6 +34,7 @@ from .models import (
     PosicionGrupo,
 
     PartidoMundial2022,
+    PartidoGrupo,
     HistorialJugador,
 
 )
@@ -623,6 +625,39 @@ def detalle_mundial(request, pk):
 
     datos_tablas = preparar_tablas_mundial(mundial)
 
+    # Encuentros reales por grupo: Qatar usa los 48 históricos;
+    # las otras ediciones, el modelo PartidoGrupo.
+    partidos_por_grupo = defaultdict(list)
+    partidos_para_forma = defaultdict(list)
+    if mundial.anio == 2022:
+        registros = (PartidoMundial2022.objects.filter(mundial=mundial)
+                     .exclude(grupo="").select_related("equipo1", "equipo2")
+                     .prefetch_related("eventos_grupo").order_by("fecha", "pk"))
+    else:
+        registros = (PartidoGrupo.objects.filter(mundial=mundial)
+                     .select_related("equipo1", "equipo2")
+                     .prefetch_related("eventos_grupo").order_by("fecha", "pk"))
+    for p in registros:
+        grupo_clave = p.grupo.replace("Group ", "Grupo ")
+        partidos_por_grupo[grupo_clave].append(p)
+        if mundial.anio == 2022 or p.jugado:
+            if p.goles1 > p.goles2:
+                forma1, forma2 = "V", "D"
+            elif p.goles1 < p.goles2:
+                forma1, forma2 = "D", "V"
+            else:
+                forma1 = forma2 = "E"
+            partidos_para_forma[normalizar_nombre(p.equipo1.nombre)].append(forma1)
+            partidos_para_forma[normalizar_nombre(p.equipo2.nombre)].append(forma2)
+    for grupo in datos_tablas["tablas_grupos"]:
+        grupo["partidos"] = partidos_por_grupo.get(grupo["nombre"], [])
+        for fila in grupo["filas"]:
+            nombre = normalizar_nombre(fila["posicion"].equipo)
+            # La forma se deduce de resultados disputados; sin encuentros
+            # registrados, se respeta el valor manual de PosicionGrupo.
+            forma = partidos_para_forma.get(nombre, [])
+            fila["ultimas"] = forma[-5:] if forma else fila["posicion"].lista_forma[-5:]
+
     # Partidos ordenados por fase y orden
 
     partidos = list(
@@ -1049,16 +1084,18 @@ def detalle_seleccion(request, pk):
 
     elif anio_elegido == 2022:
 
-        # Mantener el comportamiento del plantel 2022
+        # Plantel asociado específicamente a Qatar 2022.
         jugadores = Jugador.objects.filter(
-            seleccion=seleccion
-        ).order_by(
+            seleccion=seleccion,
+            historiales__mundial__anio=2022
+        ).distinct().order_by(
             "numero_camiseta",
             "apellido_nombres"
         )
 
         plantel_tecnico = PersonalTecnico.objects.filter(
-            seleccion=seleccion
+            seleccion=seleccion,
+            mundial__anio=2022
         ).order_by(
             "funcion",
             "apellido"
@@ -1121,6 +1158,11 @@ def detalle_seleccion(request, pk):
                 "hubo_penales": hubo_penales,
                 "resultado": resultado,
             })
+
+    if anio_elegido not in (2022,):
+        plantel_tecnico = PersonalTecnico.objects.filter(
+            seleccion=seleccion, mundial__anio=anio_elegido
+        ).order_by("funcion", "apellido")
 
     # ==========================================
     # DATOS PARA EL HTML
@@ -1495,11 +1537,18 @@ def detalle_jugador(request, pk):
         default=None,
     )
 
+    from .models import EstadisticaJugadorPartido
+    estadisticas_partidos = EstadisticaJugadorPartido.objects.filter(jugador=jugador)
+    if anio_elegido is not None:
+        estadisticas_partidos = estadisticas_partidos.filter(mundial__anio=anio_elegido)
+    estadisticas_partidos = estadisticas_partidos.select_related("partido_grupo", "partido_eliminatoria")
+
     return render(
         request,
         "jugador/detalle_jugador.html",
         {
             "jugador": jugador,
+            "estadisticas_partidos": estadisticas_partidos,
             "historiales": historiales,
             "anio_elegido": anio_elegido,
             "historial_seleccionado": historial_seleccionado,
@@ -1515,3 +1564,55 @@ def detalle_jugador(request, pk):
             "mejor_mundial": mejor_mundial,
         },
     )
+
+
+# Partidos de fase de grupos, configurables desde el panel por Mundial.
+def partidos_grupos_mundial(request, pk):
+    from .models import PartidoGrupo
+    mundial = get_object_or_404(Mundial, pk=pk)
+    partidos = PartidoGrupo.objects.filter(mundial=mundial).select_related("equipo1", "equipo2")
+    # Qatar tiene un modelo legado con sus partidos de grupos originales.
+    partidos_qatar = (PartidoMundial2022.objects.filter(mundial=mundial).exclude(grupo="").select_related("equipo1", "equipo2")
+                      if mundial.anio == 2022 else [])
+    return render(request, "mundial/partidos_grupos.html", {
+        "mundial": mundial, "partidos": partidos, "partidos_qatar": partidos_qatar,
+    })
+
+
+# =========================================
+# DETALLE DE PARTIDO DE FASE DE GRUPOS
+# =========================================
+def detalle_partido_grupo(request, tipo, partido_id):
+    from .models import PartidoGrupo, PartidoMundial2022, EventoGrupo, EstadisticaJugadorPartido
+    if tipo == "qatar":
+        partido = get_object_or_404(PartidoMundial2022.objects.select_related("mundial", "equipo1", "equipo2"), pk=partido_id, mundial__anio=2022)
+        if not partido.grupo:
+            raise Http404("Este partido no pertenece a una fase de grupos.")
+        eventos = list(EventoGrupo.objects.filter(partido_qatar=partido))
+        estadisticas_jugadores = []
+        jugado = True
+    elif tipo == "grupo":
+        partido = get_object_or_404(PartidoGrupo.objects.select_related("mundial", "equipo1", "equipo2"), pk=partido_id)
+        eventos = list(EventoGrupo.objects.filter(partido_grupo=partido))
+        estadisticas_jugadores = list(EstadisticaJugadorPartido.objects.filter(partido_grupo=partido).select_related("jugador", "jugador__seleccion"))
+        jugado = partido.jugado
+    else:
+        raise Http404("Tipo de partido desconocido.")
+    def orden_evento(evento):
+        try:
+            partes = str(evento.minuto).replace("'", "").split("+")
+            return (int(partes[0]), int(partes[1]) if len(partes)>1 else 0, evento.pk)
+        except (ValueError, TypeError, IndexError):
+            return (999, 0, evento.pk)
+    eventos.sort(key=orden_evento)
+    tipos_gol = {"GOL", "PENAL", "AUTOGOL"}
+    tipos_tarjeta = {"AMARILLA", "ROJA", "DOBLE_AMARILLA"}
+    return render(request, "mundial/detalle_partido_grupo.html", {
+        "partido": partido, "tipo_partido": tipo, "jugado": jugado,
+        "eventos": eventos, "goles": [e for e in eventos if e.tipo in tipos_gol],
+        "tarjetas": [e for e in eventos if e.tipo in tipos_tarjeta],
+        "cambios": [e for e in eventos if e.tipo == "CAMBIO"],
+        "faltas": [e for e in eventos if e.tipo == "FALTA"],
+        "estadisticas_jugadores": estadisticas_jugadores,
+        "hay_estadisticas": tipo == "grupo",
+    })

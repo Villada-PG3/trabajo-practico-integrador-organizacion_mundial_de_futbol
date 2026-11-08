@@ -1,0 +1,44 @@
+/* Partidos de grupos - página pública */
+.pg-page {color:#f6f8f6}.pg-page h1{color:#e2c26e;font-weight:800}.pg-subtitle{color:#bfd3c6}
+.pg-card{height:100%;background:linear-gradient(135deg,#145a32,#0c3225);border:1px solid rgba(200,163,77,.4);border-radius:14px;padding:20px}
+.pg-group{color:#e2c26e;font-size:.8rem;font-weight:700}.pg-score{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 0;flex-wrap:wrap}
+.pg-score span{font-weight:700;flex:1;min-width:100px}.pg-score strong{font-size:1.25rem;white-space:nowrap;color:#e2c26e}
+.pg-card small,.pg-card details{color:#c5dccb}.pg-card summary{cursor:pointer;color:#e2c26e}.pg-empty{padding:30px;border:1px dashed #c8a34d;border-radius:12px}
+
+/* CORRECCIÓN DE BANDERAS Y TARJETAS */
+.partido-grupo img,
+.partido-card img,
+.pg-partido img,
+.partido-grupo-card img {
+    width: 32px !important;
+    height: 22px !important;
+    max-width: 32px !important;
+    max-height: 22px !important;
+    object-fit: cover !important;
+    display: inline-block !important;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+.partido-grupo,
+.partido-card,
+.pg-partido,
+.partido-grupo-card {
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.partido-grupo a,
+.partido-card a,
+.pg-partido a,
+.partido-grupo-card a {
+    overflow-wrap: break-word;
+}
+.mf-panel img[src*="flagcdn"],
+.grupo-partidos img[src*="flagcdn"],
+.partidos-grupo img[src*="flagcdn"] {
+    width: 32px !important;
+    height: 22px !important;
+    object-fit: cover !important;
+}

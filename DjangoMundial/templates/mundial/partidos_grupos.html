@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load banderas %}
+{% block title %}Partidos de grupos | {{ mundial.nombre }}{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/detalle_partido_grupo.css' %}">{% endblock %}
+{% block content %}
+<div class="container my-5 dg-wrap">
+  <a class="dg-back" href="{% url 'detalle_mundial' mundial.pk %}"><i class="fa-solid fa-arrow-left"></i> Volver a {{ mundial.nombre }}</a>
+  <h1 class="dg-gold mt-3 mb-3">Partidos de fase de grupos · {{ mundial.anio }}</h1>
+  <div class="row g-3">
+  {% if mundial.anio == 2022 %}
+    {% for partido in partidos_qatar %}
+    <div class="col-md-6"><a class="dg-fixture" href="{% url 'detalle_partido_grupo' 'qatar' partido.pk %}"><small>{{ partido.grupo }} · {{ partido.fecha|date:'d/m/Y' }}</small><div class="dg-fixture-row"><span>{% with u=partido.equipo1.nombre|bandera %}{% if u %}<img src="{{ u }}" alt="" class="dg-smallflag">{% endif %}{% endwith %} {{ partido.equipo1.nombre }}</span><strong>{{ partido.goles1 }} - {{ partido.goles2 }}</strong><span>{% with u=partido.equipo2.nombre|bandera %}{% if u %}<img src="{{ u }}" alt="" class="dg-smallflag">{% endif %}{% endwith %} {{ partido.equipo2.nombre }}</span></div><small>Ver goles, tarjetas y eventos <i class="fa-solid fa-arrow-right"></i></small></a></div>
+    {% empty %}<p>No hay partidos de Qatar registrados.</p>{% endfor %}
+  {% else %}
+    {% for partido in partidos %}
+    <div class="col-md-6"><a class="dg-fixture" href="{% url 'detalle_partido_grupo' 'grupo' partido.pk %}"><small>{{ partido.grupo }} · {{ partido.fecha|date:'d/m/Y'|default:'Fecha a confirmar' }}</small><div class="dg-fixture-row"><span>{% with u=partido.equipo1.nombre|bandera %}{% if u %}<img src="{{ u }}" alt="" class="dg-smallflag">{% endif %}{% endwith %} {{ partido.equipo1.nombre }}</span><strong>{% if partido.jugado %}{{ partido.goles1 }} - {{ partido.goles2 }}{% else %}vs.{% endif %}</strong><span>{% with u=partido.equipo2.nombre|bandera %}{% if u %}<img src="{{ u }}" alt="" class="dg-smallflag">{% endif %}{% endwith %} {{ partido.equipo2.nombre }}</span></div><small>Ver goles, tarjetas y eventos <i class="fa-solid fa-arrow-right"></i></small></a></div>
+    {% empty %}<p>No hay partidos de grupos registrados.</p>{% endfor %}
+  {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 {% load static %}
 
@@ -42,7 +41,6 @@ Administración | MundoFútbol
 
     </nav>
 
-
     <!-- ======================================
          PÁGINA PRINCIPAL
          ====================================== -->
@@ -79,7 +77,6 @@ Administración | MundoFútbol
 
         </section>
 
-
         <div class="mf-panel-section-title">
             <h2>
                 <i class="fa-solid fa-trophy"></i>
@@ -90,7 +87,6 @@ Administración | MundoFútbol
                 {{ mundiales_panel|length }} ediciones
             </span>
         </div>
-
 
         <div class="row g-4">
 
@@ -154,7 +150,6 @@ Administración | MundoFútbol
 
         </div>
 
-
         <div class="mt-4">
             <a
                 href="{% url 'admin:index' %}"
@@ -164,7 +159,6 @@ Administración | MundoFútbol
                 Administrador clásico de Django
             </a>
         </div>
-
 
     <!-- ======================================
          ADMINISTRAR UN MUNDIAL
@@ -210,14 +204,12 @@ Administración | MundoFútbol
 
         </section>
 
-
         <div class="mf-panel-section-title">
             <h2>
                 <i class="fa-solid fa-layer-group"></i>
                 Secciones de {{ mundial.anio }}
             </h2>
         </div>
-
 
         <div class="row g-3 mb-4">
 
@@ -253,7 +245,6 @@ Administración | MundoFútbol
             {% endfor %}
 
         </div>
-
 
         <!-- SELECCIONES PARTICIPANTES -->
 
@@ -304,7 +295,6 @@ Administración | MundoFútbol
 
         </section>
 
-
         <!-- CUERPO TÉCNICO -->
 
         <section class="mf-panel-box">
@@ -317,9 +307,7 @@ Administración | MundoFútbol
             </div>
 
             <p class="mf-panel-help">
-                Vista de referencia: los técnicos están relacionados
-                con su selección, pero todavía no con una edición
-                específica del Mundial.
+                Técnicos relacionados con esta edición del Mundial.
             </p>
 
             <div class="table-responsive">
@@ -371,7 +359,6 @@ Administración | MundoFútbol
 
         </section>
 
-
     <!-- ======================================
          LISTADO DE UNA SECCIÓN
          ====================================== -->
@@ -400,6 +387,18 @@ Administración | MundoFútbol
 
             </div>
 
+            {% if seccion == "selecciones" and puede_crear_seleccion %}
+                <a href="{% url 'panel_nueva_seleccion' mundial.pk %}" class="mf-panel-secondary">
+                    <i class="fa-solid fa-flag"></i> Crear selección nueva
+                </a>
+            {% endif %}
+
+            {% if seccion == "jugadores" and puede_crear_jugador %}
+                <a href="{% url 'panel_nuevo_jugador' mundial.pk %}" class="mf-panel-secondary">
+                    <i class="fa-solid fa-user-plus"></i> Crear jugador nuevo
+                </a>
+            {% endif %}
+
             {% if puede_agregar %}
 
                 <a
@@ -413,7 +412,6 @@ Administración | MundoFútbol
             {% endif %}
 
         </section>
-
 
         <section class="mf-panel-box">
 
@@ -429,7 +427,6 @@ Administración | MundoFútbol
                 </span>
 
             </div>
-
 
             <!-- BUSCADOR -->
 
@@ -458,7 +455,6 @@ Administración | MundoFútbol
                 {% endif %}
 
             </form>
-
 
             <!-- TABLA -->
 
@@ -541,7 +537,6 @@ Administración | MundoFútbol
 
             </div>
 
-
             <!-- PAGINACIÓN -->
 
             {% if pagina_registros.has_other_pages %}
@@ -581,7 +576,6 @@ Administración | MundoFútbol
             {% endif %}
 
         </section>
-
 
     <!-- ======================================
          FORMULARIO DE MUNDIAL
@@ -681,7 +675,6 @@ Administración | MundoFútbol
             </form>
 
         </section>
-
 
     <!-- ======================================
          FORMULARIO DE UNA SECCIÓN
@@ -794,7 +787,6 @@ Administración | MundoFútbol
             </form>
 
         </section>
-
 
     <!-- ======================================
          ELIMINAR REGISTRO

@@ -135,3 +135,31 @@ class PartidoMundial2022Admin(admin.ModelAdmin):
 
 if not admin.site.is_registered(PartidoMundial2022):
     admin.site.register(PartidoMundial2022, PartidoMundial2022Admin)
+
+
+from .models import ParticipacionSeleccion, PartidoGrupo, EstadisticaJugadorPartido
+
+@admin.register(ParticipacionSeleccion)
+class ParticipacionSeleccionAdmin(admin.ModelAdmin):
+    list_display = ("mundial", "seleccion", "instancia_alcanzada")
+    list_filter = ("mundial",)
+    search_fields = ("seleccion__nombre",)
+
+@admin.register(PartidoGrupo)
+class PartidoGrupoAdmin(admin.ModelAdmin):
+    list_display = ("mundial", "grupo", "equipo1", "goles1", "equipo2", "goles2")
+    list_filter = ("mundial", "grupo")
+
+@admin.register(EstadisticaJugadorPartido)
+class EstadisticaJugadorPartidoAdmin(admin.ModelAdmin):
+    list_display = ("mundial", "jugador", "goles", "asistencias", "faltas", "amarillas", "rojas")
+    list_filter = ("mundial",)
+
+
+from .models import EventoGrupo
+
+@admin.register(EventoGrupo)
+class EventoGrupoAdmin(admin.ModelAdmin):
+    list_display = ("minuto", "tipo", "equipo", "jugador", "partido_grupo", "partido_qatar")
+    list_filter = ("tipo",)
+    search_fields = ("jugador", "equipo", "descripcion")

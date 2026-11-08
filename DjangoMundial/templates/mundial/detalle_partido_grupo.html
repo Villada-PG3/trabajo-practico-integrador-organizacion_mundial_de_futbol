@@ -1,0 +1,61 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% load banderas %}
+
+{% block title %}Detalle del partido | MundoFútbol{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card text-white border-warning" style="background:#0F3D2E;border-radius:16px;">
+        <div class="card-body text-center p-4">
+            <h2 class="mb-4" style="color:#C8A34D;">Detalle del partido</h2>
+            <div class="d-flex justify-content-center align-items-center flex-wrap gap-4 mb-4">
+                <div>
+                    <img src="{{ partido.equipo1.nombre|bandera }}" alt="" style="width:48px;height:32px;object-fit:contain;">
+                    <h4 class="mt-2">{{ partido.equipo1.nombre }}</h4>
+                </div>
+                <h2 style="color:#C8A34D;">{{ partido.goles1 }} - {{ partido.goles2 }}</h2>
+                <div>
+                    <img src="{{ partido.equipo2.nombre|bandera }}" alt="" style="width:48px;height:32px;object-fit:contain;">
+                    <h4 class="mt-2">{{ partido.equipo2.nombre }}</h4>
+                </div>
+            </div>
+            <p>Grupo {{ partido.grupo }} · {{ partido.fecha|date:"d/m/Y"|default:"Fecha por definir" }}</p>
+            {% if partido.estadio %}
+                <p>Estadio: {{ partido.estadio }}</p>
+            {% endif %}
+            <hr>
+            <h4 style="color:#C8A34D;">Estadísticas del partido</h4>
+            <div class="table-responsive mt-3">
+                <table class="table table-dark table-striped">
+                    <thead>
+                        <tr><th>Estadística</th><th>{{ partido.equipo1.nombre }}</th><th>{{ partido.equipo2.nombre }}</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Córners</td><td>{{ partido.corners1 }}</td><td>{{ partido.corners2 }}</td></tr>
+                        <tr><td>Faltas</td><td>{{ partido.faltas1 }}</td><td>{{ partido.faltas2 }}</td></tr>
+                        <tr><td>Laterales</td><td>{{ partido.laterales1 }}</td><td>{{ partido.laterales2 }}</td></tr>
+                        <tr><td>Minutos de ataque</td><td>{{ partido.minutos_ataque1 }}</td><td>{{ partido.minutos_ataque2 }}</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <h4 class="mt-4" style="color:#C8A34D;">Eventos del partido</h4>
+            {% if eventos %}
+                <div class="list-group mt-3">
+                    {% for evento in eventos %}
+                        <div class="list-group-item text-white" style="background:#145A32;border-color:#C8A34D;">
+                            <strong>{{ evento.minuto }}'</strong>
+                            {{ evento.get_tipo_display|default:evento.tipo }}
+                            · {{ evento.jugador }}
+                            {% if evento.equipo %} · {{ evento.equipo }}{% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-white-50 mt-3">No hay eventos registrados para este partido.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

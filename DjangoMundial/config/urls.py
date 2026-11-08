@@ -12,6 +12,8 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
+    path('partidos/grupos/<slug:tipo>/<int:partido_id>/', views.detalle_partido_grupo, name='detalle_partido_grupo'),
+
 
     # Administración tradicional
     path(
@@ -58,6 +60,8 @@ urlpatterns = [
 # PANEL POR MUNDIAL
 # ==========================================
 
+    path('panel/mundial/<int:mundial_id>/nuevo-jugador/', panel.nuevo_jugador_mundial, name='panel_nuevo_jugador'),
+    path('panel/mundial/<int:mundial_id>/nueva-seleccion/', panel.nueva_seleccion_mundial, name='panel_nueva_seleccion'),
 path(
     'panel/mundial/<int:mundial_id>/',
     panel.administrar_mundial,
@@ -194,6 +198,8 @@ path(
         views.detalle_jugador,
         name='detalle_jugador'
     ),
+
+    path('mundial/<int:pk>/partidos-grupos/', views.partidos_grupos_mundial, name='partidos_grupos_mundial'),
 
     # ======================================
     # DETALLE DE PARTIDO

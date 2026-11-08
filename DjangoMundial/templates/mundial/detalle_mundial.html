@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/grupos_desplegables.css' %}">
 <link rel="stylesheet" href="{% static 'css/banderas_partidos.css' %}">
 <style>
     a.equipo-con-bandera,
@@ -26,6 +27,12 @@
 {% endblock %}
 
 {% block content %}
+<div class="container my-3 text-end">
+  <a href="{% url 'partidos_grupos_mundial' mundial.pk %}" class="btn btn-outline-warning">
+    <i class="fa-solid fa-calendar-days me-2"></i> Ver partidos de grupos
+  </a>
+</div>
+
 
 <!-- VOLVER -->
 <div class="mb-4">
@@ -187,9 +194,12 @@
 
                         <div class="card bg-black border border-dorado shadow rounded-3 overflow-hidden grupo-card">
 
-                            <div class="grupo-titulo">
-                                {{ grupo.nombre|upper }}
-                            </div>
+                            <button class="grupo-titulo gf-toggle" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#partidos-grupo-{{ forloop.counter }}"
+                                aria-expanded="false" aria-controls="partidos-grupo-{{ forloop.counter }}">
+                                <span>{{ grupo.nombre|upper }}</span>
+                                <span class="gf-toggle-hint">Ver partidos <i class="fa-solid fa-chevron-down"></i></span>
+                            </button>
 
                             <div class="table-responsive">
 
@@ -316,7 +326,7 @@
                                             <!-- RESULTADOS RECIENTES -->
                                             <td>
 
-                                                {% for resultado in pos.lista_forma %}
+                                                {% for resultado in fila.ultimas %}
 
                                                     {% if resultado == 'V' %}
                                                         <span class="badge bg-success">V</span>
@@ -344,11 +354,33 @@
                                 </table>
 
                             </div>
-
+                            <div class="collapse" id="partidos-grupo-{{ forloop.counter }}">
+                                <section class="gf-fixtures" aria-label="Partidos de {{ grupo.nombre }}">
+                                    <div class="gf-fixtures-heading">Partidos y resultados · {{ grupo.nombre }}</div>
+                                    {% for partido in grupo.partidos %}
+                                    <article class="gf-match">
+                                        <a class="gf-match-link" href="{% if mundial.anio == 2022 %}{% url 'detalle_partido_grupo' 'qatar' partido.pk %}{% else %}{% url 'detalle_partido_grupo' 'grupo' partido.pk %}{% endif %}">
+                                            <div class="gf-match-main">
+                                                <span class="gf-match-team">
+                                                    {% with bandera=partido.equipo1.nombre|bandera %}{% if bandera %}<img class="gf-flag" src="{{ bandera }}" alt="Bandera de {{ partido.equipo1.nombre }}" loading="lazy">{% endif %}{% endwith %}
+                                                    {{ partido.equipo1.nombre }}
+                                                </span>
+                                                {% if mundial.anio == 2022 or partido.jugado %}<strong class="gf-match-score">{{ partido.goles1 }} – {{ partido.goles2 }}</strong>{% else %}<strong class="gf-match-score gf-pending">vs.</strong>{% endif %}
+                                                <span class="gf-match-team gf-away">
+                                                    {% with bandera=partido.equipo2.nombre|bandera %}{% if bandera %}<img class="gf-flag" src="{{ bandera }}" alt="Bandera de {{ partido.equipo2.nombre }}" loading="lazy">{% endif %}{% endwith %}
+                                                    {{ partido.equipo2.nombre }}
+                                                </span>
+                                            </div>
+                                            <div class="gf-match-meta">{{ partido.fecha|date:"d/m/Y"|default:"Fecha por definir" }}{% if partido.estadio %} · {{ partido.estadio }}{% endif %} · <span class="gf-detail-cta">Ver detalle, tarjetas y eventos <i class="fa-solid fa-arrow-right"></i></span></div>
+                                        </a>
+                                    </article>
+                                    {% empty %}
+                                    <p class="gf-no-events">Todavía no hay partidos cargados para este grupo.</p>
+                                    {% endfor %}
+                                </section>
+                            </div>
                         </div>
-
                     </div>
-
                     {% endfor %}
 
                 </div>

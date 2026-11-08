@@ -1,0 +1,25 @@
+.gf-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;border:0;border-bottom:1px solid #c8a34d;color:#fff;cursor:pointer}.gf-toggle-hint{font-size:.78rem;display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:0;text-transform:none}.gf-toggle-hint i{transition:transform .2s}.gf-toggle[aria-expanded="true"] .gf-toggle-hint i{transform:rotate(180deg)}.gf-fixtures{background:#102d23;padding:18px}.gf-fixtures-heading{font-size:.96rem;font-weight:800;color:#e7c678;margin-bottom:14px}.gf-match{background:#183d30;border:1px solid #3b6951;border-radius:11px;padding:15px;margin-bottom:10px}.gf-match-main{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px}.gf-match-team{font-weight:700;text-align:right}.gf-away{text-align:left}.gf-match-score{background:#09251c;padding:9px 15px;border-radius:8px;white-space:nowrap;color:#e7c678}.gf-pending{color:#c3d1c9}.gf-match-meta{text-align:center;color:#b4c9bc;font-size:.78rem;margin-top:9px}.gf-match-events{margin-top:12px;border-top:1px solid #49745b;padding-top:10px}.gf-match-events summary{cursor:pointer;color:#e7c678;font-size:.84rem;font-weight:700}.gf-match-events summary i{font-size:.7rem;margin-left:7px}.gf-event-list{margin-top:10px}.gf-event{display:flex;gap:12px;border-bottom:1px solid #3b604d;padding:9px 0;font-size:.84rem}.gf-minute{color:#e7c678;font-weight:800;min-width:42px}.gf-no-events{color:#b8cbbc;font-size:.85rem;margin:10px 0}.gf-match-stats{margin-top:12px;color:#c6dbce;font-size:.81rem;line-height:1.8}@media(max-width:570px){.gf-fixtures{padding:10px}.gf-match{padding:12px}.gf-match-main{gap:6px}.gf-match-score{padding:7px 9px}.gf-match-team{font-size:.78rem}.gf-toggle-hint{font-size:.7rem}}
+
+/* ARREGLO DEFINITIVO DE BANDERAS */
+.gf-match .gf-flag {
+    display: inline-block !important;
+    width: 30px !important;
+    height: 21px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    min-height: 21px !important;
+    max-height: 21px !important;
+    object-fit: contain !important;
+    vertical-align: middle !important;
+    margin-right: 7px;
+}
+
+.gf-match-team {
+    min-width: 0;
+    font-size: 14px;
+}
+
+.gf-match-main {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+}

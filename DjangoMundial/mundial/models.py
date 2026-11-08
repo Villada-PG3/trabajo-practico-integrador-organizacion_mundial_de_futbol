@@ -561,6 +561,13 @@ class PersonalTecnico(models.Model):
 
     seleccion = models.ForeignKey(Seleccion, on_delete=models.CASCADE, related_name='plantel_tecnico')
 
+    mundial = models.ForeignKey(
+        Mundial, on_delete=models.CASCADE, null=True, blank=True,
+        related_name='planteles_tecnicos',
+        verbose_name='Mundial de participación',
+        help_text='Obligatorio al crear desde el panel de una edición.'
+    )
+
     def __str__(self):
 
         return f"{self.apellido}, {self.nombre} ({self.get_funcion_display()})"
@@ -726,6 +733,11 @@ class HistorialJugador(models.Model):
     asistencias = models.PositiveIntegerField(
         default=0,
         verbose_name="Asistencias"
+    )
+
+    numero_camiseta_mundial = models.PositiveSmallIntegerField(
+        null=True, blank=True, validators=[MinValueValidator(1), MaxValueValidator(99)],
+        verbose_name="Dorsal en este Mundial"
     )
 
     class Meta:
@@ -967,3 +979,113 @@ class PartidoMundial2022(models.Model):
             f'{self.equipo2.nombre}'
 
         )
+
+
+# Participación explícita de una selección por edición.
+class ParticipacionSeleccion(models.Model):
+    mundial = models.ForeignKey(Mundial, on_delete=models.CASCADE, related_name="selecciones_participantes")
+    seleccion = models.ForeignKey(Seleccion, on_delete=models.PROTECT, related_name="mundiales_disputados")
+    instancia_alcanzada = models.CharField(max_length=60, blank=True, verbose_name="Instancia alcanzada")
+    observaciones = models.TextField(blank=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["mundial", "seleccion"], name="unica_seleccion_por_mundial")]
+        ordering = ["seleccion__nombre"]
+        verbose_name = "Selección participante"
+        verbose_name_plural = "Selecciones participantes"
+
+    def __str__(self):
+        return f"{self.seleccion.nombre} · {self.mundial.anio}"
+
+
+# Partidos de grupos para nuevas ediciones, sin tocar los 64 partidos históricos de Qatar.
+class PartidoGrupo(models.Model):
+    mundial = models.ForeignKey(Mundial, on_delete=models.CASCADE, related_name="partidos_grupo")
+    grupo = models.CharField(max_length=20, choices=PosicionGrupo.GRUPOS_CHOICES)
+    fecha = models.DateField(null=True, blank=True)
+    estadio = models.CharField(max_length=150, blank=True)
+    equipo1 = models.ForeignKey(Seleccion, on_delete=models.PROTECT, related_name="partidos_grupo_local")
+    equipo2 = models.ForeignKey(Seleccion, on_delete=models.PROTECT, related_name="partidos_grupo_visitante")
+    goles1 = models.PositiveSmallIntegerField(default=0)
+    goles2 = models.PositiveSmallIntegerField(default=0)
+    jugado = models.BooleanField(default=False, verbose_name="Partido disputado", help_text="Activar cuando el resultado sea definitivo; permite distinguir 0-0 de un partido pendiente.")
+    corners1 = models.PositiveSmallIntegerField(default=0, verbose_name="Córners equipo 1")
+    corners2 = models.PositiveSmallIntegerField(default=0, verbose_name="Córners equipo 2")
+    laterales1 = models.PositiveSmallIntegerField(default=0, verbose_name="Laterales equipo 1")
+    laterales2 = models.PositiveSmallIntegerField(default=0, verbose_name="Laterales equipo 2")
+    faltas1 = models.PositiveSmallIntegerField(default=0, verbose_name="Faltas equipo 1")
+    faltas2 = models.PositiveSmallIntegerField(default=0, verbose_name="Faltas equipo 2")
+    minutos_ataque1 = models.PositiveSmallIntegerField(default=0, verbose_name="Minutos de ataque equipo 1")
+    minutos_ataque2 = models.PositiveSmallIntegerField(default=0, verbose_name="Minutos de ataque equipo 2")
+
+    class Meta:
+        ordering = ["fecha", "pk"]
+        verbose_name = "Partido de grupos"
+        verbose_name_plural = "Partidos de grupos"
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        if self.equipo1_id and self.equipo1_id == self.equipo2_id:
+            raise ValidationError("Los equipos deben ser diferentes.")
+
+    def __str__(self):
+        return f"{self.mundial.anio}: {self.equipo1} {self.goles1}-{self.goles2} {self.equipo2}"
+
+
+class EstadisticaJugadorPartido(models.Model):
+    mundial = models.ForeignKey(Mundial, on_delete=models.CASCADE, related_name="estadisticas_por_partido")
+    jugador = models.ForeignKey(Jugador, on_delete=models.PROTECT, related_name="estadisticas_por_partido")
+    partido_grupo = models.ForeignKey(PartidoGrupo, on_delete=models.CASCADE, blank=True, null=True, related_name="estadisticas_jugadores")
+    partido_eliminatoria = models.ForeignKey(PartidoEliminatoria, on_delete=models.CASCADE, blank=True, null=True, related_name="estadisticas_jugadores")
+    goles = models.PositiveSmallIntegerField(default=0)
+    asistencias = models.PositiveSmallIntegerField(default=0)
+    faltas = models.PositiveSmallIntegerField(default=0)
+    amarillas = models.PositiveSmallIntegerField(default=0)
+    rojas = models.PositiveSmallIntegerField(default=0)
+    minutos_jugados = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        verbose_name = "Estadística individual por partido"
+        verbose_name_plural = "Estadísticas individuales por partido"
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        if bool(self.partido_grupo_id) == bool(self.partido_eliminatoria_id):
+            raise ValidationError("Seleccioná exactamente un partido (de grupos o eliminatoria).")
+        partido = self.partido_grupo or self.partido_eliminatoria
+        if partido and self.mundial_id and partido.mundial_id != self.mundial_id:
+            raise ValidationError("El partido debe pertenecer al Mundial seleccionado.")
+        if self.jugador_id and self.mundial_id and not HistorialJugador.objects.filter(jugador_id=self.jugador_id, mundial_id=self.mundial_id).exists():
+            raise ValidationError("El jugador no está asociado a este Mundial.")
+
+    def __str__(self):
+        return f"{self.jugador} · {self.mundial.anio}"
+
+
+class EventoGrupo(models.Model):
+    """Evento asociado a un partido de grupos actual o al archivo histórico de Qatar."""
+    TIPOS_EVENTO = EventoPartido.TIPOS_EVENTO
+    partido_grupo = models.ForeignKey(PartidoGrupo, on_delete=models.CASCADE, null=True, blank=True, related_name="eventos_grupo", verbose_name="Partido de grupos")
+    partido_qatar = models.ForeignKey(PartidoMundial2022, on_delete=models.CASCADE, null=True, blank=True, related_name="eventos_grupo", verbose_name="Partido histórico Qatar 2022")
+    tipo = models.CharField(max_length=20, choices=TIPOS_EVENTO)
+    minuto = models.CharField(max_length=10, help_text="Ejemplo: 34 o 45+2")
+    equipo = models.CharField(max_length=100, blank=True)
+    jugador = models.CharField(max_length=150, blank=True)
+    jugador_entra = models.CharField(max_length=150, blank=True)
+    jugador_sale = models.CharField(max_length=150, blank=True)
+    descripcion = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name = "Evento de partido de grupos"
+        verbose_name_plural = "Eventos de partidos de grupos"
+        ordering = ["pk"]
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        if bool(self.partido_grupo_id) == bool(self.partido_qatar_id):
+            raise ValidationError("Seleccioná exactamente un partido: de grupos o de Qatar 2022.")
+        if self.partido_qatar_id and not self.partido_qatar.grupo:
+            raise ValidationError("El encuentro histórico debe ser de fase de grupos.")
+
+    def __str__(self):
+        return f"{self.minuto}' · {self.get_tipo_display()} · {self.jugador or self.equipo}"
