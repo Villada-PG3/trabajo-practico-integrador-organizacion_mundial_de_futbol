@@ -428,6 +428,9 @@ Administración | MundoFútbol
 
             </div>
 
+            {% if nota_estadisticas %}
+            <p class="small text-warning mb-3">— significa que no hay un dato individual verificado en esta carga. No equivale a cero. Los valores que se completan automáticamente se obtienen de eventos y alineaciones identificados por partido.</p>
+            {% endif %}
             <!-- BUSCADOR -->
 
             <form method="get" class="mf-panel-search">

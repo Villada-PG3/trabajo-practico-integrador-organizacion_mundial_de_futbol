@@ -1,19 +1,15 @@
-
 /* ==========================================
    MUNDOFÚTBOL - DETALLE DEL PARTIDO
    ========================================== */
-
 .detalle-partido {
     --dp-verde-fondo: #0F3D2E;
     --dp-verde-navbar: #145A32;
     --dp-verde-tarjeta: #1E8449;
     --dp-dorado: #C8A34D;
     --dp-blanco: #FFFFFF;
-
     color: var(--dp-blanco);
     padding-bottom: 40px;
 }
-
 .detalle-partido .dp-dorado {
     color: var(--dp-dorado);
 }
@@ -21,7 +17,6 @@
 /* ==========================================
    MARCADOR
    ========================================== */
-
 .detalle-partido .dp-marcador {
     background: var(--dp-verde-navbar);
     border: 1px solid var(--dp-dorado);
@@ -29,7 +24,6 @@
     padding: 35px 25px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 }
-
 .detalle-partido .dp-fase {
     color: var(--dp-dorado);
     text-align: center;
@@ -38,14 +32,12 @@
     font-weight: bold;
     margin-bottom: 28px;
 }
-
 .detalle-partido .dp-marcador-equipos {
     display: grid;
     grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
     align-items: center;
     gap: 15px;
 }
-
 .detalle-partido .dp-equipo {
     color: #FFFFFF;
     font-size: clamp(16px, 2.5vw, 27px);
@@ -53,7 +45,6 @@
     text-align: center;
     overflow-wrap: anywhere;
 }
-
 .detalle-partido .dp-resultado {
     color: var(--dp-dorado);
     font-size: clamp(32px, 4vw, 52px);
@@ -61,7 +52,6 @@
     text-align: center;
     white-space: nowrap;
 }
-
 .detalle-partido .dp-resultado span {
     display: block;
     color: #FFFFFF;
@@ -70,7 +60,6 @@
     letter-spacing: 1px;
     margin-top: 5px;
 }
-
 .detalle-partido .dp-info {
     text-align: center;
     color: var(--dp-dorado);
@@ -81,13 +70,11 @@
 /* ==========================================
    PESTAÑAS
    ========================================== */
-
 .detalle-partido .dp-pestanas {
     display: flex;
     gap: 15px;
     border-bottom: 1px solid var(--dp-dorado);
 }
-
 .detalle-partido .dp-pestanas .nav-link {
     color: #FFFFFF;
     background: transparent;
@@ -99,11 +86,9 @@
     text-transform: uppercase;
     font-size: 13px;
 }
-
 .detalle-partido .dp-pestanas .nav-link:hover {
     color: var(--dp-dorado);
 }
-
 .detalle-partido .dp-pestanas .nav-link.active {
     color: var(--dp-dorado);
     background: transparent;
@@ -113,7 +98,6 @@
 /* ==========================================
    TARJETAS DE ESTADÍSTICAS
    ========================================== */
-
 .detalle-partido .dp-estadistica {
     min-height: 145px;
     height: 100%;
@@ -128,18 +112,15 @@
     gap: 8px;
     text-align: center;
 }
-
 .detalle-partido .dp-estadistica > i {
     color: var(--dp-dorado);
     font-size: 19px;
 }
-
 .detalle-partido .dp-estadistica strong {
     font-size: 30px;
     color: var(--dp-dorado);
     line-height: 1.1;
 }
-
 .detalle-partido .dp-estadistica > span:last-child {
     color: #FFFFFF;
     font-size: 13px;
@@ -148,7 +129,6 @@
 /* ==========================================
    PANELES
    ========================================== */
-
 .detalle-partido .dp-panel {
     background: var(--dp-verde-navbar);
     border: 1px solid var(--dp-dorado);
@@ -156,7 +136,6 @@
     overflow: hidden;
     margin-top: 22px;
 }
-
 .detalle-partido .dp-panel-titulo {
     background: var(--dp-verde-fondo);
     border-bottom: 1px solid var(--dp-dorado);
@@ -169,7 +148,6 @@
     margin: 0;
     padding: 17px;
 }
-
 .detalle-partido .dp-columnas-equipo {
     display: grid;
     grid-template-columns: minmax(0,1fr) 80px minmax(0,1fr);
@@ -180,12 +158,10 @@
     font-weight: bold;
     font-size: 13px;
 }
-
 .detalle-partido .dp-columnas-equipo span:nth-child(2) {
     text-align: center;
     color: var(--dp-dorado);
 }
-
 .detalle-partido .dp-columnas-equipo span:last-child {
     text-align: right;
 }
@@ -193,7 +169,6 @@
 /* ==========================================
    EVENTOS
    ========================================== */
-
 .detalle-partido .dp-evento {
     display: grid;
     grid-template-columns: minmax(0,1fr) 80px minmax(0,1fr);
@@ -203,25 +178,20 @@
     min-height: 74px;
     border-bottom: 1px solid rgba(255,255,255,0.13);
 }
-
 .detalle-partido .dp-evento:last-child {
     border-bottom: none;
 }
-
 .detalle-partido .dp-evento:nth-of-type(even) {
     background: rgba(0,0,0,0.08);
 }
-
 .detalle-partido .dp-evento-izq {
     text-align: left;
     min-width: 0;
 }
-
 .detalle-partido .dp-evento-der {
     text-align: right;
     min-width: 0;
 }
-
 .detalle-partido .dp-evento strong {
     display: block;
     color: #FFFFFF;
@@ -229,7 +199,6 @@
     font-weight: 700;
     overflow-wrap: anywhere;
 }
-
 .detalle-partido .dp-evento small {
     display: block;
     color: #D7E9DD;
@@ -237,14 +206,12 @@
     margin-top: 4px;
     overflow-wrap: anywhere;
 }
-
 .detalle-partido .dp-minuto {
     color: var(--dp-dorado);
     text-align: center;
     font-size: 15px;
     font-weight: 800;
 }
-
 .detalle-partido .dp-evento-general {
     grid-column: 1 / -1;
     text-align: center;
@@ -252,12 +219,10 @@
     font-size: 13px;
     padding-top: 5px;
 }
-
 .detalle-partido .dp-evento-general strong {
     display: inline;
     color: var(--dp-dorado);
 }
-
 .detalle-partido .dp-vacio {
     padding: 30px 15px;
     text-align: center;
@@ -268,7 +233,6 @@
 /* ==========================================
    TARJETAS AMARILLAS Y ROJAS
    ========================================== */
-
 .detalle-partido .dp-tarjeta {
     display: inline-block;
     width: 12px;
@@ -278,11 +242,9 @@
     margin: 0 5px;
     flex-shrink: 0;
 }
-
 .detalle-partido .dp-tarjeta.amarilla {
     background: #FFD600;
 }
-
 .detalle-partido .dp-tarjeta.roja {
     background: #E53935;
 }
@@ -290,11 +252,9 @@
 /* ==========================================
    SUSTITUCIONES
    ========================================== */
-
 .detalle-partido .dp-evento strong.dp-entra {
     color: #8DFFAA;
 }
-
 .detalle-partido .dp-evento small.dp-sale {
     color: #FF9696;
 }
@@ -307,15 +267,12 @@
     .detalle-partido .dp-marcador {
         padding: 25px 14px;
     }
-
     .detalle-partido .dp-marcador-equipos {
         gap: 8px;
     }
-
     .detalle-partido .dp-pestanas {
         gap: 3px;
     }
-
     .detalle-partido .dp-pestanas .nav-link {
         padding: 12px;
         font-size: 12px;
@@ -330,19 +287,15 @@
         padding-left: 8px;
         padding-right: 8px;
     }
-
     .detalle-partido .dp-evento strong {
         font-size: 12px;
     }
-
     .detalle-partido .dp-evento small {
         font-size: 10px;
     }
-
     .detalle-partido .dp-minuto {
         font-size: 13px;
     }
-
     .detalle-partido .dp-equipo {
         font-size: 15px;
     }

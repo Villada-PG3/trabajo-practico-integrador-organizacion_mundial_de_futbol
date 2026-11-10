@@ -13,13 +13,32 @@
     vertical-align: middle !important;
     margin-right: 7px;
 }
-
 .gf-match-team {
     min-width: 0;
     font-size: 14px;
 }
-
 .gf-match-main {
     width: 100%;
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+}
+
+/* ENLACES DE PARTIDOS - SIN COLOR AZUL */
+.gf-match a,
+.gf-match a:visited {
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+.gf-match a:hover {
+    color: #C8A34D !important;
+    text-decoration: underline !important;
+}
+
+/* ENLACE AL DETALLE DEL PARTIDO */
+.gf-match-detail,
+.gf-match-detail:visited {
+    color: #C8A34D !important;
+    text-decoration: none !important;
+}
+.gf-match-detail:hover {
+    color: #f0d78a !important;
 }

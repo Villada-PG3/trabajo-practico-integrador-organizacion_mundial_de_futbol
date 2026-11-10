@@ -1,8 +1,6 @@
-
 /* ==========================================
    MUNDOFÚTBOL - PANEL POR MUNDIALES
    ========================================== */
-
 .mf-panel {
     --mf-dark: #092b20;
     --mf-green: #0f3d2e;
@@ -11,81 +9,63 @@
     --mf-gold: #c8a34d;
     --mf-gold-light: #f0d78a;
     --mf-border: rgba(200, 163, 77, .3);
-
     color: #fff;
     max-width: 1550px;
     margin: 0 auto;
 }
-
 .mf-panel * {
     box-sizing: border-box;
 }
 
 /* PESTAÑAS DE MUNDIALES */
-
 .mf-panel-nav {
     display: flex;
     align-items: center;
     gap: 10px;
-
     overflow-x: auto;
     padding: 6px 2px 17px;
     margin-bottom: 22px;
-
     scrollbar-width: thin;
 }
-
 .mf-panel-tab {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 9px;
-
     padding: 12px 18px;
-
     color: #e0ebe3;
     background: #103b2c;
-
     border: 1px solid var(--mf-border);
     border-radius: 11px;
-
     font-weight: 700;
     font-size: .88rem;
-
     text-decoration: none;
     white-space: nowrap;
-
     transition: .2s ease;
 }
-
 .mf-panel-tab:hover {
     color: var(--mf-gold-light);
     border-color: var(--mf-gold);
     background: #185239;
 }
-
 .mf-panel-tab.active {
     color: #092b20;
     background: linear-gradient(135deg, #f0d78a, #c8a34d);
     border-color: var(--mf-gold);
 }
-
 .mf-panel-tab.active:hover {
     color: #092b20;
 }
 
 /* HERO */
-
 .mf-panel-hero {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 24px;
-
     padding: 32px;
     margin-bottom: 30px;
-
     background:
         radial-gradient(
             circle at 95% 0%,
@@ -93,101 +73,80 @@
             transparent 40%
         ),
         linear-gradient(125deg, #0b3023, #16553a);
-
     border: 1px solid var(--mf-border);
     border-radius: 20px;
 }
-
 .mf-panel-kicker {
     display: flex;
     align-items: center;
     gap: 10px;
-
     color: var(--mf-gold-light);
     font-size: .78rem;
     font-weight: 800;
     letter-spacing: 1px;
     text-transform: uppercase;
-
     margin-bottom: 13px;
 }
-
 .mf-panel-hero h1 {
     color: var(--mf-gold-light);
     font-size: clamp(1.7rem, 3vw, 2.6rem);
     font-weight: 850;
-
     margin: 0 0 10px;
 }
-
 .mf-panel-hero p {
     color: #c9ddd0;
     max-width: 650px;
     margin: 0;
     line-height: 1.7;
 }
-
 .mf-panel-back {
     display: inline-flex;
     align-items: center;
     gap: 9px;
-
     color: #e3eee6;
     text-decoration: none;
     font-size: .85rem;
-
     margin-bottom: 16px;
 }
-
 .mf-panel-back:hover {
     color: var(--mf-gold-light);
 }
 
 /* BOTONES */
-
 .mf-panel-primary,
 .mf-panel-secondary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 9px;
-
     padding: 12px 18px;
-
     font-size: .86rem;
     font-weight: 800;
-
     border-radius: 10px;
     text-decoration: none;
     cursor: pointer;
-
     transition: .2s ease;
 }
-
 .mf-panel-primary {
     background: linear-gradient(135deg, #efd58a, #c8a34d);
     color: #092b20 !important;
     border: 1px solid var(--mf-gold);
 }
-
 .mf-panel-primary:hover {
     filter: brightness(1.08);
     transform: translateY(-2px);
 }
-
 .mf-panel-secondary {
     background: rgba(255, 255, 255, .05);
     color: #fff !important;
     border: 1px solid rgba(255, 255, 255, .25);
 }
-
 .mf-panel-secondary:hover {
     border-color: var(--mf-gold);
     color: var(--mf-gold-light) !important;
 }
 
 /* TÍTULOS */
-
 .mf-panel-section-title,
 .mf-box-header {
     display: flex;
@@ -196,11 +155,9 @@
     justify-content: space-between;
     gap: 15px;
 }
-
 .mf-panel-section-title {
     margin-bottom: 22px;
 }
-
 .mf-panel-section-title h2,
 .mf-box-header h2 {
     color: #fff;
@@ -208,13 +165,11 @@
     font-weight: 800;
     margin: 0;
 }
-
 .mf-panel-section-title h2 i,
 .mf-box-header h2 i {
     color: var(--mf-gold);
     margin-right: 9px;
 }
-
 .mf-panel-section-title span,
 .mf-box-header > span {
     color: #b9d1c1;
@@ -222,65 +177,49 @@
 }
 
 /* TARJETAS DE MUNDIALES */
-
 .mf-mundial-card {
     display: flex;
     flex-direction: column;
-
     height: 100%;
     min-height: 260px;
-
     padding: 25px;
-
     color: #fff;
     text-decoration: none;
-
     background: linear-gradient(145deg, #18573c, #0c3023);
-
     border: 1px solid var(--mf-border);
     border-radius: 18px;
-
     transition: .2s ease;
 }
-
 .mf-mundial-card:hover {
     color: #fff;
     transform: translateY(-4px);
     border-color: var(--mf-gold);
     box-shadow: 0 12px 30px rgba(0, 0, 0, .2);
 }
-
 .mf-mundial-card-top {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-
     margin-bottom: 22px;
 }
-
 .mf-mundial-logo {
     display: flex;
     align-items: center;
     justify-content: center;
-
     width: 70px;
     height: 70px;
-
     background: rgba(255, 255, 255, .07);
     border: 1px solid var(--mf-border);
     border-radius: 14px;
-
     color: var(--mf-gold);
     font-size: 2rem;
 }
-
 .mf-mundial-logo img {
     width: 100%;
     height: 100%;
     object-fit: contain;
     padding: 8px;
 }
-
 .mf-year-badge {
     color: var(--mf-gold-light);
     background: rgba(200, 163, 77, .12);
@@ -288,118 +227,90 @@
     border-radius: 9px;
     font-weight: 800;
 }
-
 .mf-mundial-card h3 {
     color: #fff;
     font-size: 1.3rem;
     font-weight: 800;
     margin-bottom: 12px;
 }
-
 .mf-mundial-card p {
     color: #c5d9cb;
     margin-bottom: 20px;
 }
-
 .mf-mundial-card-bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     color: var(--mf-gold-light);
     font-weight: 750;
     font-size: .85rem;
-
     margin-top: auto;
 }
 
 /* SECCIONES DE CADA MUNDIAL */
-
 .mf-section-card {
     display: flex;
     flex-direction: column;
-
     height: 100%;
     min-height: 218px;
-
     padding: 23px;
-
     color: #fff;
     text-decoration: none;
-
     background: linear-gradient(145deg, #174e36, #0c3023);
-
     border: 1px solid var(--mf-border);
     border-radius: 16px;
-
     transition: .2s ease;
 }
-
 .mf-section-card:hover {
     color: #fff;
     transform: translateY(-3px);
     border-color: var(--mf-gold);
     background: linear-gradient(145deg, #1e6444, #103b2c);
 }
-
 .mf-section-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-
     width: 49px;
     height: 49px;
-
     color: var(--mf-gold-light);
     background: rgba(200, 163, 77, .12);
-
     border-radius: 12px;
     font-size: 1.3rem;
-
     margin-bottom: 17px;
 }
-
 .mf-section-card h3 {
     color: #fff;
     font-size: 1.12rem;
     font-weight: 800;
     margin-bottom: 9px;
 }
-
 .mf-section-card p {
     color: #c7d8cd;
     font-size: .86rem;
     line-height: 1.6;
     margin-bottom: 20px;
 }
-
 .mf-section-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     color: var(--mf-gold-light);
     font-size: .8rem;
     font-weight: 750;
-
     margin-top: auto;
 }
 
 /* CONTENEDORES */
-
 .mf-panel-box {
     padding: 25px;
-
     background: linear-gradient(145deg, #103b2c, #0b2e22);
-
     border: 1px solid var(--mf-border);
     border-radius: 17px;
 }
-
 .mf-box-header {
     margin-bottom: 20px;
 }
-
 .mf-panel-help,
 .mf-panel-muted {
     color: #bfd3c4;
@@ -408,265 +319,205 @@
 }
 
 /* SELECCIONES */
-
 .mf-selecciones-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 12px;
 }
-
 .mf-seleccion-item {
     display: flex;
     flex-direction: column;
     gap: 7px;
-
     background: #174a34;
     border: 1px solid rgba(255, 255, 255, .1);
     border-radius: 11px;
-
     padding: 15px;
 }
-
 .mf-seleccion-item > i {
     color: var(--mf-gold-light);
 }
-
 .mf-seleccion-item span {
     color: white;
     font-weight: 750;
 }
-
 .mf-seleccion-item small {
     color: #b8d1c1;
 }
 
 /* BUSCADOR */
-
 .mf-panel-search {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-
     margin-bottom: 24px;
 }
-
 .mf-panel-search input {
     flex: 1;
     min-width: 230px;
-
     background: #08271c;
     border: 1px solid rgba(200, 163, 77, .4);
     border-radius: 10px;
-
     color: white;
     padding: 12px 15px;
 }
-
 .mf-panel-search input::placeholder {
     color: #a6c0ae;
 }
-
 .mf-panel-search input:focus {
     outline: none;
     border-color: var(--mf-gold);
 }
 
 /* TABLAS */
-
 .mf-panel-table {
     width: 100%;
     border-collapse: collapse;
     color: #fff;
 }
-
 .mf-panel-table th {
     padding: 15px;
-
     color: var(--mf-gold-light);
     background: #08291e;
-
     font-size: .76rem;
     font-weight: 800;
     text-transform: uppercase;
     white-space: nowrap;
 }
-
 .mf-panel-table td {
     padding: 15px;
-
     color: #fff;
     background: #174a34;
-
     border-bottom: 1px solid rgba(255, 255, 255, .11);
     font-size: .85rem;
     vertical-align: middle;
 }
-
 .mf-panel-table tr:hover td {
     background: #20593f;
 }
 
 /* ACCIONES */
-
 .mf-actions {
     display: flex;
     align-items: center;
     gap: 8px;
 }
-
 .mf-action-edit,
 .mf-action-delete {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 7px;
-
     padding: 9px 12px;
-
     border: 0;
     border-radius: 8px;
-
     font-size: .8rem;
     font-weight: 750;
     text-decoration: none;
     cursor: pointer;
 }
-
 .mf-action-edit {
     color: #092b20;
     background: var(--mf-gold);
 }
-
 .mf-action-edit:hover {
     color: #092b20;
     background: var(--mf-gold-light);
 }
-
 .mf-action-delete {
     color: #fff;
     background: #8c3037;
 }
-
 .mf-action-delete:hover {
     color: #fff;
     background: #aa3b43;
 }
 
 /* FORMULARIOS */
-
 .mf-panel-form label {
     display: block;
-
     color: var(--mf-gold-light);
     font-size: .88rem;
     font-weight: 750;
-
     margin-bottom: 9px;
 }
-
 .mf-panel-form .form-control,
 .mf-panel-form .form-select {
     width: 100%;
-
     color: #fff;
     background: #08291e;
-
     border: 1px solid rgba(200, 163, 77, .3);
     border-radius: 10px;
-
     padding: 11px 13px;
 }
-
 .mf-panel-form .form-control:focus,
 .mf-panel-form .form-select:focus {
     color: #fff;
     background: #08291e;
-
     border-color: var(--mf-gold);
     box-shadow: 0 0 0 3px rgba(200, 163, 77, .14);
 }
-
 .mf-panel-form textarea {
     min-height: 115px;
 }
-
 .mf-panel-form .form-control::placeholder {
     color: #a5bfae;
 }
-
 .mf-panel-form .form-text,
 .mf-field-help {
     color: #b9cfbf;
     font-size: .78rem;
     margin-top: 8px;
 }
-
 .mf-field-error,
 .mf-panel-form .errorlist {
     color: #ffafb7;
     font-size: .85rem;
     margin-top: 8px;
 }
-
 .mf-form-notice {
     display: flex;
     align-items: center;
     gap: 12px;
-
     padding: 16px;
-
     color: #d8ebda;
     background: rgba(200, 163, 77, .08);
-
     border: 1px solid var(--mf-border);
     border-radius: 11px;
-
     margin-bottom: 25px;
 }
-
 .mf-form-notice i {
     color: var(--mf-gold);
 }
-
 .mf-form-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-
     margin-top: 30px;
 }
 
 /* PAGINACIÓN */
-
 .mf-pagination {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
     gap: 10px;
-
     margin-top: 28px;
 }
-
 .mf-pagination a,
 .mf-pagination span {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-
     padding: 10px 14px;
-
     color: var(--mf-gold-light);
     border: 1px solid var(--mf-border);
     border-radius: 9px;
-
     text-decoration: none;
 }
-
 .mf-pagination a:hover {
     background: rgba(200, 163, 77, .12);
 }
-
 .mf-pagination span {
     color: #092b20;
     background: var(--mf-gold);
@@ -674,27 +525,21 @@
 }
 
 /* SIN DATOS */
-
 .mf-panel-empty {
     padding: 50px 20px;
-
     text-align: center;
-
     background: #103b2c;
     border: 1px dashed var(--mf-border);
     border-radius: 15px;
 }
-
 .mf-panel-empty > i {
     color: var(--mf-gold);
     font-size: 2.5rem;
     margin-bottom: 15px;
 }
-
 .mf-panel-empty h3 {
     color: #fff;
 }
-
 .mf-panel-empty p {
     color: #c0d4c5;
 }
@@ -711,15 +556,12 @@
     .mf-panel-hero {
         padding: 22px;
     }
-
     .mf-panel-box {
         padding: 17px;
     }
-
     .mf-selecciones-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
     .mf-panel-primary,
     .mf-panel-secondary {
         text-align: center;
@@ -730,7 +572,6 @@
     .mf-selecciones-grid {
         grid-template-columns: 1fr;
     }
-
     .mf-panel-search .mf-panel-primary {
         width: 100%;
     }

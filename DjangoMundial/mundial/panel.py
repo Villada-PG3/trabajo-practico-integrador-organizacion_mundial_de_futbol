@@ -69,7 +69,7 @@ SECCIONES = {
         "titulo": "Estadísticas por partido",
         "descripcion": "Goles, asistencias, faltas, tarjetas y minutos por jugador.",
         "icono": "fa-chart-line",
-        "columnas": ["jugador", "goles", "asistencias", "faltas", "amarillas", "rojas"],
+        "columnas": ["jugador", "goles", "asistencias", "faltas", "amarillas", "rojas", "minutos_jugados"],
         "busqueda": ["jugador__apellido_nombres", "jugador__seleccion__nombre"],
     },
     "posiciones": {
@@ -455,9 +455,14 @@ def listado_mundial(request, mundial_id, seccion):
                 if metodo:
                     valor = metodo()
 
-            celdas.append(
-                str(valor) if valor is not None else "—"
-            )
+            # Evitamos que un cero de una importación parcial se
+            # interprete como un dato individual confirmado.
+            if (seccion == "estadisticas-partido"
+                    and nombre_campo in ("asistencias", "faltas", "minutos_jugados")
+                    and valor in (0, None)):
+                celdas.append("—")
+            else:
+                celdas.append(str(valor) if valor is not None else "—")
 
         filas.append({
             "pk": registro.pk,
@@ -481,6 +486,7 @@ def listado_mundial(request, mundial_id, seccion):
         "encabezados": encabezados,
         "pagina_registros": pagina,
         "busqueda": busqueda,
+        "nota_estadisticas": seccion == "estadisticas-partido",
         "puede_agregar": tiene_permiso(
             request.user, modelo, "add"
         ),

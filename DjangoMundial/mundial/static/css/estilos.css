@@ -1,31 +1,24 @@
-
 /* ==========================================
    MUNDOFÚTBOL - ESTILOS GENERALES
    ========================================== */
-
 :root {
     --color-fondo: #0F3D2E;
     --color-navbar: #145A32;
     --color-tarjeta: #1E8449;
     --color-dorado: #C8A34D;
     --color-texto: #FFFFFF;
-
     --color-verde-clasificado: #24AD71;
     --color-verde-tercero: #194C39;
     --color-gris-tabla: #212529;
-
     --altura-navbar: 80px;
 }
-
 
 /* ==========================================
    FONDO GENERAL
    ========================================== */
-
 html {
     background-color: var(--color-fondo);
 }
-
 body {
     background-color: var(--color-fondo) !important;
     color: var(--color-texto) !important;
@@ -33,45 +26,36 @@ body {
     min-height: 100vh;
 }
 
-
 /* ==========================================
    NAVBAR Y FOOTER
    ========================================== */
-
 .navbar,
 .bg-navbar,
 footer {
     background-color: var(--color-navbar) !important;
 }
-
 .navbar {
     z-index: 1030;
 }
-
 .navbar .nav-link {
     color: #FFFFFF !important;
 }
-
 .navbar .nav-link:hover {
     color: var(--color-dorado) !important;
 }
-
 .navbar .navbar-brand {
     color: var(--color-dorado) !important;
 }
 
-
 /* ==========================================
    TARJETAS GENERALES
    ========================================== */
-
 .card,
 .bg-tarjeta {
     background-color: var(--color-tarjeta) !important;
     color: var(--color-texto) !important;
     border-color: var(--color-dorado) !important;
 }
-
 .card-header,
 .card-footer {
     background-color: var(--color-navbar) !important;
@@ -79,28 +63,22 @@ footer {
     color: var(--color-texto) !important;
 }
 
-
 /* ==========================================
    COLORES PERSONALIZADOS
    ========================================== */
-
 .text-dorado {
     color: var(--color-dorado) !important;
 }
-
 .bg-dorado {
     background-color: var(--color-dorado) !important;
 }
-
 .border-dorado {
     border-color: var(--color-dorado) !important;
 }
 
-
 /* ==========================================
    BOTONES
    ========================================== */
-
 .btn-dorado {
     background-color: var(--color-dorado) !important;
     color: var(--color-fondo) !important;
@@ -108,130 +86,104 @@ footer {
     border: none;
     transition: all 0.2s ease-in-out;
 }
-
 .btn-dorado:hover {
     background-color: #B08D3B !important;
     color: #FFFFFF !important;
 }
-
 .btn-outline-dorado {
     color: var(--color-dorado) !important;
     border: 1px solid var(--color-dorado) !important;
     background-color: transparent;
     transition: all 0.2s ease-in-out;
 }
-
 .btn-outline-dorado:hover {
     background-color: var(--color-dorado) !important;
     color: var(--color-fondo) !important;
 }
 
-
 /* ==========================================
    PESTAÑAS DE NAVEGACIÓN
    ========================================== */
-
 .nav-pills .nav-link {
     color: var(--color-dorado) !important;
     background-color: transparent;
 }
-
 .nav-pills .nav-link:hover {
     color: #FFFFFF !important;
 }
-
 .nav-pills .nav-link.active {
     color: var(--color-fondo) !important;
     background-color: var(--color-dorado) !important;
     border-color: var(--color-dorado) !important;
 }
 
-
 /* ==========================================
    CARRUSEL DEL INICIO
    ========================================== */
-
 .carousel-item img {
     max-height: 420px;
     object-fit: cover;
     width: 100%;
 }
 
-
 /* ==========================================
    ÚLTIMOS MUNDIALES - GRID RESPONSIVE
    ========================================== */
-
 .grid-ultimos-mundiales {
     display: grid;
     grid-template-columns: repeat(
         auto-fit,
         minmax(min(100%, 280px), 1fr)
     );
-
     gap: 24px;
     width: 100%;
 }
-
 .grid-ultimos-mundiales .mundial-item {
     display: flex;
     flex-direction: column;
     min-width: 0;
 }
-
 .grid-ultimos-mundiales .mundial-item > .card {
     width: 100%;
     height: 100%;
-
     display: flex;
     flex-direction: column;
-
     overflow: hidden;
 }
-
 .grid-ultimos-mundiales .card-body {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
 }
-
 .grid-ultimos-mundiales .card-body .btn-dorado {
     width: 100%;
 }
 
-
 /* ==========================================
    LOGOS DE LOS MUNDIALES
    ========================================== */
-
 .grid-ultimos-mundiales .imagen-mundial {
     width: 100%;
     height: 280px;
     min-height: 280px;
     max-height: 280px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 18px;
     margin: 0;
-
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
-
     background-color: var(--color-navbar);
 }
 
 /* Fondo degradado general */
-
 .grid-ultimos-mundiales .imagen-mundial::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 1;
-
     background:
         radial-gradient(
             circle at center,
@@ -246,24 +198,19 @@ footer {
 }
 
 /* Logos completos, sin deformar */
-
 .grid-ultimos-mundiales .imagen-mundial img {
     display: block;
-
     position: relative;
     z-index: 2;
-
     width: 100%;
     height: 100%;
     max-width: 100%;
     max-height: 100%;
-
     object-fit: contain;
     object-position: center;
 }
 
 /* Mundial 2022 */
-
 .grid-ultimos-mundiales .imagen-mundial.logo-2022::before {
     background:
         radial-gradient(
@@ -280,7 +227,6 @@ footer {
 }
 
 /* Mundial 2026 */
-
 .grid-ultimos-mundiales .imagen-mundial.logo-2026::before {
     background:
         radial-gradient(
@@ -295,79 +241,60 @@ footer {
             #050505 100%
         );
 }
-
 .grid-ultimos-mundiales .imagen-sin-foto {
     background-color: var(--color-fondo);
 }
 
-
 /* ==========================================
    FASE DE GRUPOS
    ========================================== */
-
 .grupo-card {
     border: 1px solid var(--color-dorado) !important;
     overflow: hidden;
 }
-
 .grupo-titulo {
     padding: 18px 12px;
-
     background-color: var(--color-navbar);
     color: #FFFFFF;
-
     text-align: center;
     font-weight: 800;
     font-size: 18px;
-
     border-bottom: 1px solid var(--color-dorado);
 }
-
 .tabla-grupos {
     font-size: 14px;
 }
-
 .tabla-grupos th,
 .tabla-grupos td {
     padding: 12px 8px;
     vertical-align: middle;
 }
-
 .tabla-grupos thead th {
     background-color: #212529 !important;
     color: #FFFFFF !important;
-
     font-weight: 800;
     white-space: nowrap;
 }
 
-
 /* ==========================================
    INSIGNIAS DE POSICIÓN
    ========================================== */
-
 .posicion-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     width: 34px;
     height: 34px;
-
     border-radius: 50%;
     border: 2px solid transparent;
-
     font-size: 15px;
     font-weight: 800;
     line-height: 1;
-
     flex-shrink: 0;
-
     transition: transform 0.2s ease;
 }
 
 /* Primero: dorado */
-
 .posicion-1 {
     background-color: #C8A34D;
     color: #0F3D2E;
@@ -375,7 +302,6 @@ footer {
 }
 
 /* Segundo: blanco */
-
 .posicion-2 {
     background-color: #ECECEC;
     color: #0F3D2E;
@@ -383,7 +309,6 @@ footer {
 }
 
 /* Mejor tercero clasificado: verde */
-
 .posicion-3 {
     background-color: var(--color-verde-clasificado);
     color: #FFFFFF;
@@ -391,22 +316,18 @@ footer {
 }
 
 /* Eliminados */
-
 .posicion-sin-color {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     width: 34px;
     height: 34px;
-
     color: #B6C4BB;
     font-size: 14px;
     font-weight: 700;
 }
 
 /* Tamaño pequeño para leyendas */
-
 .posicion-badge-small {
     width: 26px;
     height: 26px;
@@ -414,62 +335,48 @@ footer {
     border-width: 1px;
 }
 
-
 /* ==========================================
    FILAS DE CLASIFICACIÓN
    ========================================== */
-
 .tabla-grupos tbody .fila-clasifica-1 > td {
     background-color: #30392D !important;
     box-shadow: none !important;
 }
-
 .tabla-grupos tbody .fila-clasifica-2 > td {
     background-color: #293A37 !important;
     box-shadow: none !important;
 }
-
 .tabla-grupos tbody .fila-clasifica-3 > td {
     background-color: #194C39 !important;
     box-shadow: none !important;
 }
-
 .tabla-grupos tbody tr:hover > td {
     filter: brightness(1.12);
 }
-
 .tabla-grupos tbody tr:hover .posicion-badge {
     transform: scale(1.08);
 }
 
-
 /* ==========================================
    LEYENDA DE POSICIONES
    ========================================== */
-
 .leyenda-posiciones {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-
     gap: 18px;
     padding: 15px;
-
     background-color: var(--color-navbar);
-
     border: 1px solid var(--color-dorado);
     border-radius: 10px;
 }
-
 .leyenda-item {
     display: flex;
     align-items: center;
     gap: 8px;
-
     font-size: 13px;
     color: #FFFFFF;
 }
-
 
 /* ==========================================
    MEJORES TERCEROS - STICKY CORREGIDO
@@ -477,23 +384,19 @@ footer {
 
 /*
    Esta es la parte más importante.
-
    Antes el sticky estaba aplicado
    al aside interior.
-
    Ahora el sticky se aplica a toda
    la columna derecha del Bootstrap Grid.
 */
 
 /* Permitir que sticky use el scroll de la página */
-
 #pills-tabContent,
 #pills-grupos {
     overflow: visible !important;
 }
 
 /* La fila ocupa la altura de los grupos */
-
 #pills-grupos > .row {
     align-items: stretch !important;
 }
@@ -503,7 +406,6 @@ footer {
    ========================================== */
 
 @media (min-width: 1200px) {
-
     #pills-grupos .columna-terceros {
         position: sticky !important;
 
@@ -516,10 +418,8 @@ footer {
            los doce grupos.
         */
         align-self: flex-start !important;
-
         height: fit-content !important;
         max-height: calc(100vh - 110px);
-
         z-index: 20;
     }
 
@@ -527,32 +427,24 @@ footer {
        El aside queda estático porque
        el sticky lo controla la columna.
     */
-
     #pills-grupos .terceros-sidebar {
         position: static !important;
         top: auto !important;
-
         width: 100%;
     }
-
 }
 
 /* ==========================================
    TARJETA DE MEJORES TERCEROS
    ========================================== */
-
 .terceros-card,
 .terceros-panel {
     background-color: #212529 !important;
-
     border: 1px solid var(--color-dorado) !important;
     border-radius: 12px;
-
     overflow: hidden;
-
     display: flex;
     flex-direction: column;
-
     width: 100%;
     max-height: calc(100vh - 110px);
 }
@@ -560,36 +452,25 @@ footer {
 /* ==========================================
    ENCABEZADO DEL PANEL
    ========================================== */
-
 .terceros-titulo,
 .terceros-encabezado {
     background-color: var(--color-navbar);
     color: #FFFFFF;
-
     text-align: center;
-
     font-size: 18px;
     font-weight: 800;
-
     padding: 18px 12px;
-
     border-bottom: 1px solid var(--color-dorado);
-
     flex-shrink: 0;
 }
-
 .subtitulo-terceros,
 .terceros-encabezado small {
     display: block;
-
     margin-top: 6px;
-
     font-size: 12px;
     font-weight: 500;
-
     color: #DCE9E0;
 }
-
 
 /* ==========================================
    SCROLL INTERNO DE LA TABLA
@@ -599,386 +480,283 @@ footer {
    Si los 12 terceros no entran
    en la altura de la pantalla,
    solamente la tabla tiene scroll.
-
    Esto permite mantener visible
    el encabezado y la leyenda.
 */
-
 .terceros-card > .table-responsive,
 .terceros-panel > .table-responsive {
     flex: 1 1 auto;
-
     min-height: 0;
-
     overflow-x: auto;
     overflow-y: auto;
-
     overscroll-behavior: contain;
-
     scrollbar-width: thin;
     scrollbar-color: #C8A34D #212529;
 }
 
-
 /* ==========================================
    TABLA DE MEJORES TERCEROS
    ========================================== */
-
 .tabla-terceros {
     width: 100%;
     margin: 0;
-
     font-size: 12px;
     border-collapse: collapse;
 }
-
 .tabla-terceros thead th {
     position: sticky;
-
     top: 0;
     z-index: 2;
-
     background-color: #212529 !important;
     color: #FFFFFF !important;
-
     padding: 12px 6px;
-
     font-size: 11px;
     font-weight: 800;
-
     text-transform: uppercase;
     white-space: nowrap;
-
     border-bottom: 1px solid rgba(255,255,255,0.20) !important;
 }
-
 .tabla-terceros tbody td {
     padding: 13px 6px;
-
     vertical-align: middle;
-
     border-bottom: 1px solid rgba(255,255,255,0.13) !important;
 }
 
 /* Terceros clasificados */
-
 .tabla-terceros tbody tr.tercero-aprobado > td {
     background-color: #194C39 !important;
     color: #FFFFFF !important;
-
     box-shadow: none !important;
 }
 
 /* Terceros eliminados */
-
 .tabla-terceros tbody tr.tercero-eliminado > td {
     background-color: #212529 !important;
     color: #C4D1C8 !important;
-
     box-shadow: none !important;
 }
-
 .tabla-terceros tbody tr:hover > td {
     filter: brightness(1.12);
 }
 
-
 /* ==========================================
    NOMBRE DE LA SELECCIÓN Y SU GRUPO
    ========================================== */
-
 .tercero-nombre {
     display: block;
-
     color: #FFFFFF;
-
     font-size: 12px;
     font-weight: 700;
     line-height: 1.35;
-
     overflow-wrap: anywhere;
 }
-
 .tercero-grupo,
 .tercero-grupo-badge {
     display: inline-block;
-
     margin-top: 5px;
     padding: 3px 7px;
-
     border-radius: 20px;
-
     background-color: rgba(255,255,255,0.10);
     color: #CFE7D9;
-
     font-size: 10px;
     font-weight: 600;
 }
 
-
 /* ==========================================
    NÚMEROS DE MEJORES TERCEROS
    ========================================== */
-
 .numero-tercero {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     width: 27px;
     height: 27px;
-
     background-color: #37483F;
     color: #FFFFFF;
-
     border-radius: 50%;
-
     font-size: 12px;
     font-weight: 800;
 }
-
 .numero-tercero.clasificado {
     background-color: var(--color-verde-clasificado);
     color: #FFFFFF;
 }
 
-
 /* ==========================================
    FOOTER Y LEYENDA DE TERCEROS
    ========================================== */
-
 .terceros-footer,
 .terceros-referencia {
     background-color: var(--color-fondo) !important;
-
     border-top: 1px solid var(--color-dorado) !important;
-
     padding: 13px;
-
     flex-shrink: 0;
 }
-
 .leyenda-terceros,
 .terceros-referencia {
     display: flex;
     flex-direction: column;
-
     gap: 9px;
 }
-
 .leyenda-terceros .leyenda-item,
 .terceros-referencia > div {
     display: flex;
     align-items: center;
-
     gap: 8px;
-
     color: #FFFFFF;
     font-size: 12px;
 }
-
 .referencia-circulo {
     width: 12px;
     height: 12px;
-
     border-radius: 50%;
     flex-shrink: 0;
 }
-
 .referencia-circulo.verde {
     background-color: var(--color-verde-clasificado);
 }
-
 .referencia-circulo.neutro {
     background-color: #66776C;
 }
 
-
 /* ==========================================
    CUADRO DE ELIMINATORIAS
    ========================================== */
-
 #pills-eliminatorias .cuadro-contenedor {
     overflow-x: auto;
-
     background: #000000;
-
     border: 1px solid var(--color-dorado);
     border-radius: 16px;
-
     padding: 20px;
 }
-
 #pills-eliminatorias .cuadro-columnas {
     display: flex;
     align-items: stretch;
-
     gap: 16px;
     min-width: 1200px;
 }
-
 #pills-eliminatorias .columna-fase {
     flex: 1;
     min-width: 210px;
 }
-
 #pills-eliminatorias .titulo-fase {
     color: var(--color-dorado);
-
     text-align: center;
     text-transform: uppercase;
-
     font-weight: 800;
-
     border-bottom: 1px solid #666666;
-
     padding-bottom: 12px;
     margin-bottom: 15px;
 }
-
 #pills-eliminatorias .lista-partidos {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-
     height: 1600px;
 }
 
 /* Enlaces a los partidos */
-
 #pills-eliminatorias .partido-enlace {
     display: block;
-
     color: #FFFFFF;
     text-decoration: none;
-
     cursor: pointer;
 }
 
 /* Tarjetas de partido */
-
 #pills-eliminatorias .partido-tarjeta {
     background-color: var(--color-tarjeta);
-
     border: 1px solid var(--color-dorado);
     border-radius: 8px;
-
     overflow: hidden;
-
     transition:
         transform 0.2s ease,
         box-shadow 0.2s ease;
 }
-
 #pills-eliminatorias .partido-enlace:hover .partido-tarjeta {
     transform: scale(1.03);
-
     box-shadow: 0 0 12px rgba(200,163,77,0.40);
 }
 
 /* Fechas */
-
 #pills-eliminatorias .partido-fecha {
     background-color: var(--color-navbar);
     color: var(--color-dorado);
-
     text-align: center;
     font-size: 11px;
-
     padding: 5px;
-
     border-bottom: 1px solid var(--color-dorado);
 }
 
 /* Interior de los partidos */
-
 #pills-eliminatorias .partido-cuerpo {
     padding: 10px;
 }
 
 /* Equipos */
-
 #pills-eliminatorias .equipo-fila {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     gap: 6px;
     padding: 5px 0;
 }
-
 #pills-eliminatorias .equipo-fila:first-child {
     border-bottom: 1px solid rgba(255,255,255,0.25);
 }
-
 #pills-eliminatorias .equipo-nombre {
     color: #FFFFFF;
-
     font-size: 13px;
     font-weight: 700;
-
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
-
 #pills-eliminatorias .equipo-nombre.ganador {
     color: #FFD966;
 }
 
 /* Resultados */
-
 #pills-eliminatorias .equipo-goles {
     background-color: #000000;
     color: #FFFFFF;
-
     padding: 3px 9px;
-
     border-radius: 6px;
     font-weight: 800;
 }
-
 #pills-eliminatorias .equipo-goles.ganador {
     background-color: var(--color-dorado);
     color: var(--color-fondo);
 }
 
 /* Tercer puesto */
-
 #pills-eliminatorias .tercer-puesto-contenedor {
     width: 240px;
     max-width: 100%;
 }
 
 /* Compatibilidad con tarjetas antiguas */
-
 #pills-eliminatorias .card {
     background-color: var(--color-tarjeta) !important;
-
     border: 1px solid var(--color-dorado) !important;
     color: #FFFFFF !important;
 }
-
 #pills-eliminatorias .card-header {
     background-color: var(--color-navbar) !important;
     color: var(--color-dorado) !important;
 }
-
 #pills-eliminatorias .card-body {
     background-color: var(--color-tarjeta) !important;
 }
-
 #pills-eliminatorias .badge {
     background-color: #000000 !important;
     color: #FFFFFF !important;
 }
-
 #pills-eliminatorias .badge.bg-success,
 #pills-eliminatorias .badge.bg-dorado {
     background-color: var(--color-dorado) !important;
     color: var(--color-fondo) !important;
 }
-
 
 /* ==========================================
    RESPONSIVE - TABLETS
@@ -991,99 +769,77 @@ footer {
        la tabla de terceros aparece
        debajo de los grupos.
     */
-
     #pills-grupos .columna-terceros {
         position: static !important;
-
         top: auto !important;
         height: auto !important;
-
         align-self: auto !important;
         max-height: none;
     }
-
     #pills-grupos .terceros-sidebar {
         position: static !important;
     }
-
     .terceros-card,
     .terceros-panel {
         max-height: none;
     }
-
     .terceros-card > .table-responsive,
     .terceros-panel > .table-responsive {
         overflow-y: visible;
     }
 }
 
-
 @media (max-width: 991px) {
-
     .grid-ultimos-mundiales {
         gap: 18px;
     }
-
     .grid-ultimos-mundiales .imagen-mundial {
         height: 240px;
         min-height: 240px;
         max-height: 240px;
-
         padding: 15px;
     }
 }
-
 
 /* ==========================================
    RESPONSIVE - CELULARES
    ========================================== */
 
 @media (max-width: 576px) {
-
     .grid-ultimos-mundiales {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-
     .grid-ultimos-mundiales .imagen-mundial {
         height: 230px;
         min-height: 230px;
         max-height: 230px;
-
         padding: 15px;
     }
-
     .tabla-grupos {
         font-size: 12px;
     }
-
     .tabla-grupos th,
     .tabla-grupos td {
         padding: 9px 6px;
     }
-
     .posicion-badge,
     .posicion-sin-color {
         width: 28px;
         height: 28px;
-
         font-size: 12px;
     }
-
     .tabla-terceros {
         font-size: 12px;
     }
-
     .tabla-terceros thead th,
     .tabla-terceros tbody td {
         padding: 10px 6px;
     }
-
     .terceros-titulo,
     .terceros-encabezado {
         font-size: 16px;
     }
-
     .leyenda-posiciones {
         gap: 12px;
     }
@@ -1092,30 +848,24 @@ footer {
 /* ==========================================
    MUNDOFÚTBOL - ESTILOS GENERALES
    ========================================== */
-
 :root {
     --color-fondo: #0F3D2E;
     --color-navbar: #145A32;
     --color-tarjeta: #1E8449;
     --color-dorado: #C8A34D;
     --color-texto: #FFFFFF;
-
     --color-verde-clasificado: #24AD71;
     --color-verde-tercero: #194C39;
     --color-gris-tabla: #212529;
-
     --altura-navbar: 80px;
 }
-
 
 /* ==========================================
    FONDO GENERAL
    ========================================== */
-
 html {
     background-color: var(--color-fondo);
 }
-
 body {
     background-color: var(--color-fondo) !important;
     color: var(--color-texto) !important;
@@ -1123,45 +873,36 @@ body {
     min-height: 100vh;
 }
 
-
 /* ==========================================
    NAVBAR Y FOOTER
    ========================================== */
-
 .navbar,
 .bg-navbar,
 footer {
     background-color: var(--color-navbar) !important;
 }
-
 .navbar {
     z-index: 1030;
 }
-
 .navbar .nav-link {
     color: #FFFFFF !important;
 }
-
 .navbar .nav-link:hover {
     color: var(--color-dorado) !important;
 }
-
 .navbar .navbar-brand {
     color: var(--color-dorado) !important;
 }
 
-
 /* ==========================================
    TARJETAS GENERALES
    ========================================== */
-
 .card,
 .bg-tarjeta {
     background-color: var(--color-tarjeta) !important;
     color: var(--color-texto) !important;
     border-color: var(--color-dorado) !important;
 }
-
 .card-header,
 .card-footer {
     background-color: var(--color-navbar) !important;
@@ -1169,28 +910,22 @@ footer {
     color: var(--color-texto) !important;
 }
 
-
 /* ==========================================
    COLORES PERSONALIZADOS
    ========================================== */
-
 .text-dorado {
     color: var(--color-dorado) !important;
 }
-
 .bg-dorado {
     background-color: var(--color-dorado) !important;
 }
-
 .border-dorado {
     border-color: var(--color-dorado) !important;
 }
 
-
 /* ==========================================
    BOTONES
    ========================================== */
-
 .btn-dorado {
     background-color: var(--color-dorado) !important;
     color: var(--color-fondo) !important;
@@ -1198,130 +933,104 @@ footer {
     border: none;
     transition: all 0.2s ease-in-out;
 }
-
 .btn-dorado:hover {
     background-color: #B08D3B !important;
     color: #FFFFFF !important;
 }
-
 .btn-outline-dorado {
     color: var(--color-dorado) !important;
     border: 1px solid var(--color-dorado) !important;
     background-color: transparent;
     transition: all 0.2s ease-in-out;
 }
-
 .btn-outline-dorado:hover {
     background-color: var(--color-dorado) !important;
     color: var(--color-fondo) !important;
 }
 
-
 /* ==========================================
    PESTAÑAS DE NAVEGACIÓN
    ========================================== */
-
 .nav-pills .nav-link {
     color: var(--color-dorado) !important;
     background-color: transparent;
 }
-
 .nav-pills .nav-link:hover {
     color: #FFFFFF !important;
 }
-
 .nav-pills .nav-link.active {
     color: var(--color-fondo) !important;
     background-color: var(--color-dorado) !important;
     border-color: var(--color-dorado) !important;
 }
 
-
 /* ==========================================
    CARRUSEL DEL INICIO
    ========================================== */
-
 .carousel-item img {
     max-height: 420px;
     object-fit: cover;
     width: 100%;
 }
 
-
 /* ==========================================
    ÚLTIMOS MUNDIALES - GRID RESPONSIVE
    ========================================== */
-
 .grid-ultimos-mundiales {
     display: grid;
     grid-template-columns: repeat(
         auto-fit,
         minmax(min(100%, 280px), 1fr)
     );
-
     gap: 24px;
     width: 100%;
 }
-
 .grid-ultimos-mundiales .mundial-item {
     display: flex;
     flex-direction: column;
     min-width: 0;
 }
-
 .grid-ultimos-mundiales .mundial-item > .card {
     width: 100%;
     height: 100%;
-
     display: flex;
     flex-direction: column;
-
     overflow: hidden;
 }
-
 .grid-ultimos-mundiales .card-body {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
 }
-
 .grid-ultimos-mundiales .card-body .btn-dorado {
     width: 100%;
 }
 
-
 /* ==========================================
    LOGOS DE LOS MUNDIALES
    ========================================== */
-
 .grid-ultimos-mundiales .imagen-mundial {
     width: 100%;
     height: 280px;
     min-height: 280px;
     max-height: 280px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 18px;
     margin: 0;
-
     position: relative;
     overflow: hidden;
     box-sizing: border-box;
-
     background-color: var(--color-navbar);
 }
 
 /* Fondo degradado general */
-
 .grid-ultimos-mundiales .imagen-mundial::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 1;
-
     background:
         radial-gradient(
             circle at center,
@@ -1336,24 +1045,19 @@ footer {
 }
 
 /* Logos completos, sin deformar */
-
 .grid-ultimos-mundiales .imagen-mundial img {
     display: block;
-
     position: relative;
     z-index: 2;
-
     width: 100%;
     height: 100%;
     max-width: 100%;
     max-height: 100%;
-
     object-fit: contain;
     object-position: center;
 }
 
 /* Mundial 2022 */
-
 .grid-ultimos-mundiales .imagen-mundial.logo-2022::before {
     background:
         radial-gradient(
@@ -1370,7 +1074,6 @@ footer {
 }
 
 /* Mundial 2026 */
-
 .grid-ultimos-mundiales .imagen-mundial.logo-2026::before {
     background:
         radial-gradient(
@@ -1385,79 +1088,60 @@ footer {
             #050505 100%
         );
 }
-
 .grid-ultimos-mundiales .imagen-sin-foto {
     background-color: var(--color-fondo);
 }
 
-
 /* ==========================================
    FASE DE GRUPOS
    ========================================== */
-
 .grupo-card {
     border: 1px solid var(--color-dorado) !important;
     overflow: hidden;
 }
-
 .grupo-titulo {
     padding: 18px 12px;
-
     background-color: var(--color-navbar);
     color: #FFFFFF;
-
     text-align: center;
     font-weight: 800;
     font-size: 18px;
-
     border-bottom: 1px solid var(--color-dorado);
 }
-
 .tabla-grupos {
     font-size: 14px;
 }
-
 .tabla-grupos th,
 .tabla-grupos td {
     padding: 12px 8px;
     vertical-align: middle;
 }
-
 .tabla-grupos thead th {
     background-color: #212529 !important;
     color: #FFFFFF !important;
-
     font-weight: 800;
     white-space: nowrap;
 }
 
-
 /* ==========================================
    INSIGNIAS DE POSICIÓN
    ========================================== */
-
 .posicion-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     width: 34px;
     height: 34px;
-
     border-radius: 50%;
     border: 2px solid transparent;
-
     font-size: 15px;
     font-weight: 800;
     line-height: 1;
-
     flex-shrink: 0;
-
     transition: transform 0.2s ease;
 }
 
 /* Primero: dorado */
-
 .posicion-1 {
     background-color: #C8A34D;
     color: #0F3D2E;
@@ -1465,7 +1149,6 @@ footer {
 }
 
 /* Segundo: blanco */
-
 .posicion-2 {
     background-color: #ECECEC;
     color: #0F3D2E;
@@ -1473,7 +1156,6 @@ footer {
 }
 
 /* Mejor tercero clasificado: verde */
-
 .posicion-3 {
     background-color: var(--color-verde-clasificado);
     color: #FFFFFF;
@@ -1481,22 +1163,18 @@ footer {
 }
 
 /* Eliminados */
-
 .posicion-sin-color {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     width: 34px;
     height: 34px;
-
     color: #B6C4BB;
     font-size: 14px;
     font-weight: 700;
 }
 
 /* Tamaño pequeño para leyendas */
-
 .posicion-badge-small {
     width: 26px;
     height: 26px;
@@ -1504,62 +1182,48 @@ footer {
     border-width: 1px;
 }
 
-
 /* ==========================================
    FILAS DE CLASIFICACIÓN
    ========================================== */
-
 .tabla-grupos tbody .fila-clasifica-1 > td {
     background-color: #30392D !important;
     box-shadow: none !important;
 }
-
 .tabla-grupos tbody .fila-clasifica-2 > td {
     background-color: #293A37 !important;
     box-shadow: none !important;
 }
-
 .tabla-grupos tbody .fila-clasifica-3 > td {
     background-color: #194C39 !important;
     box-shadow: none !important;
 }
-
 .tabla-grupos tbody tr:hover > td {
     filter: brightness(1.12);
 }
-
 .tabla-grupos tbody tr:hover .posicion-badge {
     transform: scale(1.08);
 }
 
-
 /* ==========================================
    LEYENDA DE POSICIONES
    ========================================== */
-
 .leyenda-posiciones {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-
     gap: 18px;
     padding: 15px;
-
     background-color: var(--color-navbar);
-
     border: 1px solid var(--color-dorado);
     border-radius: 10px;
 }
-
 .leyenda-item {
     display: flex;
     align-items: center;
     gap: 8px;
-
     font-size: 13px;
     color: #FFFFFF;
 }
-
 
 /* ==========================================
    MEJORES TERCEROS - STICKY CORREGIDO
@@ -1567,23 +1231,19 @@ footer {
 
 /*
    Esta es la parte más importante.
-
    Antes el sticky estaba aplicado
    al aside interior.
-
    Ahora el sticky se aplica a toda
    la columna derecha del Bootstrap Grid.
 */
 
 /* Permitir que sticky use el scroll de la página */
-
 #pills-tabContent,
 #pills-grupos {
     overflow: visible !important;
 }
 
 /* La fila ocupa la altura de los grupos */
-
 #pills-grupos > .row {
     align-items: stretch !important;
 }
@@ -1593,7 +1253,6 @@ footer {
    ========================================== */
 
 @media (min-width: 1200px) {
-
     #pills-grupos .columna-terceros {
         position: sticky !important;
 
@@ -1606,10 +1265,8 @@ footer {
            los doce grupos.
         */
         align-self: flex-start !important;
-
         height: fit-content !important;
         max-height: calc(100vh - 110px);
-
         z-index: 20;
     }
 
@@ -1617,32 +1274,24 @@ footer {
        El aside queda estático porque
        el sticky lo controla la columna.
     */
-
     #pills-grupos .terceros-sidebar {
         position: static !important;
         top: auto !important;
-
         width: 100%;
     }
-
 }
 
 /* ==========================================
    TARJETA DE MEJORES TERCEROS
    ========================================== */
-
 .terceros-card,
 .terceros-panel {
     background-color: #212529 !important;
-
     border: 1px solid var(--color-dorado) !important;
     border-radius: 12px;
-
     overflow: hidden;
-
     display: flex;
     flex-direction: column;
-
     width: 100%;
     max-height: calc(100vh - 110px);
 }
@@ -1650,36 +1299,25 @@ footer {
 /* ==========================================
    ENCABEZADO DEL PANEL
    ========================================== */
-
 .terceros-titulo,
 .terceros-encabezado {
     background-color: var(--color-navbar);
     color: #FFFFFF;
-
     text-align: center;
-
     font-size: 18px;
     font-weight: 800;
-
     padding: 18px 12px;
-
     border-bottom: 1px solid var(--color-dorado);
-
     flex-shrink: 0;
 }
-
 .subtitulo-terceros,
 .terceros-encabezado small {
     display: block;
-
     margin-top: 6px;
-
     font-size: 12px;
     font-weight: 500;
-
     color: #DCE9E0;
 }
-
 
 /* ==========================================
    SCROLL INTERNO DE LA TABLA
@@ -1689,386 +1327,283 @@ footer {
    Si los 12 terceros no entran
    en la altura de la pantalla,
    solamente la tabla tiene scroll.
-
    Esto permite mantener visible
    el encabezado y la leyenda.
 */
-
 .terceros-card > .table-responsive,
 .terceros-panel > .table-responsive {
     flex: 1 1 auto;
-
     min-height: 0;
-
     overflow-x: auto;
     overflow-y: auto;
-
     overscroll-behavior: contain;
-
     scrollbar-width: thin;
     scrollbar-color: #C8A34D #212529;
 }
 
-
 /* ==========================================
    TABLA DE MEJORES TERCEROS
    ========================================== */
-
 .tabla-terceros {
     width: 100%;
     margin: 0;
-
     font-size: 12px;
     border-collapse: collapse;
 }
-
 .tabla-terceros thead th {
     position: sticky;
-
     top: 0;
     z-index: 2;
-
     background-color: #212529 !important;
     color: #FFFFFF !important;
-
     padding: 12px 6px;
-
     font-size: 11px;
     font-weight: 800;
-
     text-transform: uppercase;
     white-space: nowrap;
-
     border-bottom: 1px solid rgba(255,255,255,0.20) !important;
 }
-
 .tabla-terceros tbody td {
     padding: 13px 6px;
-
     vertical-align: middle;
-
     border-bottom: 1px solid rgba(255,255,255,0.13) !important;
 }
 
 /* Terceros clasificados */
-
 .tabla-terceros tbody tr.tercero-aprobado > td {
     background-color: #194C39 !important;
     color: #FFFFFF !important;
-
     box-shadow: none !important;
 }
 
 /* Terceros eliminados */
-
 .tabla-terceros tbody tr.tercero-eliminado > td {
     background-color: #212529 !important;
     color: #C4D1C8 !important;
-
     box-shadow: none !important;
 }
-
 .tabla-terceros tbody tr:hover > td {
     filter: brightness(1.12);
 }
 
-
 /* ==========================================
    NOMBRE DE LA SELECCIÓN Y SU GRUPO
    ========================================== */
-
 .tercero-nombre {
     display: block;
-
     color: #FFFFFF;
-
     font-size: 12px;
     font-weight: 700;
     line-height: 1.35;
-
     overflow-wrap: anywhere;
 }
-
 .tercero-grupo,
 .tercero-grupo-badge {
     display: inline-block;
-
     margin-top: 5px;
     padding: 3px 7px;
-
     border-radius: 20px;
-
     background-color: rgba(255,255,255,0.10);
     color: #CFE7D9;
-
     font-size: 10px;
     font-weight: 600;
 }
 
-
 /* ==========================================
    NÚMEROS DE MEJORES TERCEROS
    ========================================== */
-
 .numero-tercero {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     width: 27px;
     height: 27px;
-
     background-color: #37483F;
     color: #FFFFFF;
-
     border-radius: 50%;
-
     font-size: 12px;
     font-weight: 800;
 }
-
 .numero-tercero.clasificado {
     background-color: var(--color-verde-clasificado);
     color: #FFFFFF;
 }
 
-
 /* ==========================================
    FOOTER Y LEYENDA DE TERCEROS
    ========================================== */
-
 .terceros-footer,
 .terceros-referencia {
     background-color: var(--color-fondo) !important;
-
     border-top: 1px solid var(--color-dorado) !important;
-
     padding: 13px;
-
     flex-shrink: 0;
 }
-
 .leyenda-terceros,
 .terceros-referencia {
     display: flex;
     flex-direction: column;
-
     gap: 9px;
 }
-
 .leyenda-terceros .leyenda-item,
 .terceros-referencia > div {
     display: flex;
     align-items: center;
-
     gap: 8px;
-
     color: #FFFFFF;
     font-size: 12px;
 }
-
 .referencia-circulo {
     width: 12px;
     height: 12px;
-
     border-radius: 50%;
     flex-shrink: 0;
 }
-
 .referencia-circulo.verde {
     background-color: var(--color-verde-clasificado);
 }
-
 .referencia-circulo.neutro {
     background-color: #66776C;
 }
 
-
 /* ==========================================
    CUADRO DE ELIMINATORIAS
    ========================================== */
-
 #pills-eliminatorias .cuadro-contenedor {
     overflow-x: auto;
-
     background: #000000;
-
     border: 1px solid var(--color-dorado);
     border-radius: 16px;
-
     padding: 20px;
 }
-
 #pills-eliminatorias .cuadro-columnas {
     display: flex;
     align-items: stretch;
-
     gap: 16px;
     min-width: 1200px;
 }
-
 #pills-eliminatorias .columna-fase {
     flex: 1;
     min-width: 210px;
 }
-
 #pills-eliminatorias .titulo-fase {
     color: var(--color-dorado);
-
     text-align: center;
     text-transform: uppercase;
-
     font-weight: 800;
-
     border-bottom: 1px solid #666666;
-
     padding-bottom: 12px;
     margin-bottom: 15px;
 }
-
 #pills-eliminatorias .lista-partidos {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-
     height: 1600px;
 }
 
 /* Enlaces a los partidos */
-
 #pills-eliminatorias .partido-enlace {
     display: block;
-
     color: #FFFFFF;
     text-decoration: none;
-
     cursor: pointer;
 }
 
 /* Tarjetas de partido */
-
 #pills-eliminatorias .partido-tarjeta {
     background-color: var(--color-tarjeta);
-
     border: 1px solid var(--color-dorado);
     border-radius: 8px;
-
     overflow: hidden;
-
     transition:
         transform 0.2s ease,
         box-shadow 0.2s ease;
 }
-
 #pills-eliminatorias .partido-enlace:hover .partido-tarjeta {
     transform: scale(1.03);
-
     box-shadow: 0 0 12px rgba(200,163,77,0.40);
 }
 
 /* Fechas */
-
 #pills-eliminatorias .partido-fecha {
     background-color: var(--color-navbar);
     color: var(--color-dorado);
-
     text-align: center;
     font-size: 11px;
-
     padding: 5px;
-
     border-bottom: 1px solid var(--color-dorado);
 }
 
 /* Interior de los partidos */
-
 #pills-eliminatorias .partido-cuerpo {
     padding: 10px;
 }
 
 /* Equipos */
-
 #pills-eliminatorias .equipo-fila {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     gap: 6px;
     padding: 5px 0;
 }
-
 #pills-eliminatorias .equipo-fila:first-child {
     border-bottom: 1px solid rgba(255,255,255,0.25);
 }
-
 #pills-eliminatorias .equipo-nombre {
     color: #FFFFFF;
-
     font-size: 13px;
     font-weight: 700;
-
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
-
 #pills-eliminatorias .equipo-nombre.ganador {
     color: #FFD966;
 }
 
 /* Resultados */
-
 #pills-eliminatorias .equipo-goles {
     background-color: #000000;
     color: #FFFFFF;
-
     padding: 3px 9px;
-
     border-radius: 6px;
     font-weight: 800;
 }
-
 #pills-eliminatorias .equipo-goles.ganador {
     background-color: var(--color-dorado);
     color: var(--color-fondo);
 }
 
 /* Tercer puesto */
-
 #pills-eliminatorias .tercer-puesto-contenedor {
     width: 240px;
     max-width: 100%;
 }
 
 /* Compatibilidad con tarjetas antiguas */
-
 #pills-eliminatorias .card {
     background-color: var(--color-tarjeta) !important;
-
     border: 1px solid var(--color-dorado) !important;
     color: #FFFFFF !important;
 }
-
 #pills-eliminatorias .card-header {
     background-color: var(--color-navbar) !important;
     color: var(--color-dorado) !important;
 }
-
 #pills-eliminatorias .card-body {
     background-color: var(--color-tarjeta) !important;
 }
-
 #pills-eliminatorias .badge {
     background-color: #000000 !important;
     color: #FFFFFF !important;
 }
-
 #pills-eliminatorias .badge.bg-success,
 #pills-eliminatorias .badge.bg-dorado {
     background-color: var(--color-dorado) !important;
     color: var(--color-fondo) !important;
 }
-
 
 /* ==========================================
    RESPONSIVE - TABLETS
@@ -2081,116 +1616,91 @@ footer {
        la tabla de terceros aparece
        debajo de los grupos.
     */
-
     #pills-grupos .columna-terceros {
         position: static !important;
-
         top: auto !important;
         height: auto !important;
-
         align-self: auto !important;
         max-height: none;
     }
-
     #pills-grupos .terceros-sidebar {
         position: static !important;
     }
-
     .terceros-card,
     .terceros-panel {
         max-height: none;
     }
-
     .terceros-card > .table-responsive,
     .terceros-panel > .table-responsive {
         overflow-y: visible;
     }
 }
 
-
 @media (max-width: 991px) {
-
     .grid-ultimos-mundiales {
         gap: 18px;
     }
-
     .grid-ultimos-mundiales .imagen-mundial {
         height: 240px;
         min-height: 240px;
         max-height: 240px;
-
         padding: 15px;
     }
 }
-
 
 /* ==========================================
    RESPONSIVE - CELULARES
    ========================================== */
 
 @media (max-width: 576px) {
-
     .grid-ultimos-mundiales {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-
     .grid-ultimos-mundiales .imagen-mundial {
         height: 230px;
         min-height: 230px;
         max-height: 230px;
-
         padding: 15px;
     }
-
     .tabla-grupos {
         font-size: 12px;
     }
-
     .tabla-grupos th,
     .tabla-grupos td {
         padding: 9px 6px;
     }
-
     .posicion-badge,
     .posicion-sin-color {
         width: 28px;
         height: 28px;
-
         font-size: 12px;
     }
-
     .tabla-terceros {
         font-size: 12px;
     }
-
     .tabla-terceros thead th,
     .tabla-terceros tbody td {
         padding: 10px 6px;
     }
-
     .terceros-titulo,
     .terceros-encabezado {
         font-size: 16px;
     }
-
     .leyenda-posiciones {
         gap: 12px;
     }
 }
-
 
 /* ==========================================
    BANDERAS DE SELECCIONES
    ========================================== */
-
 .equipo-con-bandera {
     display: flex;
     align-items: center;
     gap: 10px;
     min-width: 0;
 }
-
 .bandera-seleccion {
     width: 28px;
     height: 20px;
@@ -2204,7 +1714,6 @@ footer {
 .tabla-terceros .equipo-con-bandera {
     gap: 7px;
 }
-
 .tabla-terceros .bandera-seleccion {
     width: 23px;
     height: 17px;
@@ -2215,29 +1724,24 @@ footer {
    ========================================== */
 
 @media (min-width: 1200px) {
-
     .navbar-nav {
         flex-wrap: nowrap;
         align-items: center;
     }
-
     .navbar-nav .nav-item {
         flex-shrink: 0;
     }
-
     .navbar .nav-link {
         white-space: nowrap;
         font-size: 0.85rem;
         padding-left: 0.4rem;
         padding-right: 0.4rem;
     }
-
 }
 
 /* ==================================================
    MUNDOFÚTBOL - NAVBAR PREMIUM
    ================================================== */
-
 :root {
     --mf-gold: #C8A34D;
     --mf-gold-light: #F0D78A;
@@ -2248,12 +1752,10 @@ footer {
 }
 
 /* CONTENEDOR PRINCIPAL */
-
 .navbar.navbar-mundofutbol {
     position: sticky;
     top: 0;
     z-index: 1050;
-
     background:
         linear-gradient(
             115deg,
@@ -2261,19 +1763,14 @@ footer {
             rgba(15, 61, 46, .97) 55%,
             rgba(20, 90, 50, .96)
         ) !important;
-
     border-bottom: 1px solid rgba(200, 163, 77, .45) !important;
-
     padding: 11px 0 !important;
-
     box-shadow:
         0 8px 30px rgba(0, 0, 0, .24),
         inset 0 1px 0 rgba(255, 255, 255, .04);
-
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
 }
-
 .navbar-mundofutbol .navbar-inner {
     max-width: 1600px;
     margin: 0 auto;
@@ -2283,43 +1780,31 @@ footer {
 }
 
 /* MARCA */
-
 .navbar-mundofutbol .brand-mundofutbol {
     display: inline-flex;
     align-items: center;
     gap: 12px;
-
     color: var(--mf-gold-light) !important;
     text-decoration: none;
-
     font-size: 1.35rem;
     font-weight: 850;
     letter-spacing: -.6px;
-
     white-space: nowrap;
-
     transition: transform .25s ease;
 }
-
 .navbar-mundofutbol .brand-mundofutbol:hover {
     transform: translateY(-2px);
 }
-
 .navbar-mundofutbol .brand-logo {
     position: relative;
-
     width: 46px;
     height: 46px;
     flex-shrink: 0;
-
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     border-radius: 15px;
-
     color: #092B20;
-
     background:
         linear-gradient(
             145deg,
@@ -2327,21 +1812,17 @@ footer {
             #C8A34D 55%,
             #A98230
         );
-
     box-shadow:
         0 4px 16px rgba(200, 163, 77, .22),
         inset 0 1px 1px rgba(255, 255, 255, .55);
-
     font-size: 1.25rem;
 }
-
 .navbar-mundofutbol .brand-text {
     display: flex;
     flex-direction: column;
     gap: 1px;
     line-height: 1.1;
 }
-
 .navbar-mundofutbol .brand-subtitle {
     color: #C6D7CD;
     font-size: .58rem;
@@ -2351,181 +1832,135 @@ footer {
 }
 
 /* LINKS DE NAVEGACIÓN */
-
 .navbar-mundofutbol .navbar-nav {
     display: flex;
     align-items: center;
     gap: 5px;
 }
-
 .navbar-mundofutbol .nav-link.nav-link-custom {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 9px;
-
     position: relative;
     white-space: nowrap;
-
     padding: 11px 13px !important;
-
     color: #E5EEE8 !important;
-
     font-size: .85rem !important;
     font-weight: 650;
-
     border-radius: 11px;
-
     background: transparent;
-
     transition:
         background .22s ease,
         color .22s ease,
         transform .22s ease,
         box-shadow .22s ease;
 }
-
 .navbar-mundofutbol .nav-link-custom i {
     color: #A8CBB6;
-
     font-size: .96rem;
     transition: color .22s ease;
 }
-
 .navbar-mundofutbol .nav-link.nav-link-custom:hover {
     color: var(--mf-gold-light) !important;
     background: rgba(255, 255, 255, .075);
     transform: translateY(-2px);
 }
-
 .navbar-mundofutbol .nav-link-custom:hover i {
     color: var(--mf-gold-light);
 }
 
 /* PÁGINA ACTIVA */
-
 .navbar-mundofutbol .nav-link.nav-link-custom.active {
     color: var(--mf-gold-light) !important;
-
     background: rgba(200, 163, 77, .13);
-
     box-shadow:
         inset 0 0 0 1px rgba(200, 163, 77, .28);
 }
-
 .navbar-mundofutbol .nav-link-custom.active i {
     color: var(--mf-gold-light);
 }
-
 .navbar-mundofutbol .nav-link-custom.active::after {
     content: "";
-
     position: absolute;
     bottom: 3px;
     left: 28%;
     right: 28%;
-
     height: 2px;
     border-radius: 10px;
-
     background: var(--mf-gold);
-
     box-shadow: 0 0 9px rgba(200, 163, 77, .5);
 }
 
 /* DESPLEGABLE DE CONFEDERACIONES */
-
 .navbar-mundofutbol .dropdown-menu {
     min-width: 270px;
-
     margin-top: 12px;
     padding: 10px;
-
     background: #102D22 !important;
-
     border: 1px solid rgba(200, 163, 77, .35) !important;
     border-radius: 16px;
-
     box-shadow:
         0 18px 46px rgba(0, 0, 0, .38),
         inset 0 1px 0 rgba(255, 255, 255, .05);
 }
-
 .navbar-mundofutbol .dropdown-header-mf {
     display: flex;
     align-items: center;
     gap: 9px;
-
     padding: 11px 12px 12px;
-
     color: var(--mf-gold-light);
-
     font-size: .71rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1.4px;
 }
-
 .navbar-mundofutbol .dropdown-item {
     display: flex;
     align-items: center;
     gap: 11px;
-
     padding: 11px 13px;
-
     color: #F1F7F2 !important;
-
     border-radius: 9px;
     font-size: .85rem;
     font-weight: 550;
-
     transition:
         background .2s ease,
         color .2s ease,
         transform .2s ease;
 }
-
 .navbar-mundofutbol .dropdown-item i {
     width: 20px;
     text-align: center;
     color: #C8A34D;
 }
-
 .navbar-mundofutbol .dropdown-item:hover,
 .navbar-mundofutbol .dropdown-item:focus {
     color: var(--mf-gold-light) !important;
     background: rgba(200, 163, 77, .14) !important;
     transform: translateX(3px);
 }
-
 .navbar-mundofutbol .dropdown-divider {
     border-color: rgba(200, 163, 77, .25);
     margin: 9px 0;
 }
-
 .navbar-mundofutbol .dropdown-item.dropdown-all {
     background: rgba(200, 163, 77, .09);
-
     color: var(--mf-gold-light) !important;
-
     font-weight: 800;
 }
 
 /* ZONA DE ACCIONES */
-
 .navbar-mundofutbol .navbar-actions {
     display: flex;
     align-items: center;
     gap: 10px;
 }
-
 .navbar-mundofutbol .navbar-separator {
     display: block;
     width: 1px;
     height: 30px;
-
     margin: 0 7px;
-
     background:
         linear-gradient(
             to bottom,
@@ -2536,26 +1971,19 @@ footer {
 }
 
 /* ADMINISTRACIÓN */
-
 .navbar-mundofutbol .btn-admin-navbar {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 9px;
-
     padding: 11px 16px;
-
     color: #0A2E21 !important;
-
     font-size: .84rem;
     font-weight: 800;
-
     text-decoration: none;
     white-space: nowrap;
-
     border: 1px solid rgba(255, 238, 177, .42);
     border-radius: 11px;
-
     background:
         linear-gradient(
             135deg,
@@ -2563,25 +1991,20 @@ footer {
             #C8A34D 60%,
             #BA933C
         ) !important;
-
     box-shadow:
         0 5px 17px rgba(200, 163, 77, .2),
         inset 0 1px 0 rgba(255, 255, 255, .4);
-
     transition:
         transform .22s ease,
         box-shadow .22s ease,
         filter .22s ease;
 }
-
 .navbar-mundofutbol .btn-admin-navbar:hover {
     color: #0A2E21 !important;
     transform: translateY(-2px);
     filter: brightness(1.08);
-
     box-shadow: 0 8px 24px rgba(200, 163, 77, .32);
 }
-
 .navbar-mundofutbol .btn-admin-navbar.is-active {
     box-shadow:
         0 0 0 2px rgba(255, 230, 156, .32),
@@ -2589,73 +2012,53 @@ footer {
 }
 
 /* CERRAR SESIÓN */
-
 .navbar-mundofutbol .btn-logout-navbar {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 9px;
-
     padding: 11px 14px;
-
     color: #EFF6F1 !important;
-
     font-size: .84rem;
     font-weight: 650;
-
     white-space: nowrap;
-
     background: rgba(255, 255, 255, .045) !important;
-
     border: 1px solid rgba(255, 255, 255, .15);
     border-radius: 11px;
-
     transition:
         transform .22s ease,
         background .22s ease,
         color .22s ease,
         border-color .22s ease;
 }
-
 .navbar-mundofutbol .btn-logout-navbar:hover {
     color: #FFD3D6 !important;
     background: rgba(206, 69, 82, .13) !important;
-
     border-color: rgba(232, 106, 116, .5);
     transform: translateY(-2px);
 }
 
 /* USUARIO */
-
 .navbar-mundofutbol .user-chip {
     display: inline-flex;
     align-items: center;
     gap: 9px;
-
     padding: 5px 8px 5px 5px;
-
     border-radius: 12px;
-
     background: rgba(255, 255, 255, .055);
     border: 1px solid rgba(255, 255, 255, .11);
 }
-
 .navbar-mundofutbol .user-avatar {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     width: 32px;
     height: 32px;
-
     border-radius: 9px;
-
     color: var(--mf-gold-light);
     background: rgba(200, 163, 77, .14);
-
     font-size: .85rem;
 }
-
 .navbar-mundofutbol .user-name {
     color: #E5EEE8;
     font-size: .78rem;
@@ -2663,50 +2066,37 @@ footer {
 }
 
 /* REGISTRO E INICIO DE SESIÓN */
-
 .navbar-mundofutbol .btn-register-navbar {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-
     padding: 11px 16px;
-
     background: var(--mf-gold);
     color: var(--mf-dark) !important;
-
     font-weight: 800;
     text-decoration: none;
-
     border-radius: 11px;
-
     transition: transform .2s ease, background .2s ease;
 }
-
 .navbar-mundofutbol .btn-register-navbar:hover {
     background: var(--mf-gold-light);
     transform: translateY(-2px);
 }
 
 /* BOTÓN HAMBURGUESA */
-
 .navbar-mundofutbol .navbar-toggler {
     border: 1px solid rgba(200, 163, 77, .35) !important;
     border-radius: 12px;
-
     padding: 10px 12px;
-
     color: var(--mf-gold-light);
-
     background: rgba(200, 163, 77, .09);
 }
-
 .navbar-mundofutbol .navbar-toggler:focus {
     box-shadow: 0 0 0 3px rgba(200, 163, 77, .18);
 }
 
 /* ACCESIBILIDAD */
-
 .navbar-mundofutbol a:focus-visible,
 .navbar-mundofutbol button:focus-visible {
     outline: 2px solid var(--mf-gold-light);
@@ -2719,53 +2109,41 @@ footer {
    para que el menú no quede amontonado. */
 
 @media (max-width: 1399.98px) {
-
     .navbar-mundofutbol .navbar-collapse {
         margin-top: 18px;
         padding: 18px;
-
         background: rgba(7, 36, 26, .92);
-
         border: 1px solid rgba(200, 163, 77, .22);
         border-radius: 16px;
     }
-
     .navbar-mundofutbol .navbar-nav {
         align-items: stretch !important;
         gap: 5px;
     }
-
     .navbar-mundofutbol .nav-link.nav-link-custom {
         justify-content: flex-start;
         padding: 13px 15px !important;
         width: 100%;
     }
-
     .navbar-mundofutbol .navbar-actions {
         flex-direction: column;
         align-items: stretch;
         gap: 10px;
-
         margin-top: 16px;
         padding-top: 16px;
-
         border-top: 1px solid rgba(200, 163, 77, .2);
     }
-
     .navbar-mundofutbol .navbar-separator {
         display: none;
     }
-
     .navbar-mundofutbol .user-chip {
         justify-content: center;
     }
-
     .navbar-mundofutbol .btn-admin-navbar,
     .navbar-mundofutbol .btn-logout-navbar,
     .navbar-mundofutbol .btn-register-navbar {
         width: 100%;
     }
-
     .navbar-mundofutbol .dropdown-menu {
         margin-top: 6px;
         box-shadow: none;
@@ -2773,37 +2151,109 @@ footer {
 }
 
 @media (max-width: 575.98px) {
-
     .navbar-mundofutbol .navbar-inner {
         padding-left: 15px;
         padding-right: 15px;
     }
-
     .navbar-mundofutbol .brand-mundofutbol {
         font-size: 1.14rem;
         gap: 9px;
     }
-
     .navbar-mundofutbol .brand-logo {
         width: 41px;
         height: 41px;
     }
-
     .navbar-mundofutbol .brand-subtitle {
         font-size: .52rem;
     }
-
     .navbar-mundofutbol .navbar-collapse {
         padding: 12px;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-
     .navbar-mundofutbol *,
     .navbar-mundofutbol *::before,
     .navbar-mundofutbol *::after {
         transition: none !important;
         animation: none !important;
+    }
+}
+
+/* MEJORA VISUAL DEL CARRUSEL PRINCIPAL */
+.carousel-item img {
+    width: 100%;
+    height: 430px;
+    object-fit: cover;
+    object-position: center;
+}
+.carousel-item {
+    position: relative;
+}
+.carousel-item::after {
+    content: "";
+    position: absolute;
+    inset: 35% 0 0;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(0, 0, 0, 0.65)
+    );
+    pointer-events: none;
+}
+.carousel-caption {
+    z-index: 2;
+    background: transparent !important;
+    bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .carousel-item img {
+        height: 300px;
+    }
+}
+
+/* TEXTO DEL CARRUSEL PRINCIPAL */
+.carousel-caption {
+    position: absolute;
+    z-index: 3;
+    bottom: 25px;
+    left: 15%;
+    right: 15%;
+    padding: 18px 20px;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.85),
+        rgba(0, 0, 0, 0.35),
+        transparent
+    ) !important;
+    border-radius: 12px;
+    text-align: center;
+}
+.carousel-caption h5,
+.carousel-caption h2 {
+    color: #C8A34D !important;
+    font-size: clamp(23px, 3vw, 34px);
+    font-weight: 800;
+    text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.9);
+    margin-bottom: 8px;
+}
+.carousel-caption p {
+    color: #ffffff !important;
+    font-size: 16px;
+    font-weight: 500;
+    text-shadow: 1px 2px 5px #000;
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .carousel-caption {
+        left: 5%;
+        right: 5%;
+        bottom: 15px;
+        padding: 12px;
+    }
+    .carousel-caption p {
+        font-size: 13px;
     }
 }

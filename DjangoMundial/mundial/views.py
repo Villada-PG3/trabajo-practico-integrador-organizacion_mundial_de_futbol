@@ -1,74 +1,46 @@
 from django.http import Http404
 from collections import defaultdict
-
 import unicodedata
-
 from django.views.generic import ListView
-
 from django.shortcuts import render, get_object_or_404, redirect
-
 from django.contrib.auth.forms import UserCreationForm
-
 from django.contrib import messages
-
 from django.contrib.admin.views.decorators import staff_member_required
-
 from django.db.models import Q , Sum
-
 from .models import (
-
     Confederacion,
-
     Mundial,
-
     Seleccion,
-
     Jugador,
-
     PersonalTecnico,
-
     PartidoEliminatoria,
-
     EventoPartido,
-
     PosicionGrupo,
-
     PartidoMundial2022,
     PartidoGrupo,
     HistorialJugador,
-
 )
 
 # ==========================================
-
 # FUNCIONES AUXILIARES
 
 # ==========================================
 
 def normalizar_nombre(nombre):
-
     """
 
     Permite comparar nombres con o sin tildes.
 
     """
-
     nombre = str(nombre or "").strip().lower()
-
     nombre = unicodedata.normalize("NFD", nombre)
-
     return "".join(
-
         caracter
-
         for caracter in nombre
-
         if unicodedata.category(caracter) != "Mn"
-
     )
 
 def clave_clasificacion(posicion):
-
     """
 
     Ordena por:
@@ -80,19 +52,13 @@ def clave_clasificacion(posicion):
     3. Mayor cantidad de goles a favor
 
     """
-
     return (
-
         posicion.pts,
-
         posicion.gf - posicion.gc,
-
         posicion.gf,
-
     )
 
 def clave_mejores_terceros(posicion, anio):
-
     """
 
     Ordena a los terceros.
@@ -108,37 +74,22 @@ def clave_mejores_terceros(posicion, anio):
     mejor puntaje de conducta deportiva.
 
     """
-
     conducta = 0
-
     if anio == 2026:
-
         nombre = normalizar_nombre(posicion.equipo)
-
         conducta_2026 = {
-
             "ghana": -3,
-
             "ecuador": -5,
-
         }
-
         conducta = conducta_2026.get(nombre, 0)
-
     return (
-
         posicion.pts,
-
         posicion.gf - posicion.gc,
-
         posicion.gf,
-
         conducta,
-
     )
 
 def preparar_tablas_mundial(mundial):
-
     """
 
     Prepara las tablas de grupos y, cuando
@@ -148,201 +99,110 @@ def preparar_tablas_mundial(mundial):
     No modifica ni guarda registros.
 
     """
-
     posiciones = list(
-
         PosicionGrupo.objects.filter(
-
             mundial=mundial
-
         ).order_by("grupo", "id")
-
     )
-
     grupos = defaultdict(list)
-
     for posicion in posiciones:
-
         grupos[posicion.grupo].append(posicion)
-
     # Ordenar los equipos de cada grupo
-
     grupos_ordenados = {}
-
     for nombre_grupo, equipos in grupos.items():
-
         equipos.sort(
-
             key=clave_clasificacion,
-
             reverse=True
-
         )
-
         grupos_ordenados[nombre_grupo] = equipos
-
     # Mostrar terceros solamente en formato 2026
-
     # y cuando estén cargados sus 12 grupos.
-
     mostrar_terceros = (
-
         mundial.anio == 2026
-
         and len(grupos_ordenados) == 12
-
         and all(
-
             len(equipos) == 4
-
             for equipos in grupos_ordenados.values()
-
         )
-
     )
-
     mejores_terceros = []
-
     ids_terceros_clasificados = set()
-
     if mostrar_terceros:
-
         # Extraer el tercer equipo de cada grupo
-
         for nombre_grupo, equipos in grupos_ordenados.items():
-
             tercero = equipos[2]
-
             mejores_terceros.append(tercero)
-
         # Ordenar los 12 terceros
-
         mejores_terceros.sort(
-
             key=lambda pos: clave_mejores_terceros(
-
                 pos, mundial.anio
-
             ),
-
             reverse=True
-
         )
-
         # Los 8 primeros clasifican
-
         ids_terceros_clasificados = {
-
             posicion.pk
-
             for posicion in mejores_terceros[:8]
-
         }
-
     # Preparar datos para el HTML
-
     tablas_grupos = []
-
     for nombre_grupo, equipos in sorted(
-
         grupos_ordenados.items()
-
     ):
-
         filas = []
-
         for numero, posicion in enumerate(equipos, start=1):
-
             filas.append({
-
                 "posicion": posicion,
-
                 "numero": numero,
-
                 "clasifica_tercero": (
-
                     numero == 3
-
                     and posicion.pk in ids_terceros_clasificados
-
                 ),
-
             })
-
         tablas_grupos.append({
-
             "nombre": nombre_grupo,
-
             "filas": filas,
-
         })
-
     # Preparar la tabla lateral
-
     tabla_terceros = []
-
     if mostrar_terceros:
-
         for numero, posicion in enumerate(
-
             mejores_terceros,
-
             start=1
-
         ):
-
             tabla_terceros.append({
-
                 "numero": numero,
-
                 "posicion": posicion,
-
                 "clasificado": numero <= 8,
-
             })
-
     return {
-
         "tablas_grupos": tablas_grupos,
-
         "tabla_terceros": tabla_terceros,
-
         "mostrar_terceros": mostrar_terceros,
-
     }
 
 # ==========================================
-
 # VISTAS GENERALES
 
 # ==========================================
 
 def inicio(request):
-
     ultimos_mundiales = Mundial.objects.all().order_by(
-
         "-anio"
-
     )[:3]
-
     return render(request, "inicio.html", {
-
         "ultimos_mundiales": ultimos_mundiales
-
     })
 
 def acerca(request):
-
     return render(request, "acerca.html")
 
 # ==========================================
-
 # DETALLE DEL PARTIDO
 
 # ==========================================
 
 def ordenar_minuto(evento):
-
     """
 
     Ordena minutos como:
@@ -350,155 +210,82 @@ def ordenar_minuto(evento):
     34, 45+2, 46, 90+7, 105, etc.
 
     """
-
     minuto = str(evento.minuto).replace("'", "").strip()
-
     try:
-
         partes = minuto.split("+")
-
         principal = int(partes[0])
-
         agregado = (
-
             int(partes[1])
-
             if len(partes) > 1
-
             else 0
-
         )
-
         return (principal, agregado, evento.pk)
-
     except (ValueError, TypeError, IndexError):
-
         return (999, 0, evento.pk)
 
 def detalle_partido(request, partido_id):
-
     partido = get_object_or_404(
-
         PartidoEliminatoria,
-
         pk=partido_id
-
     )
-
     eventos = list(
-
         EventoPartido.objects.filter(
-
             partido=partido
-
         )
-
     )
-
     eventos.sort(
-
         key=ordenar_minuto,
-
         reverse=True
-
     )
-
     goles = [
-
         evento
-
         for evento in eventos
-
         if evento.tipo in (
-
             "GOL",
-
             "PENAL",
-
             "AUTOGOL"
-
         )
-
     ]
-
     tarjetas = [
-
         evento
-
         for evento in eventos
-
         if evento.tipo in (
-
             "AMARILLA",
-
             "ROJA",
-
             "DOBLE_AMARILLA"
-
         )
-
     ]
-
     cambios = [
-
         evento
-
         for evento in eventos
-
         if evento.tipo == "CAMBIO"
-
     ]
-
     # Estadísticas para detalle_partido.html
-
     estadisticas = {
-
         "goles": len(goles),
-
         "amarillas": sum(
-
             1 for evento in tarjetas
-
             if evento.tipo == "AMARILLA"
-
         ),
-
         "rojas": sum(
-
             1 for evento in tarjetas
-
             if evento.tipo in (
-
                 "ROJA",
-
                 "DOBLE_AMARILLA"
-
             )
-
         ),
-
         "cambios": len(cambios),
-
     }
-
     return render(request, "detalle_partido.html", {
-
         "partido": partido,
-
         "eventos": eventos,
-
         "goles": goles,
-
         "tarjetas": tarjetas,
-
         "cambios": cambios,
-
         "estadisticas": estadisticas,
-
     })
 
 # ==========================================
-
 # CREAR MUNDIAL
 
 # ==========================================
@@ -506,125 +293,76 @@ def detalle_partido(request, partido_id):
 @staff_member_required
 
 def crear_mundial(request):
-
     if request.method == "POST":
-
         pass
-
     return render(
-
         request,
-
         "mundial/crear_mundial.html"
-
     )
 
 # ==========================================
-
 # REGISTRO
 
 # ==========================================
 
 def registro_view(request):
-
     if request.method == "POST":
-
         form = UserCreationForm(request.POST)
-
         if form.is_valid():
-
             form.save()
-
             messages.success(
-
                 request,
-
                 "¡Cuenta creada con éxito! Ya puedes iniciar sesión."
-
             )
-
             return redirect("login")
-
     else:
-
         form = UserCreationForm()
-
     return render(request, "registro.html", {
-
         "form": form
-
     })
 
 # ==========================================
-
 # MUNDIALES
 
 # ==========================================
 
 class MundialListView(ListView):
-
     """
 
     Listado de Mundiales con búsqueda y paginación.
 
     """
-
     model = Mundial
-
     template_name = "mundial/mundiales.html"
-
     context_object_name = "mundiales"
-
     paginate_by = 6
 
     def get_queryset(self):
-
         mundiales = Mundial.objects.all().order_by("-anio")
-
         q = self.request.GET.get("q", "").strip()
-
         if q:
-
             filtros = (
-
                 Q(nombre__icontains=q)
-
                 | Q(sede__icontains=q)
-
                 | Q(campeon__icontains=q)
-
             )
-
             if q.isdigit():
-
                 filtros |= Q(anio=int(q))
-
             mundiales = mundiales.filter(filtros)
-
         return mundiales
 
     def get_context_data(self, **kwargs):
-
         context = super().get_context_data(**kwargs)
-
         context["q"] = self.request.GET.get("q", "").strip()
-
         return context
 
 def detalle_mundial(request, pk):
-
     mundial = get_object_or_404(
-
         Mundial,
-
         pk=pk
-
     )
-
     # Nuevas tablas de grupos y terceros
-
     datos_tablas = preparar_tablas_mundial(mundial)
-
     # Encuentros reales por grupo: Qatar usa los 48 históricos;
     # las otras ediciones, el modelo PartidoGrupo.
     partidos_por_grupo = defaultdict(list)
@@ -657,153 +395,87 @@ def detalle_mundial(request, pk):
             # registrados, se respeta el valor manual de PosicionGrupo.
             forma = partidos_para_forma.get(nombre, [])
             fila["ultimas"] = forma[-5:] if forma else fila["posicion"].lista_forma[-5:]
-
     # Partidos ordenados por fase y orden
-
     partidos = list(
-
         PartidoEliminatoria.objects.filter(
-
             mundial=mundial
-
         ).order_by("orden", "pk")
-
     )
-
     fases = [
-
         ("16vos", "16vos de Final"),
-
         ("Octavos", "Octavos de Final"),
-
         ("Cuartos", "Cuartos de Final"),
-
         ("Semifinal", "Semifinales"),
-
         ("Final", "Gran Final"),
-
     ]
-
     fases_cuadro = []
-
     for codigo, nombre in fases:
-
         partidos_fase = [
-
             partido
-
             for partido in partidos
-
             if partido.fase == codigo
-
         ]
-
         fases_cuadro.append({
-
             "nombre": nombre,
-
             "partidos": partidos_fase,
-
         })
-
     partidos_tercer_puesto = [
-
         partido
-
         for partido in partidos
-
         if partido.fase == "Tercer Puesto"
-
     ]
-
     return render(
-
         request,
-
         "mundial/detalle_mundial.html",
-
         {
-
             "mundial": mundial,
-
             "tablas_grupos": datos_tablas["tablas_grupos"],
-
             "tabla_terceros": datos_tablas["tabla_terceros"],
-
             "mostrar_terceros": datos_tablas["mostrar_terceros"],
-
             "fases_cuadro": fases_cuadro,
-
             "partidos_tercer_puesto": partidos_tercer_puesto,
-
         }
-
     )
 
 # ==========================================
-
 # CONFEDERACIONES
 
 # ==========================================
 
 def lista_confederaciones(request):
-
     confederaciones = Confederacion.objects.all()
-
     return render(
-
         request,
-
         "confederacion/confederaciones.html",
-
         {
-
             "confederaciones": confederaciones
-
         }
-
     )
 
 def detalle_confederacion(request, pk):
-
     confederacion = get_object_or_404(
-
         Confederacion,
-
         pk=pk
-
     )
-
     selecciones = confederacion.selecciones.all()
-
     return render(
-
         request,
-
         "confederacion/detalle_confederacion.html",
-
         {
-
             "confederacion": confederacion,
-
             "selecciones": selecciones
-
         }
-
     )
 
 # ==========================================
-
 # SELECCIONES
 
 # ==========================================
-
 
 # ==========================================
 # SELECCIONES DEL MUNDIAL 2026
 # Fuente: FIFA - 48 selecciones participantes
 # ==========================================
-
 PARTICIPANTES_2026 = {
     "AFC": [
         "Arabia Saudita",
@@ -866,8 +538,6 @@ PARTICIPANTES_2026 = {
         "Turquía",
     ],
 }
-
-
 # Diferencias de nombres entre fuentes
 ALIAS_SELECCIONES = {
     "republica de corea": "corea del sur",
@@ -911,65 +581,51 @@ ALIAS_SELECCIONES = {
     "new zealand": "nueva zelanda",
 }
 
-
 def clave_seleccion(nombre):
     nombre = normalizar_nombre(nombre)
     return ALIAS_SELECCIONES.get(nombre, nombre)
-
 
 # ==========================================
 # LISTADO DE SELECCIONES
 # ==========================================
 
 def selecciones(request):
-
     mundiales = Mundial.objects.all().order_by("-anio")
-
     anios_disponibles = list(
         mundiales.values_list("anio", flat=True)
     )
-
     if 2022 in anios_disponibles:
         anio_predeterminado = 2022
     elif anios_disponibles:
         anio_predeterminado = anios_disponibles[0]
     else:
         anio_predeterminado = None
-
     try:
         anio_elegido = int(
             request.GET.get("anio", anio_predeterminado)
         )
     except (ValueError, TypeError):
         anio_elegido = anio_predeterminado
-
     if anio_elegido not in anios_disponibles:
         anio_elegido = anio_predeterminado
 
     # ======================================
     # OBTENER PARTICIPANTES SEGÚN EL MUNDIAL
     # ======================================
-
     ids_participantes = set()
     nombres_participantes = set()
-
     if anio_elegido == 2022:
-
         # Qatar 2022: los 64 partidos guardados
         partidos = PartidoMundial2022.objects.filter(
             mundial__anio=2022
         )
-
         ids_participantes.update(
             partidos.values_list("equipo1_id", flat=True)
         )
-
         ids_participantes.update(
             partidos.values_list("equipo2_id", flat=True)
         )
-
     elif anio_elegido == 2026:
-
         # Mundial 2026: los 48 participantes
         # confirmados oficialmente.
         for equipos in PARTICIPANTES_2026.values():
@@ -977,23 +633,18 @@ def selecciones(request):
                 nombres_participantes.add(
                     clave_seleccion(equipo)
                 )
-
     elif anio_elegido is not None:
-
         # Otros Mundiales: solamente datos cargados
         posiciones = PosicionGrupo.objects.filter(
             mundial__anio=anio_elegido
         ).values_list("equipo", flat=True)
-
         for equipo in posiciones:
             nombres_participantes.add(
                 clave_seleccion(equipo)
             )
-
         partidos = PartidoEliminatoria.objects.filter(
             mundial__anio=anio_elegido
         ).values_list("equipo1", "equipo2")
-
         for equipo1, equipo2 in partidos:
             nombres_participantes.add(
                 clave_seleccion(equipo1)
@@ -1005,13 +656,11 @@ def selecciones(request):
     # ======================================
     # SELECCIONES REGISTRADAS EN SQLITE
     # ======================================
-
     todas_las_selecciones = list(
         Seleccion.objects.select_related(
             "confederacion"
         ).order_by("nombre")
     )
-
     selecciones_filtradas = [
         seleccion
         for seleccion in todas_las_selecciones
@@ -1025,29 +674,22 @@ def selecciones(request):
     # ======================================
     # AGRUPAR POR CONFEDERACIÓN
     # ======================================
-
     confederaciones = Confederacion.objects.all().order_by(
         "nombre"
     )
-
     selecciones_por_confederacion = []
-
     for confederacion in confederaciones:
-
         equipos_confederacion = [
             seleccion
             for seleccion in selecciones_filtradas
             if seleccion.confederacion_id == confederacion.pk
         ]
-
         if equipos_confederacion:
-
             selecciones_por_confederacion.append({
                 "nombre": confederacion.get_nombre_display(),
                 "id": confederacion.nombre.lower(),
                 "selecciones": equipos_confederacion,
             })
-
     return render(
         request,
         "seleccion/selecciones.html",
@@ -1059,41 +701,102 @@ def selecciones(request):
         }
     )
 
-
 def detalle_seleccion(request, pk):
     from django.db.models import Q
-
     seleccion = get_object_or_404(Seleccion, pk=pk)
-
     # Mundiales disponibles
     anios_disponibles = [
         2026, 2022, 2018, 2014,
         2010, 2006, 2002, 1998
     ]
-
     try:
         anio_elegido = int(request.GET.get("anio", "2022"))
     except (ValueError, TypeError):
         anio_elegido = 2022
-
     if anio_elegido not in anios_disponibles:
         anio_elegido = 2022
-
     mundial_seleccionado = Mundial.objects.filter(
         anio=anio_elegido
     ).first()
-
     # Inicializar las consultas
     jugadores = Jugador.objects.none()
     plantel_tecnico = PersonalTecnico.objects.none()
     ultimos_partidos = []
+    if anio_elegido == 2026:
+        partidos_2026 = PartidoGrupo.objects.filter(
+            mundial__anio=2026,
+            jugado=True
+        ).filter(
+            Q(equipo1=seleccion) | Q(equipo2=seleccion)
+        ).select_related("equipo1", "equipo2").order_by("-fecha", "-pk")
+        for partido in partidos_2026:
+            es_local = partido.equipo1_id == seleccion.pk
+            rival = partido.equipo2 if es_local else partido.equipo1
+            gf = partido.goles1 if es_local else partido.goles2
+            gc = partido.goles2 if es_local else partido.goles1
+            resultado = "V" if gf > gc else "D" if gf < gc else "E"
+            ultimos_partidos.append({
+                "fecha": partido.fecha,
+                "fase": partido.grupo,
+                "rival": rival,
+                "goles_propios": gf,
+                "goles_rival": gc,
+                "penales_propios": None,
+                "penales_rival": None,
+                "hubo_penales": False,
+                "resultado": resultado,
+                "_orden": (0, partido.fecha.isoformat() if partido.fecha else "", partido.pk),
+            })
+        # También incluir partidos de eliminatorias.
+        nombres_selecciones = {
+            normalizar_nombre(s.nombre): s
+            for s in Seleccion.objects.all()
+        }
+        nombre_actual = normalizar_nombre(seleccion.nombre)
+        fases = {
+            "16vos": 1, "Octavos": 2, "Cuartos": 3,
+            "Semifinal": 4, "Tercer Puesto": 5, "Final": 6
+        }
+        eliminatorias = PartidoEliminatoria.objects.filter(
+            mundial__anio=2026
+        )
+        for partido in eliminatorias:
+            e1 = normalizar_nombre(partido.equipo1)
+            e2 = normalizar_nombre(partido.equipo2)
+            if nombre_actual not in (e1, e2):
+                continue
+            # Omitir cruces pendientes con marcador inicial 0-0.
+            if partido.goles1 == 0 and partido.goles2 == 0:
+                continue
+            es_local = e1 == nombre_actual
+            rival_nombre = e2 if es_local else e1
+            rival = nombres_selecciones.get(rival_nombre)
+            if rival is None:
+                continue
+            gf = partido.goles1 if es_local else partido.goles2
+            gc = partido.goles2 if es_local else partido.goles1
+            ultimos_partidos.append({
+                "fecha": None,
+                "fase": partido.get_fase_display(),
+                "rival": rival,
+                "goles_propios": gf,
+                "goles_rival": gc,
+                "penales_propios": None,
+                "penales_rival": None,
+                "hubo_penales": False,
+                "resultado": "V" if gf > gc else "D" if gf < gc else "E",
+                "_orden": (fases.get(partido.fase, 0), "", partido.pk),
+            })
+        ultimos_partidos.sort(
+            key=lambda item: item["_orden"],
+            reverse=True
+        )
+        ultimos_partidos = ultimos_partidos[:4]
 
     # ==========================================
     # JUGADORES SEGÚN EL MUNDIAL
     # ==========================================
-
     if anio_elegido == 2026:
-
         # Jugadores registrados con historial en 2026
         jugadores = Jugador.objects.filter(
             seleccion=seleccion,
@@ -1102,9 +805,7 @@ def detalle_seleccion(request, pk):
             "numero_camiseta",
             "apellido_nombres"
         )
-
     elif anio_elegido == 2022:
-
         # Plantel asociado específicamente a Qatar 2022.
         jugadores = Jugador.objects.filter(
             seleccion=seleccion,
@@ -1113,7 +814,6 @@ def detalle_seleccion(request, pk):
             "numero_camiseta",
             "apellido_nombres"
         )
-
         plantel_tecnico = PersonalTecnico.objects.filter(
             seleccion=seleccion,
             mundial__anio=2022
@@ -1121,7 +821,6 @@ def detalle_seleccion(request, pk):
             "funcion",
             "apellido"
         )
-
         # Últimos partidos del Mundial 2022
         partidos = PartidoMundial2022.objects.filter(
             mundial__anio=2022
@@ -1134,11 +833,8 @@ def detalle_seleccion(request, pk):
             "-fecha",
             "-fifa_match_id"
         )[:4]
-
         for partido in partidos:
-
             es_equipo1 = partido.equipo1_id == seleccion.pk
-
             if es_equipo1:
                 rival = partido.equipo2
                 gf = partido.goles1
@@ -1151,11 +847,9 @@ def detalle_seleccion(request, pk):
                 gc = partido.goles1
                 penales_favor = partido.penales2
                 penales_contra = partido.penales1
-
             hubo_penales = bool(
                 penales_favor or penales_contra
             )
-
             if hubo_penales and penales_favor != penales_contra:
                 resultado = (
                     "V" if penales_favor > penales_contra
@@ -1167,7 +861,6 @@ def detalle_seleccion(request, pk):
                 resultado = "D"
             else:
                 resultado = "E"
-
             ultimos_partidos.append({
                 "fecha": partido.fecha,
                 "fase": partido.fase,
@@ -1179,7 +872,6 @@ def detalle_seleccion(request, pk):
                 "hubo_penales": hubo_penales,
                 "resultado": resultado,
             })
-
     if anio_elegido not in (2022,):
         plantel_tecnico = PersonalTecnico.objects.filter(
             seleccion=seleccion, mundial__anio=anio_elegido
@@ -1188,50 +880,40 @@ def detalle_seleccion(request, pk):
     # ==========================================
     # DATOS PARA EL HTML
     # ==========================================
-
     contexto = {
         "seleccion": seleccion,
         "anio_elegido": anio_elegido,
         "anios_disponibles": anios_disponibles,
         "mundial_seleccionado": mundial_seleccionado,
-
         "jugadores": jugadores,
-
         "arqueros": jugadores.filter(posicion="ARQ"),
         "defensores": jugadores.filter(posicion="DEF"),
         "mediocampistas": jugadores.filter(posicion="MED"),
         "delanteros": jugadores.filter(posicion="DEL"),
-
         "directores_tecnicos": plantel_tecnico.filter(
             funcion="DT"
         ),
         "otros_tecnicos": plantel_tecnico.exclude(
             funcion="DT"
         ),
-
         "ultimos_partidos": ultimos_partidos,
         "total_jugadores": jugadores.count(),
-
         "datos_disponibles": (
             jugadores.exists()
             or bool(ultimos_partidos)
             or plantel_tecnico.exists()
         ),
     }
-
     return render(
         request,
         "seleccion/detalle_seleccion.html",
         contexto
     )
 
-
 # ==========================================
-
 # JUGADORES
 
 # ==========================================
-
 
 def jugadores(request):
     from django.core.paginator import Paginator
@@ -1240,16 +922,13 @@ def jugadores(request):
     # ==========================================
     # MUNDIALES CON HISTORIALES REGISTRADOS
     # ==========================================
-
     anios_disponibles = list(
         HistorialJugador.objects
         .order_by("-mundial__anio")
         .values_list("mundial__anio", flat=True)
         .distinct()
     )
-
     anio_parametro = request.GET.get("anio")
-
     if anio_parametro is None:
         # Al entrar por primera vez, mostrar el último Mundial.
         anio_elegido = (
@@ -1264,21 +943,17 @@ def jugadores(request):
             anio_elegido = int(anio_parametro)
         except (ValueError, TypeError):
             anio_elegido = None
-
         if anio_elegido not in anios_disponibles:
             anio_elegido = None
 
     # ==========================================
     # FILTROS RECIBIDOS POR GET
     # ==========================================
-
     q = request.GET.get("q", "").strip()
     seleccion_id = request.GET.get("seleccion", "").strip()
     posicion = request.GET.get("posicion", "").strip()
     orden = request.GET.get("orden", "nombre").strip()
-
     posiciones_validas = {"ARQ", "DEF", "MED", "DEL"}
-
     ordenes_validos = {
         "nombre",
         "nombre_desc",
@@ -1287,30 +962,24 @@ def jugadores(request):
         "partidos",
         "camiseta",
     }
-
     if posicion not in posiciones_validas:
         posicion = ""
-
     if orden not in ordenes_validos:
         orden = "nombre"
-
     if not seleccion_id.isdigit():
         seleccion_id = ""
 
     # ==========================================
     # JUGADORES DEL MUNDIAL SELECCIONADO
     # ==========================================
-
     lista_base = Jugador.objects.select_related(
         "seleccion",
         "seleccion__confederacion"
     )
-
     if anio_elegido is not None:
         lista_base = lista_base.filter(
             historiales__mundial__anio=anio_elegido
         ).distinct()
-
     # Selecciones disponibles según el Mundial.
     selecciones_disponibles = list(
         lista_base
@@ -1323,19 +992,15 @@ def jugadores(request):
     # ==========================================
     # APLICAR BÚSQUEDA Y FILTROS
     # ==========================================
-
     lista_jugadores = lista_base
-
     if q:
         lista_jugadores = lista_jugadores.filter(
             apellido_nombres__icontains=q
         )
-
     if seleccion_id:
         lista_jugadores = lista_jugadores.filter(
             seleccion_id=int(seleccion_id)
         )
-
     if posicion:
         lista_jugadores = lista_jugadores.filter(
             posicion=posicion
@@ -1344,9 +1009,7 @@ def jugadores(request):
     # ==========================================
     # ESTADÍSTICAS EXCLUSIVAS DE ESE MUNDIAL
     # ==========================================
-
     if anio_elegido is not None:
-
         historial_mundial = (
             HistorialJugador.objects
             .filter(
@@ -1355,7 +1018,6 @@ def jugadores(request):
             )
             .order_by("pk")
         )
-
         lista_jugadores = lista_jugadores.annotate(
             pj_mundial=Subquery(
                 historial_mundial.values(
@@ -1380,37 +1042,31 @@ def jugadores(request):
     # ==========================================
     # ORDENAR RESULTADOS
     # ==========================================
-
     if orden == "nombre_desc":
         lista_jugadores = lista_jugadores.order_by(
             "-apellido_nombres", "pk"
         )
-
     elif orden == "camiseta":
         lista_jugadores = lista_jugadores.order_by(
             "numero_camiseta", "apellido_nombres"
         )
-
     elif orden == "goles" and anio_elegido is not None:
         lista_jugadores = lista_jugadores.order_by(
             "-goles_mundial",
             "-asistencias_mundial",
             "apellido_nombres"
         )
-
     elif orden == "asistencias" and anio_elegido is not None:
         lista_jugadores = lista_jugadores.order_by(
             "-asistencias_mundial",
             "-goles_mundial",
             "apellido_nombres"
         )
-
     elif orden == "partidos" and anio_elegido is not None:
         lista_jugadores = lista_jugadores.order_by(
             "-pj_mundial",
             "apellido_nombres"
         )
-
     else:
         lista_jugadores = lista_jugadores.order_by(
             "apellido_nombres", "pk"
@@ -1419,63 +1075,47 @@ def jugadores(request):
     # ==========================================
     # PAGINACIÓN
     # ==========================================
-
     total_jugadores = lista_jugadores.count()
-
     paginador = Paginator(lista_jugadores, 30)
-
     pagina = paginador.get_page(
         request.GET.get("page")
     )
-
     # Mantener los filtros al cambiar de página.
     parametros = request.GET.copy()
     parametros.pop("page", None)
-
     filtros_url = parametros.urlencode()
 
     # ==========================================
     # CONTEXTO PARA EL HTML
     # ==========================================
-
     contexto = {
         "jugadores": pagina,
         "pagina": pagina,
         "total_jugadores": total_jugadores,
-
         "anios_disponibles": anios_disponibles,
         "anio_elegido": anio_elegido,
-
         "selecciones_disponibles": selecciones_disponibles,
         "seleccion_id": seleccion_id,
-
         "q": q,
         "posicion_elegida": posicion,
         "orden_elegido": orden,
-
         "filtros_url": filtros_url,
     }
-
     return render(
         request,
         "jugador/jugadores.html",
         contexto
     )
 
-
-
 def detalle_jugador(request, pk):
     jugador = get_object_or_404(Jugador, pk=pk)
-
     historiales = list(
         HistorialJugador.objects.filter(jugador=jugador)
         .select_related("mundial")
         .order_by("-mundial__anio")
     )
-
     anios = [h.mundial.anio for h in historiales]
     anio_parametro = request.GET.get("anio", "")
-
     try:
         anio_elegido = (
             int(anio_parametro)
@@ -1484,10 +1124,8 @@ def detalle_jugador(request, pk):
         )
     except (TypeError, ValueError):
         anio_elegido = anios[0] if anios else None
-
     if anio_elegido not in anios:
         anio_elegido = anios[0] if anios else None
-
     historial_seleccionado = next(
         (
             h for h in historiales
@@ -1499,7 +1137,6 @@ def detalle_jugador(request, pk):
     # ======================================
     # ESTADÍSTICAS GENERALES
     # ======================================
-
     totales = HistorialJugador.objects.filter(
         jugador=jugador
     ).aggregate(
@@ -1507,21 +1144,17 @@ def detalle_jugador(request, pk):
         goles=Sum("goles"),
         asistencias=Sum("asistencias"),
     )
-
     partidos_totales = totales["partidos"] or 0
     goles_totales = totales["goles"] or 0
     asistencias_totales = totales["asistencias"] or 0
-
     promedio_gol = (
         round(goles_totales / partidos_totales, 2)
         if partidos_totales else 0
     )
-
     promedio_asistencias = (
         round(asistencias_totales / partidos_totales, 2)
         if partidos_totales else 0
     )
-
     participaciones_gol = (
         goles_totales + asistencias_totales
     )
@@ -1529,14 +1162,11 @@ def detalle_jugador(request, pk):
     # ======================================
     # ESTADÍSTICAS POR MUNDIAL
     # ======================================
-
     estadisticas_mundiales = []
-
     for historial in historiales:
         partidos = historial.partidos_jugados
         goles = historial.goles
         asistencias = historial.asistencias
-
         estadisticas_mundiales.append({
             "mundial": historial.mundial,
             "partidos": partidos,
@@ -1551,19 +1181,16 @@ def detalle_jugador(request, pk):
     # ======================================
     # MEJOR MUNDIAL
     # ======================================
-
     mejor_mundial = max(
         historiales,
         key=lambda h: (h.goles, h.mundial.anio),
         default=None,
     )
-
     from .models import EstadisticaJugadorPartido
     estadisticas_partidos = EstadisticaJugadorPartido.objects.filter(jugador=jugador)
     if anio_elegido is not None:
         estadisticas_partidos = estadisticas_partidos.filter(mundial__anio=anio_elegido)
     estadisticas_partidos = estadisticas_partidos.select_related("partido_grupo", "partido_eliminatoria")
-
     return render(
         request,
         "jugador/detalle_jugador.html",
@@ -1573,20 +1200,16 @@ def detalle_jugador(request, pk):
             "historiales": historiales,
             "anio_elegido": anio_elegido,
             "historial_seleccionado": historial_seleccionado,
-
             "partidos_totales": partidos_totales,
             "goles_totales": goles_totales,
             "asistencias_totales": asistencias_totales,
             "promedio_gol": promedio_gol,
             "promedio_asistencias": promedio_asistencias,
             "participaciones_gol": participaciones_gol,
-
             "estadisticas_mundiales": estadisticas_mundiales,
             "mejor_mundial": mejor_mundial,
         },
     )
-
-
 # Partidos de fase de grupos, configurables desde el panel por Mundial.
 def partidos_grupos_mundial(request, pk):
     from .models import PartidoGrupo
@@ -1599,7 +1222,6 @@ def partidos_grupos_mundial(request, pk):
         "mundial": mundial, "partidos": partidos, "partidos_qatar": partidos_qatar,
     })
 
-
 # =========================================
 # DETALLE DE PARTIDO DE FASE DE GRUPOS
 # =========================================
@@ -1610,7 +1232,6 @@ def detalle_partido_grupo(request, tipo, partido_id):
         EventoGrupo,
         EstadisticaJugadorPartido,
     )
-
     if tipo == "qatar":
         partido = get_object_or_404(
             PartidoMundial2022.objects.select_related(
@@ -1619,16 +1240,13 @@ def detalle_partido_grupo(request, tipo, partido_id):
             pk=partido_id,
             mundial__anio=2022,
         )
-
         if not partido.grupo:
             raise Http404("Este partido no pertenece a una fase de grupos.")
-
         eventos = list(
             EventoGrupo.objects.filter(partido_qatar=partido)
         )
         estadisticas_jugadores = []
         jugado = True
-
     elif tipo == "grupo":
         partido = get_object_or_404(
             PartidoGrupo.objects.select_related(
@@ -1636,27 +1254,21 @@ def detalle_partido_grupo(request, tipo, partido_id):
             ),
             pk=partido_id,
         )
-
         eventos = list(
             EventoGrupo.objects.filter(partido_grupo=partido)
         )
-
         estadisticas_jugadores = list(
             EstadisticaJugadorPartido.objects.filter(
                 partido_grupo=partido
             ).select_related("jugador", "jugador__seleccion")
         )
-
         jugado = partido.jugado
-
     else:
         raise Http404("Tipo de partido desconocido.")
-
     # Normalizar los nombres para que coincidan aunque los eventos
     # estén guardados en inglés y las selecciones estén en español.
     equipo1_clave = clave_seleccion(partido.equipo1.nombre)
     equipo2_clave = clave_seleccion(partido.equipo2.nombre)
-
     for evento in eventos:
         evento.equipo_clave = clave_seleccion(evento.equipo)
 
@@ -1670,32 +1282,25 @@ def detalle_partido_grupo(request, tipo, partido_id):
             )
         except (ValueError, TypeError, IndexError):
             return (999, 0, evento.pk)
-
     eventos.sort(key=orden_evento)
-
     tipos_gol = {"GOL", "PENAL", "AUTOGOL"}
     tipos_tarjeta = {"AMARILLA", "ROJA", "DOBLE_AMARILLA"}
-
     goles = [
         evento for evento in eventos
         if evento.tipo in tipos_gol
     ]
-
     tarjetas = [
         evento for evento in eventos
         if evento.tipo in tipos_tarjeta
     ]
-
     cambios = [
         evento for evento in eventos
         if evento.tipo == "CAMBIO"
     ]
-
     faltas = [
         evento for evento in eventos
         if evento.tipo == "FALTA"
     ]
-
     return render(
         request,
         "mundial/detalle_partido_grupo.html",
